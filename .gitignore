@@ -4,3 +4,28 @@
 *.jar
 *.war
 *.ear
+
+# AsteroidMiner
+.metadata/
+
+# Core project
+AsteroidMiner/.settings/
+AsteroidMiner/bin
+AsteroidMiner/.classpath
+
+# Android natives
+AsteroidMiner-android/.settings/
+AsteroidMiner-android/bin
+AsteroidMiner-android/.classpath
+AsteroidMiner-android/project.properties
+
+# Desktop natives
+AsteroidMiner-desktop/.settings/
+AsteroidMiner-desktop/bin
+AsteroidMiner-desktop/.classpath
+
+# HTML5 natives
+AsteroidMiner-html/.gwt/
+AsteroidMiner-html/.settings/
+AsteroidMiner-html/bin
+AsteroidMiner-html/.classpath
