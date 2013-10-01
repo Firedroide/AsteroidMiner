@@ -8,20 +8,23 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class SpaceShip extends Entity {
+
+public class Asteroid extends Entity {
 	
-	public SpaceShip(World world) {
-		super(world, createBodyDef(), createCollisionBox());
+	private static final float PI2 = (float) (2 * Math.PI);
+	
+	public Asteroid(World world, Vector2 location, float radius) {
+		super(world, createBodyDef(location), createCircle(radius));
 	}
 	
 	@Override
 	public void render(SpriteBatch batch) {
-		Sprite s = Textures.SPACESHIP;
+		Sprite s = Textures.ASTEROID;
 		Body body = getPhysicsBody();
 		
 		Vector2 loc = new Vector2(body.getPosition());
@@ -37,21 +40,18 @@ public class SpaceShip extends Entity {
 		return false;
 	}
 	
-	private static BodyDef createBodyDef() {
-		BodyDef bd = new BodyDef();
-		bd.allowSleep = false;
-		bd.type = BodyType.DynamicBody;
-		bd.angularDamping = 10f;
-		bd.linearDamping = 2.5f;
-		bd.position.set(2f, 2f);
+	private static BodyDef createBodyDef(Vector2 position) {
+		final BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set(position);
+		bodyDef.angle = MathUtils.random(PI2);
 		
-		return bd;
+		return bodyDef;
 	}
 	
-	private static Shape createCollisionBox() {
-		PolygonShape ps = new PolygonShape();
-		ps.setAsBox(0.1f, 0.1f);
-		
-		return ps;
+	private static Shape createCircle(float radius) {
+		final CircleShape cs = new CircleShape();
+		cs.setRadius(radius);
+		return cs;
 	}
 }

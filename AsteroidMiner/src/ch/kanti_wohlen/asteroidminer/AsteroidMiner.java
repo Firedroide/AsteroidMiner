@@ -1,6 +1,6 @@
 package ch.kanti_wohlen.asteroidminer;
 
-import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
+import ch.kanti_wohlen.asteroidminer.screen.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -14,20 +14,15 @@ public class AsteroidMiner extends Game {
 	private FPSLogger fpsLogger;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	
-	private float height;
-	private float width;
-	private float backgroundU2;
-	private float backgroundV2;
+	private Screens screens;
+	private Input input;
 	
 	@Override
 	public void create() {
 		Textures.load(); // TODO: Loading system.
 		
-		width = Gdx.graphics.getWidth();
-		height = Gdx.graphics.getHeight();
-		backgroundU2 = width / Textures.BACKGROUND.getWidth();
-		backgroundV2 = height / Textures.BACKGROUND.getHeight();
+		float height = Gdx.graphics.getHeight();
+		float width = Gdx.graphics.getWidth();
 		
 		fpsLogger = new FPSLogger();
 		camera = new OrthographicCamera(width, height);
@@ -35,7 +30,10 @@ public class AsteroidMiner extends Game {
 		camera.update();
 		batch = new SpriteBatch();
 		
-		setScreen(new GameScreen(this));
+		input = new Input(this);
+		
+		screens = new Screens(this);
+		setScreen(screens.GAME_SCREEN);
 	}
 	
 	@Override
@@ -56,13 +54,9 @@ public class AsteroidMiner extends Game {
 		// Render the currently active screen.
 		//batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		drawBackground();
 		super.render();
 		batch.end();
 	}
-	
-	@Override
-	public void resize(int width, int height) {}
 	
 	@Override
 	public void pause() {}
@@ -74,7 +68,11 @@ public class AsteroidMiner extends Game {
 		return batch;
 	}
 	
-	private void drawBackground() {
-		batch.draw(Textures.BACKGROUND.getTexture(), 0f, 0f, width, height, 0f, 0f, backgroundU2, backgroundV2);
+	public Input getInput() {
+		return input;
+	}
+	
+	public Screens getScreens() {
+		return screens;
 	}
 }
