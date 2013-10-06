@@ -13,10 +13,9 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-
 public class Asteroid extends Entity {
 	
-	private static final float PI2 = (float) (2 * Math.PI);
+	private static final float PI2 = 2 * MathUtils.PI;
 	
 	public Asteroid(World world, Vector2 location, float radius) {
 		super(world, createBodyDef(location), createCircle(radius));

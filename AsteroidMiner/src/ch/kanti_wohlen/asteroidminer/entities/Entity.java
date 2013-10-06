@@ -12,6 +12,7 @@ public abstract class Entity {
 	protected static final float PIXEL_TO_BOX2D = 0.1f;
 	
 	private final Body body;
+	private boolean removed;
 	
 	public Entity(World world, BodyDef bodyDef, Shape collisionBox) {
 		body = world.createBody(bodyDef);
@@ -26,7 +27,15 @@ public abstract class Entity {
 		return body;
 	}
 	
-	public abstract void render(SpriteBatch batch);
+	public boolean remove() {
+		if (isRemoved()) return false;
+		removed = true;
+		return true;
+	}
 	
-	public abstract boolean isRemoved();
+	public boolean isRemoved() {
+		return removed;
+	}
+	
+	public abstract void render(SpriteBatch batch);
 }
