@@ -5,16 +5,18 @@ import java.util.Iterator;
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.Input;
 import ch.kanti_wohlen.asteroidminer.Textures;
-import ch.kanti_wohlen.asteroidminer.entities.Asteroid;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class GameScreen extends AbstractScreen {
+	
+	public static final float WORLD_SIZE = 200f;
 	
 	private static final float timeStep = 1 / 60f; // TODO: Allow different maximum frame rates?
 	private static final int velocityIterations = 8;
@@ -28,18 +30,27 @@ public class GameScreen extends AbstractScreen {
 	private float backgroundU2;
 	private float backgroundV2;
 	
+	// Temp
+	private int counter = 0;
+	
 	public GameScreen(AsteroidMiner game) {
 		input = game.getInput();
 		world = new World(new Vector2(0, 0), true);
 		batch = game.getSpriteBatch();
 		
 		spaceShip = new SpaceShip(world);
-		new Asteroid(world, new Vector2(1000f, 1000f), 100);
 	}
 	
 	@Override
 	public void render(float delta) {
 		renderGame();
+		
+		// Temp
+		counter += 1;
+		counter %= 60;
+		if (counter == 0) {
+			Gdx.app.log("World", (world.getBodyCount() - 2) + " LAZORS!");
+		}
 		
 		// Process input
 		input.onGameRunning(spaceShip);
@@ -54,12 +65,13 @@ public class GameScreen extends AbstractScreen {
 		Iterator<Body> bodies = world.getBodies();
 		while (bodies.hasNext()) {
 			Body body = bodies.next();
-			Object o = body.getUserData();
-			if (!(o instanceof Entity)) return;
-			
+			if (body == null) continue;
 			Entity e = (Entity) body.getUserData();
+			
 			if (e.isRemoved()) {
 				bodies.remove();
+				world.destroyBody(body);
+				body.setUserData(null);
 			} else {
 				e.render(batch);
 			}
@@ -102,5 +114,10 @@ public class GameScreen extends AbstractScreen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public SpaceShip getSpaceShip() {
+		// Somewhat temporary.
+		return spaceShip;
 	}
 }

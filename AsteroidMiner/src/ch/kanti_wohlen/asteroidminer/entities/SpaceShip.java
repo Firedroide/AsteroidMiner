@@ -37,6 +37,10 @@ public class SpaceShip extends Entity {
 		return false;
 	}
 	
+	public Laser fireLaser() {
+		return new Laser(getPhysicsBody().getWorld(), this);
+	}
+	
 	private static BodyDef createBodyDef() {
 		BodyDef bd = new BodyDef();
 		bd.allowSleep = false;

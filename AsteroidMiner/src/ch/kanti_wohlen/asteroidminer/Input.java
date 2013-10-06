@@ -33,6 +33,10 @@ public class Input implements InputProcessor {
 		if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			ship.getPhysicsBody().applyAngularImpulse(-factorTurn);
 		}
+		
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+			game.getScreens().GAME_SCREEN.getSpaceShip().fireLaser();
+		}
 	}
 	
 	@Override
