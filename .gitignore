@@ -27,5 +27,9 @@ AsteroidMiner-desktop/.classpath
 # HTML5 natives
 AsteroidMiner-html/.gwt/
 AsteroidMiner-html/.settings/
+AsteroidMiner-html/war/assets/
+AsteroidMiner-html/war/WEB-INF/deploy/
+AsteroidMiner-html/war/ch.kanti_wohlen.asteroidminer.GwtDefinition/
+AsteroidMiner-html/gwt-unitCache/
 AsteroidMiner-html/bin
 AsteroidMiner-html/.classpath
