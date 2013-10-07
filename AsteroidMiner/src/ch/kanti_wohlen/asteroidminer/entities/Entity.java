@@ -1,6 +1,9 @@
 package ch.kanti_wohlen.asteroidminer.entities;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -35,6 +38,14 @@ public abstract class Entity {
 	
 	public boolean isRemoved() {
 		return removed;
+	}
+	
+	protected void positionSprite(Sprite sprite) {
+		Vector2 loc = new Vector2(body.getPosition());
+		loc.mul(Entity.BOX2D_TO_PIXEL);
+		
+		sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+		sprite.setPosition(loc.x - sprite.getWidth() / 2f, loc.y - sprite.getHeight() / 2f);
 	}
 	
 	public abstract void render(SpriteBatch batch);

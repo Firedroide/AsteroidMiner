@@ -26,14 +26,8 @@ public class Laser extends Entity {
 	
 	@Override
 	public void render(SpriteBatch batch) {
-		Sprite s = Textures.SPACESHIP;
-		Body body = getPhysicsBody();
-		
-		Vector2 loc = new Vector2(body.getPosition());
-		loc.mul(Entity.BOX2D_TO_PIXEL);
-		
-		s.setPosition(loc.x, loc.y);
-		s.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+		Sprite s = Textures.LASER;
+		positionSprite(s);
 		s.draw(batch);
 	}
  	
@@ -58,11 +52,11 @@ public class Laser extends Entity {
 		final Body body = ship.getPhysicsBody();
 		final float x = -MathUtils.sin(body.getAngle());
 		final float y = MathUtils.cos(body.getAngle());
-		final Vector2 vertex = new Vector2(0f, 0f);
-		((PolygonShape) body.getFixtureList().get(0).getShape()).getVertex(3, vertex);
-		final float d = vertex.y / 2f;
+		final float h = Textures.SPACESHIP.getHeight() * 0.5f * PIXEL_TO_BOX2D;
 		
-		bd.position.set(body.getPosition().x + x * d, body.getPosition().y + y * d);
+		Vector2 pos = new Vector2(body.getPosition());
+		pos.add(h * x, h * y);
+		bd.position.set(pos);
 		bd.linearVelocity.set(x * SPEED, y * SPEED);
 		bd.angle = body.getAngle();
 		
@@ -71,7 +65,7 @@ public class Laser extends Entity {
 	
 	private static Shape createCollisionBox() {
 		PolygonShape ps = new PolygonShape();
-		ps.setAsBox(0.1f, 0.02f);
+		ps.setAsBox(Textures.LASER.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.LASER.getHeight() / 2f * PIXEL_TO_BOX2D);
 		return ps;
 	}
 }
