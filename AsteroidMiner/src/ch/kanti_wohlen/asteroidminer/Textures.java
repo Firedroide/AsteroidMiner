@@ -11,6 +11,7 @@ public final class Textures {
 	public static Sprite BACKGROUND;
 	public static Sprite SPACESHIP;
 	public static Sprite ASTEROID;
+	public static Sprite LASER;
 	
 	private Textures() {};
 	
@@ -24,12 +25,16 @@ public final class Textures {
 		BACKGROUND = new Sprite(bg, bg.getWidth(), bg.getHeight());
 		
 		Texture sprites = new Texture(Gdx.files.internal("graphics/sprites.png"));
-		SPACESHIP = new Sprite(sprites, 64, 0, 64, 64);
-		SPACESHIP.setOrigin(32, 32);
+		SPACESHIP = new Sprite(sprites, 629, 34, 70, 81);
+		SPACESHIP.setOrigin(SPACESHIP.getWidth() / 2, SPACESHIP.getHeight() / 2);
 		SPACESHIP.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
-		ASTEROID = new Sprite(sprites, 192, 0, 64, 64);
-		ASTEROID.setOrigin(32, 32);
+		ASTEROID = new Sprite(sprites, 164, 237, 84, 83);
+		ASTEROID.setOrigin(ASTEROID.getWidth() / 2, ASTEROID.getHeight() / 2);
 		ASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		LASER = new Sprite(sprites, 364, 177, 7, 12);
+		LASER.setOrigin(LASER.getWidth() / 2, LASER.getHeight() / 2);
+		LASER.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 }
