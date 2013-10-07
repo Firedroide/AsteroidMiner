@@ -18,8 +18,10 @@ public class Input implements InputProcessor {
 	
 	public void onGameRunning(SpaceShip ship) {
 		boolean k = Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT);
-		float factorSpeed = k ? 8f : 4f;
-		float factorTurn = k ? 0.0001f : 0.00025f;
+		float factorSpeed = k ? 160f : 80f;
+		float factorTurn = k ? 0.05f : 0.125f;
+		factorSpeed *= ship.getPhysicsBody().getMass();
+		factorTurn *= ship.getPhysicsBody().getMass() * ship.getPhysicsBody().getMass();
 		
 		if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
 			float x = -MathUtils.sin(ship.getPhysicsBody().getAngle()) * factorSpeed;
@@ -35,7 +37,7 @@ public class Input implements InputProcessor {
 		}
 		
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			game.getScreens().GAME_SCREEN.getSpaceShip().fireLaser();
+			ship.fireLaser();
 		}
 	}
 	
