@@ -1,6 +1,8 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.CollisionListener;
@@ -70,6 +72,38 @@ public class GameScreen extends AbstractScreen {
 		input.onGameRunning(spaceShip);
 		// Do physics
 		world.step(timeStep, velocityIterations, positionIterations);
+		applyGravity();
+	}
+	
+	private void applyGravity() {
+		final float G = 10f;
+		
+		// Update to nightly GDX builds to fix this issue?
+		List<Body> bodies = new ArrayList<Body>();
+		Iterator<Body> bodyIterator = world.getBodies();
+		while (bodyIterator.hasNext()) {
+			Body body = bodyIterator.next();
+			if (body != null) {
+				bodies.add(body);
+			}
+		}
+		
+		for (Body body : bodies) {
+			if (body == null) continue;
+			
+			for (Body target : bodies) {
+				if (target == null) continue;
+				if (target.getGravityScale() == 0f) continue;
+				
+				Vector2 dir = body.getPosition().cpy().sub(target.getPosition());
+				final float dist = dir.len2() + 1;
+				dir.nor();
+				final float w2 = body.getMass() * target.getMass();
+				final float force = G * w2 / dist;
+				
+				target.applyForceToCenter(dir.mul(force).mul(target.getGravityScale()));
+			}
+		}
 	}
 	
 	public void renderGame() {
