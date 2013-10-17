@@ -16,10 +16,12 @@ public class Input implements InputProcessor {
 		Gdx.input.setInputProcessor(this);
 	}
 	
-	public void onGameRunning(SpaceShip ship) {
+	public void onGameRunning(LocalPlayer player) {
 		boolean k = Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT);
 		float factorSpeed = k ? 160f : 80f;
 		float factorTurn = k ? 0.05f : 0.125f;
+		SpaceShip ship = player.getSpaceShip();
+		
 		factorSpeed *= ship.getPhysicsBody().getMass();
 		factorTurn *= ship.getPhysicsBody().getMass() * ship.getPhysicsBody().getMass();
 		

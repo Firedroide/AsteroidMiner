@@ -6,11 +6,11 @@ import java.util.List;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.CollisionListener;
-import ch.kanti_wohlen.asteroidminer.Input;
+import ch.kanti_wohlen.asteroidminer.LocalPlayer;
+import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Asteroid;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
-import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,10 +28,10 @@ public class GameScreen extends AbstractScreen {
 	private static final int positionIterations = 3;
 	
 	private final OrthographicCamera foregroundCamera;
-	private final Input input;
 	private final World world;
 	private final SpriteBatch batch;
-	private final SpaceShip spaceShip;
+	private final List<Player> players;
+	private final Player localPlayer;
 	
 	private float backgroundU2;
 	private float backgroundV2;
@@ -44,13 +44,15 @@ public class GameScreen extends AbstractScreen {
 		foregroundCamera.setToOrtho(false);
 		foregroundCamera.position.set(0f, 0f, 0f);
 		
-		input = game.getInput();
 		world = new World(new Vector2(0, 0), true);
 		CollisionListener cl = new CollisionListener();
 		world.setContactFilter(cl);
 		batch = game.getSpriteBatch();
 		
-		spaceShip = new SpaceShip(world);
+		localPlayer = new LocalPlayer(game, world);
+		players = new ArrayList<Player>();
+		players.add(localPlayer);
+		
 		new Asteroid(world, new Vector2(20, 20), Textures.ASTEROID.getHeight() * 0.05f);
 		new Asteroid(world, new Vector2(50, 30), Textures.ASTEROID.getHeight() * 0.05f);
 		new Asteroid(world, new Vector2(40, 60), Textures.ASTEROID.getHeight() * 0.05f);
@@ -69,7 +71,10 @@ public class GameScreen extends AbstractScreen {
 		}
 		
 		// Process input
-		input.onGameRunning(spaceShip);
+		for (Player p : players) {
+			p.doInput();
+		}
+		
 		// Do physics
 		world.step(timeStep, velocityIterations, positionIterations);
 		applyGravity();
@@ -149,7 +154,7 @@ public class GameScreen extends AbstractScreen {
 	
 	private void moveCamera() {
 		// Get the spaceship's current distance from the center of the screen
-		final Vector2 movement = new Vector2(spaceShip.getPhysicsBody().getPosition().mul(10f));
+		final Vector2 movement = new Vector2(localPlayer.getSpaceShip().getPhysicsBody().getPosition().mul(10f));
 		movement.sub(foregroundCamera.position.x, foregroundCamera.position.y);
 		
 		// Get the ship's distance from the border, keeping the direction
@@ -164,6 +169,14 @@ public class GameScreen extends AbstractScreen {
 		foregroundCamera.position.add(movement.x, movement.y, 0f);
 		foregroundCamera.update(false);
 		foregroundCamera.apply(Gdx.gl11);
+	}
+	
+	public Player[] getPlayers() {
+		return players.toArray(new Player[players.size()]);
+	}
+	
+	public Player getLocalPlayer() {
+		return localPlayer;
 	}
 	
 	@Override
@@ -202,10 +215,5 @@ public class GameScreen extends AbstractScreen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public SpaceShip getSpaceShip() {
-		// Somewhat temporary.
-		return spaceShip;
 	}
 }

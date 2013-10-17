@@ -15,7 +15,6 @@ public class AsteroidMiner extends Game {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Screens screens;
-	private Input input;
 	
 	@Override
 	public void create() {
@@ -29,8 +28,6 @@ public class AsteroidMiner extends Game {
 		camera.translate(-width / 2f, -height / 2f);
 		camera.update();
 		batch = new SpriteBatch();
-		
-		input = new Input(this);
 		
 		screens = new Screens(this);
 		setScreen(screens.GAME_SCREEN);
@@ -66,10 +63,6 @@ public class AsteroidMiner extends Game {
 	
 	public SpriteBatch getSpriteBatch() {
 		return batch;
-	}
-	
-	public Input getInput() {
-		return input;
 	}
 	
 	public Screens getScreens() {
