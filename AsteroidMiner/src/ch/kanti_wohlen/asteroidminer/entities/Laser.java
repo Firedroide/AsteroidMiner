@@ -58,6 +58,7 @@ public class Laser extends Entity {
 		pos.add(h * x, h * y);
 		bd.position.set(pos);
 		bd.linearVelocity.set(x * SPEED, y * SPEED);
+		bd.linearVelocity.add(body.getLinearVelocity());
 		bd.angle = body.getAngle();
 		
 		return bd;
