@@ -81,7 +81,7 @@ public class GameScreen extends AbstractScreen {
 	}
 	
 	private void applyGravity() {
-		final float G = 10f;
+		final float G = 7.5f;
 		
 		// Update to nightly GDX builds to fix this issue?
 		List<Body> bodies = new ArrayList<Body>();

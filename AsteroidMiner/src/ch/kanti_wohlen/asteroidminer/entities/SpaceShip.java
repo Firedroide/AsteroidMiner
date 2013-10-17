@@ -21,6 +21,7 @@ public class SpaceShip extends Entity {
 		Sprite s = Textures.SPACESHIP;
 		positionSprite(s);
 		s.draw(batch);
+		getPhysicsBody().setGravityScale(5f);
 	}
 	
 	@Override

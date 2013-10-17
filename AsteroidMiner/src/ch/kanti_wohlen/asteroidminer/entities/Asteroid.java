@@ -18,6 +18,7 @@ public class Asteroid extends Entity {
 	
 	public Asteroid(World world, Vector2 location, float radius) {
 		super(world, createBodyDef(location), createCircle(radius));
+		getPhysicsBody().setGravityScale(0.1f);
 	}
 	
 	@Override
