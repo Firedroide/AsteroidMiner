@@ -71,7 +71,8 @@ public class SpaceShip extends Entity {
 
 	private static Shape createCollisionBox() {
 		PolygonShape ps = new PolygonShape();
-		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.SPACESHIP.getHeight() / 2f * PIXEL_TO_BOX2D);
+		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.SPACESHIP.getHeight() / 2f
+				* PIXEL_TO_BOX2D);
 
 		return ps;
 	}

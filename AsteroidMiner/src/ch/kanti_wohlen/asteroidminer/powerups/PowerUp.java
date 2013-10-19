@@ -8,12 +8,12 @@ import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 
 public abstract class PowerUp extends Entity {
-	
+
 	public PowerUp(World world, BodyDef bodyDef, Shape collisionBox) {
 		super(world, bodyDef, collisionBox);
 	}
-	
+
 	public abstract void onPickUp(Player player);
-	
+
 	public abstract float getDropFrequency();
 }
