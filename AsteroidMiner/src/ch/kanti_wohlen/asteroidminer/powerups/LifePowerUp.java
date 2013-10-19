@@ -9,25 +9,25 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class LifePowerUp extends PowerUp {
 
-	private static float Drop_Frequency;
+	private static final float DROP_FREQUENCY = 1f;
+	private static final int HEALING_AMOUNT = 40;
 
 	public LifePowerUp(World world, BodyDef bodyDef, Shape collisionBox) {
 		super(world, bodyDef, collisionBox);
 	}
 
 	@Override
-	public void onPickUp(Player p) {
-		p.addLife(1);
+	public void onPickUp(Player player) {
+		player.getSpaceShip().heal(HEALING_AMOUNT);
 	}
 
 	@Override
 	public float getDropFrequency() {
-		return Drop_Frequency;
+		return DROP_FREQUENCY;
 	}
 
 	@Override
 	public void render(SpriteBatch batch) {
 
 	}
-
 }

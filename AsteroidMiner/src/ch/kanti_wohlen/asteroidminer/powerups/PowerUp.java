@@ -13,7 +13,7 @@ public abstract class PowerUp extends Entity {
 		super(world, bodyDef, collisionBox);
 	}
 	
-	public abstract void onPickUp(Player p);
+	public abstract void onPickUp(Player player);
 	
 	public abstract float getDropFrequency();
 }
