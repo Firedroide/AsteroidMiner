@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class LifePowerUp extends PowerUp {
-	
+
 	private static float Drop_Frequency;
 
 	public LifePowerUp(World world, BodyDef bodyDef, Shape collisionBox) {
@@ -17,7 +17,7 @@ public class LifePowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player p) {
-
+		p.addLife(1);
 	}
 
 	@Override

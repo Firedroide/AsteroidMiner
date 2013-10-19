@@ -12,6 +12,7 @@ public final class Textures {
 	public static Sprite SPACESHIP;
 	public static Sprite ASTEROID;
 	public static Sprite LASER;
+	public static Sprite LIFEPOWERUPBOX;
 	
 	private Textures() {};
 	
@@ -36,5 +37,9 @@ public final class Textures {
 		LASER = new Sprite(sprites, 364, 177, 7, 12);
 		LASER.setOrigin(LASER.getWidth() / 2, LASER.getHeight() / 2);
 		LASER.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		LIFEPOWERUPBOX = new Sprite(sprites, 256, 154, 38, 38);
+		LIFEPOWERUPBOX.setOrigin(LIFEPOWERUPBOX.getWidth() / 2, LIFEPOWERUPBOX.getHeight() / 2);
+		LIFEPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 }
