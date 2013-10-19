@@ -27,7 +27,7 @@ public class GameScreen extends AbstractScreen {
 	private static final int velocityIterations = 8;
 	private static final int positionIterations = 3;
 
-	private final OrthographicCamera foregroundCamera;
+	private final OrthographicCamera camera;
 	private final World world;
 	private final SpriteBatch batch;
 	private final List<Player> players;
@@ -40,9 +40,9 @@ public class GameScreen extends AbstractScreen {
 	private int counter = 0;
 
 	public GameScreen(AsteroidMiner game) {
-		foregroundCamera = new OrthographicCamera();
-		foregroundCamera.setToOrtho(false);
-		foregroundCamera.position.set(0f, 0f, 0f);
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false);
+		camera.position.set(0f, 0f, 0f);
 
 		world = new World(new Vector2(0, 0), true);
 		CollisionListener cl = new CollisionListener();
@@ -80,6 +80,66 @@ public class GameScreen extends AbstractScreen {
 		applyGravity();
 	}
 
+	public void renderGame() {
+		// Draw background
+		renderBackground();
+
+		Iterator<Body> bodies = world.getBodies();
+		while (bodies.hasNext()) {
+			Body body = bodies.next();
+			if (body == null) continue;
+			Entity e = (Entity) body.getUserData();
+
+			if (e.isRemoved()) {
+				bodies.remove();
+				world.destroyBody(body);
+				body.setUserData(null);
+			} else {
+				e.render(batch);
+			}
+		}
+	}
+
+	public void renderBackground() {
+		// Make background move slower
+		float fx = camera.position.x * 0.2f;
+		float fy = camera.position.y * 0.2f;
+		// And repeat background graphic
+		fx = fx % Gdx.graphics.getWidth();
+		fy = fy % Gdx.graphics.getHeight();
+		if (fx < 0) fx += Gdx.graphics.getWidth();
+		if (fy < 0) fy += Gdx.graphics.getHeight();
+		fx -= Gdx.graphics.getWidth() / 2f;
+		fy -= Gdx.graphics.getHeight() / 2f;
+		// Then set position to be inside the camera's focus
+		fx = camera.position.x - fx;
+		fy = camera.position.y - fy;
+
+		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy - height, width, height, 0f, 0f, backgroundU2, backgroundV2);
+		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy, width, height, 0f, 0f, backgroundU2, backgroundV2);
+		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy - height, width, height, 0f, 0f, backgroundU2, backgroundV2);
+		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy, width, height, 0f, 0f, backgroundU2, backgroundV2);
+	}
+
+	private void moveCamera() {
+		// Get the spaceship's current distance from the center of the screen
+		final Vector2 movement = new Vector2(localPlayer.getSpaceShip().getPhysicsBody().getPosition().mul(10f));
+		movement.sub(camera.position.x, camera.position.y);
+
+		// Get the ship's distance from the border, keeping the direction
+		final float xDir = movement.x < 0 ? -1 : 1;
+		final float yDir = movement.y < 0 ? -1 : 1;
+		movement.set(Math.abs(movement.x), Math.abs(movement.y));
+		movement.sub(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.15f);
+		movement.set(Math.max(movement.x, 0f), Math.max(movement.y, 0f));
+		movement.mul(xDir, yDir).mul(0.1f); // TODO: Use Box2DToPixel
+
+		// Apply movement to foreground camera
+		camera.position.add(movement.x, movement.y, 0f);
+		camera.update(false);
+		camera.apply(Gdx.gl11);
+	}
+
 	private void applyGravity() {
 		final float G = 7.5f;
 
@@ -109,66 +169,6 @@ public class GameScreen extends AbstractScreen {
 				target.applyForceToCenter(dir.mul(force).mul(target.getGravityScale()));
 			}
 		}
-	}
-
-	public void renderGame() {
-		// Draw background
-		renderBackground();
-
-		Iterator<Body> bodies = world.getBodies();
-		while (bodies.hasNext()) {
-			Body body = bodies.next();
-			if (body == null) continue;
-			Entity e = (Entity) body.getUserData();
-
-			if (e.isRemoved()) {
-				bodies.remove();
-				world.destroyBody(body);
-				body.setUserData(null);
-			} else {
-				e.render(batch);
-			}
-		}
-	}
-
-	public void renderBackground() {
-		// Make background move slower
-		float fx = foregroundCamera.position.x * 0.2f;
-		float fy = foregroundCamera.position.y * 0.2f;
-		// And repeat background graphic
-		fx = fx % Gdx.graphics.getWidth();
-		fy = fy % Gdx.graphics.getHeight();
-		if (fx < 0) fx += Gdx.graphics.getWidth();
-		if (fy < 0) fy += Gdx.graphics.getHeight();
-		fx -= Gdx.graphics.getWidth() / 2f;
-		fy -= Gdx.graphics.getHeight() / 2f;
-		// Then set position to be inside the camera's focus
-		fx = foregroundCamera.position.x - fx;
-		fy = foregroundCamera.position.y - fy;
-
-		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy - height, width, height, 0f, 0f, backgroundU2, backgroundV2);
-		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy, width, height, 0f, 0f, backgroundU2, backgroundV2);
-		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy - height, width, height, 0f, 0f, backgroundU2, backgroundV2);
-		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy, width, height, 0f, 0f, backgroundU2, backgroundV2);
-	}
-
-	private void moveCamera() {
-		// Get the spaceship's current distance from the center of the screen
-		final Vector2 movement = new Vector2(localPlayer.getSpaceShip().getPhysicsBody().getPosition().mul(10f));
-		movement.sub(foregroundCamera.position.x, foregroundCamera.position.y);
-
-		// Get the ship's distance from the border, keeping the direction
-		final float xDir = movement.x < 0 ? -1 : 1;
-		final float yDir = movement.y < 0 ? -1 : 1;
-		movement.set(Math.abs(movement.x), Math.abs(movement.y));
-		movement.sub(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.15f);
-		movement.set(Math.max(movement.x, 0f), Math.max(movement.y, 0f));
-		movement.mul(xDir, yDir).mul(0.1f); // TODO: Use Box2DToPixel
-
-		// Apply movement to foreground camera
-		foregroundCamera.position.add(movement.x, movement.y, 0f);
-		foregroundCamera.update(false);
-		foregroundCamera.apply(Gdx.gl11);
 	}
 
 	public Player[] getPlayers() {
