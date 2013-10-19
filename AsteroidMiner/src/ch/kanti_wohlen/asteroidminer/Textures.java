@@ -14,6 +14,9 @@ public final class Textures {
 	public static Sprite LASER;
 	public static Sprite LIFEPOWERUPBOX;
 
+	public static Sprite HEALTH_HIGH;
+	public static Sprite HEALTH_LOW;
+
 	private Textures() {};
 
 	/**
@@ -27,19 +30,26 @@ public final class Textures {
 
 		Texture sprites = new Texture(Gdx.files.internal("graphics/sprites.png"));
 		SPACESHIP = new Sprite(sprites, 629, 34, 70, 81);
-		SPACESHIP.setOrigin(SPACESHIP.getWidth() / 2, SPACESHIP.getHeight() / 2);
+		SPACESHIP.setOrigin(SPACESHIP.getRegionWidth() / 2, SPACESHIP.getRegionHeight() / 2);
 		SPACESHIP.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		ASTEROID = new Sprite(sprites, 164, 237, 84, 83);
-		ASTEROID.setOrigin(ASTEROID.getWidth() / 2, ASTEROID.getHeight() / 2);
+		ASTEROID.setOrigin(ASTEROID.getRegionWidth() / 2, ASTEROID.getRegionHeight() / 2);
 		ASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		LASER = new Sprite(sprites, 364, 177, 7, 12);
-		LASER.setOrigin(LASER.getWidth() / 2, LASER.getHeight() / 2);
+		LASER.setOrigin(LASER.getRegionWidth() / 2, LASER.getRegionHeight() / 2);
 		LASER.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		LIFEPOWERUPBOX = new Sprite(sprites, 256, 154, 38, 38);
-		LIFEPOWERUPBOX.setOrigin(LIFEPOWERUPBOX.getWidth() / 2, LIFEPOWERUPBOX.getHeight() / 2);
+		LIFEPOWERUPBOX.setOrigin(LIFEPOWERUPBOX.getRegionWidth() / 2, LIFEPOWERUPBOX.getRegionHeight() / 2);
 		LIFEPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		HEALTH_HIGH = new Sprite(sprites, 20, 350, 80, 10);
+		HEALTH_HIGH.setOrigin(HEALTH_HIGH.getRegionWidth() / 2, 0);
+		HEALTH_HIGH.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		HEALTH_LOW = new Sprite(sprites, 20, 360, 80, 10);
+		HEALTH_LOW.setOrigin(HEALTH_LOW.getRegionWidth() / 2, 0);
+		HEALTH_LOW.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 }
