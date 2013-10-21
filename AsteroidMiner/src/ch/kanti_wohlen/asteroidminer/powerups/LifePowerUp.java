@@ -1,7 +1,9 @@
 package ch.kanti_wohlen.asteroidminer.powerups;
 
 import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.Textures;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -28,6 +30,8 @@ public class LifePowerUp extends PowerUp {
 
 	@Override
 	public void render(SpriteBatch batch) {
-
+		Sprite s = Textures.LIFEPOWERUPBOX;
+		positionSprite(s);
+		s.draw(batch);
 	}
 }
