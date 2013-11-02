@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.entities;
 
+import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
 
@@ -13,17 +14,19 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class SpaceShip extends Entity {
+public class SpaceShip extends Entity implements Damageable {
 
 	public static final int MAX_HEALTH = 100;
 
 	private final HealthBar healthBar;
+	private final Player player;
 
 	private int health;
 	private boolean shieldEnabled = false;
 
-	public SpaceShip(World world) {
+	public SpaceShip(World world, Player owningPlayer) {
 		super(world, createBodyDef(), createFixture());
+		player = owningPlayer;
 		healthBar = new HealthBar(MAX_HEALTH);
 		health = MAX_HEALTH;
 	}
@@ -42,6 +45,15 @@ public class SpaceShip extends Entity {
 	@Override
 	public boolean isRemoved() {
 		return false;
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.SPACESHIP;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public int getHealth() {

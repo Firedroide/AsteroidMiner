@@ -12,7 +12,7 @@ public class LocalPlayer implements Player {
 	private final int id;
 
 	public LocalPlayer(AsteroidMiner game, World w) {
-		ship = new SpaceShip(w);
+		ship = new SpaceShip(w, this);
 		id = 0;
 		score = 0;
 		input = new Input(game);
