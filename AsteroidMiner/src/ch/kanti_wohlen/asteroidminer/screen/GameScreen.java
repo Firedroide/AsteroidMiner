@@ -50,7 +50,6 @@ public class GameScreen extends AbstractScreen {
 
 		world = new World(new Vector2(0, 0), true);
 		CollisionListener cl = new CollisionListener();
-		world.setContactFilter(cl);
 		world.setContactListener(cl);
 		batch = game.getSpriteBatch();
 

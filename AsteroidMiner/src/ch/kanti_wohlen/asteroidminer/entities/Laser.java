@@ -38,6 +38,11 @@ public class Laser extends Entity {
 		return Math.abs(loc.x) > GameScreen.WORLD_SIZE || Math.abs(loc.y) > GameScreen.WORLD_SIZE;
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.LASER;
+	}
+
 	public SpaceShip getShooter() {
 		return ship;
 	}
@@ -69,7 +74,7 @@ public class Laser extends Entity {
 		fixture.density = 0f;
 		fixture.isSensor = true;
 		final PolygonShape ps = new PolygonShape();
-		ps.setAsBox(Textures.LASER.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.LASER.getHeight() / 2f * PIXEL_TO_BOX2D);
+		ps.setAsBox(Textures.LASER.getWidth() / 4f * PIXEL_TO_BOX2D, Textures.LASER.getHeight() / 4f * PIXEL_TO_BOX2D);
 		fixture.shape = ps;
 		return fixture;
 	}

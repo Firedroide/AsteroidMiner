@@ -50,4 +50,6 @@ public abstract class Entity {
 	}
 
 	public abstract void render(SpriteBatch batch);
+
+	public abstract EntityType getType();
 }

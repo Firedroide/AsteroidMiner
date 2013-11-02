@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
+import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 
 public abstract class PowerUp extends Entity {
 
@@ -35,6 +36,11 @@ public abstract class PowerUp extends Entity {
 		cs.setRadius(PICKUP_RADIUS);
 		fixture.shape = cs;
 		return fixture;
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.POWER_UP;
 	}
 
 	public abstract void onPickUp(Player player);

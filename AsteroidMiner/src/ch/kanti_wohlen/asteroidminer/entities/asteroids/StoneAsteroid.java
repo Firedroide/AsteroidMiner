@@ -2,7 +2,9 @@ package ch.kanti_wohlen.asteroidminer.entities.asteroids;
 
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
+import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class StoneAsteroid extends Entity {
+public class StoneAsteroid extends Entity implements Damageable {
 
 	public static final int MAX_HEALTH = 100;
 	public static final float STONE_ASTEROID_MIN_SIZE = 0.5f;
@@ -52,6 +54,11 @@ public class StoneAsteroid extends Entity {
 	@Override
 	public boolean isRemoved() {
 		return health == 0;
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.ASTEROID;
 	}
 
 	public int getHealth() {
