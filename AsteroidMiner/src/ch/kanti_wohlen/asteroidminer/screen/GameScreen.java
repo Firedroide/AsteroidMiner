@@ -7,10 +7,11 @@ import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.CollisionListener;
 import ch.kanti_wohlen.asteroidminer.LocalPlayer;
 import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
-import ch.kanti_wohlen.asteroidminer.entities.Entity;
-import ch.kanti_wohlen.asteroidminer.entities.asteroids.StoneAsteroid;
-import ch.kanti_wohlen.asteroidminer.powerups.LifePowerUp;
+import ch.kanti_wohlen.asteroidminer.entities.*;
+import ch.kanti_wohlen.asteroidminer.entities.asteroids.*;
+import ch.kanti_wohlen.asteroidminer.powerups.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -32,6 +33,7 @@ public class GameScreen extends AbstractScreen {
 	private final OrthographicCamera camera;
 	private final World world;
 	private final SpriteBatch batch;
+	private final TaskScheduler scheduler;
 	private final List<Player> players;
 	private final Player localPlayer;
 
@@ -51,6 +53,8 @@ public class GameScreen extends AbstractScreen {
 		world.setContactFilter(cl);
 		world.setContactListener(cl);
 		batch = game.getSpriteBatch();
+
+		scheduler = new TaskScheduler();
 
 		localPlayer = new LocalPlayer(game, world);
 		players = new ArrayList<Player>();
@@ -83,6 +87,8 @@ public class GameScreen extends AbstractScreen {
 		// Do physics
 		world.step(timeStep, velocityIterations, positionIterations);
 		applyGravity();
+
+		scheduler.onGameTick();
 	}
 
 	public void renderGame() {
@@ -99,6 +105,7 @@ public class GameScreen extends AbstractScreen {
 			Entity e = (Entity) body.getUserData();
 
 			if (e.isRemoved()) {
+				Gdx.app.log("DEBUG", "Removed body " + body.getUserData().toString());
 				i.remove();
 				world.destroyBody(body);
 				body.setUserData(null);
