@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class SpaceShip extends Entity {
@@ -20,7 +20,7 @@ public class SpaceShip extends Entity {
 	private float healthAlpha;
 
 	public SpaceShip(World world) {
-		super(world, createBodyDef(), createCollisionBox());
+		super(world, createBodyDef(), createFixture());
 		health = MAX_HEALTH;
 		healthAlpha = HEALTH_BAR_ALPHA_MAX;
 	}
@@ -106,11 +106,13 @@ public class SpaceShip extends Entity {
 		return bd;
 	}
 
-	private static Shape createCollisionBox() {
-		PolygonShape ps = new PolygonShape();
+	private static FixtureDef createFixture() {
+		final FixtureDef fixture = new FixtureDef();
+		fixture.density = 1f;
+		final PolygonShape ps = new PolygonShape();
 		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.SPACESHIP.getHeight() / 2f
 				* PIXEL_TO_BOX2D);
-
-		return ps;
+		fixture.shape = ps;
+		return fixture;
 	}
 }

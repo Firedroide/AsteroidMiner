@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class Entity {
@@ -17,12 +17,13 @@ public abstract class Entity {
 	private final Body body;
 	private boolean removed;
 
-	public Entity(World world, BodyDef bodyDef, Shape collisionBox) {
+	public Entity(World world, BodyDef bodyDef, FixtureDef... fixtures) {
 		body = world.createBody(bodyDef);
 		body.setUserData(this);
-		if (collisionBox != null) {
-			body.createFixture(collisionBox, 1f);
-			collisionBox.dispose();
+		if (fixtures == null) return;
+		for (FixtureDef fixture : fixtures) {
+			body.createFixture(fixture);
+			fixture.shape.dispose();
 		}
 	}
 
