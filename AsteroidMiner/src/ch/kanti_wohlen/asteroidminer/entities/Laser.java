@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
@@ -20,7 +20,7 @@ public class Laser extends Entity {
 	private final SpaceShip ship;
 
 	public Laser(World world, SpaceShip spaceShip) {
-		super(world, createBodyDef(spaceShip), createCollisionBox());
+		super(world, createBodyDef(spaceShip), createFixture());
 		ship = spaceShip;
 	}
 
@@ -64,9 +64,13 @@ public class Laser extends Entity {
 		return bd;
 	}
 
-	private static Shape createCollisionBox() {
-		PolygonShape ps = new PolygonShape();
+	private static FixtureDef createFixture() {
+		final FixtureDef fixture = new FixtureDef();
+		fixture.density = 0f;
+		fixture.isSensor = true;
+		final PolygonShape ps = new PolygonShape();
 		ps.setAsBox(Textures.LASER.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.LASER.getHeight() / 2f * PIXEL_TO_BOX2D);
-		return ps;
+		fixture.shape = ps;
+		return fixture;
 	}
 }

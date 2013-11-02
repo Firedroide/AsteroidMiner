@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class SpaceShip extends Entity {
@@ -21,7 +21,7 @@ public class SpaceShip extends Entity {
 	private boolean shieldEnabled = false;
 
 	public SpaceShip(World world) {
-		super(world, createBodyDef(), createCollisionBox());
+		super(world, createBodyDef(), createFixture());
 		health = MAX_HEALTH;
 		healthAlpha = HEALTH_BAR_ALPHA_MAX;
 	}
@@ -46,21 +46,18 @@ public class SpaceShip extends Entity {
 															// is off....
 		final float y = s.getY() + s.getHeight() * 1.15f;
 
-		final int xm = Math.round((float) health / SpaceShip.MAX_HEALTH
-				* Textures.HEALTH_HIGH.getRegionWidth());
+		final int xm = Math.round((float) health / SpaceShip.MAX_HEALTH * Textures.HEALTH_HIGH.getRegionWidth());
 		final int xn = Textures.HEALTH_LOW.getRegionWidth() - xm;
 		final int wHigh = Textures.HEALTH_HIGH.getRegionWidth();
 		final int xLow = Textures.HEALTH_LOW.getRegionX();
 		final int wLow = Textures.HEALTH_LOW.getRegionWidth();
 
-		Textures.HEALTH_HIGH.setBounds(x, y, xm,
-				Textures.HEALTH_HIGH.getHeight());
+		Textures.HEALTH_HIGH.setBounds(x, y, xm, Textures.HEALTH_HIGH.getHeight());
 		Textures.HEALTH_HIGH.setRegionWidth(xm);
 		Textures.HEALTH_HIGH.draw(batch, Math.min(healthAlpha, 1f));
 		Textures.HEALTH_HIGH.setRegionWidth(wHigh);
 
-		Textures.HEALTH_LOW.setBounds(x + xm, y, xn,
-				Textures.HEALTH_LOW.getHeight());
+		Textures.HEALTH_LOW.setBounds(x + xm, y, xn, Textures.HEALTH_LOW.getHeight());
 		Textures.HEALTH_LOW.setRegionX(xLow + xm);
 		Textures.HEALTH_LOW.setRegionWidth(xn);
 		Textures.HEALTH_LOW.draw(batch, Math.min(healthAlpha, 1f));
@@ -119,11 +116,12 @@ public class SpaceShip extends Entity {
 		return bd;
 	}
 
-	private static Shape createCollisionBox() {
-		PolygonShape ps = new PolygonShape();
-		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D,
-				Textures.SPACESHIP.getHeight() / 2f * PIXEL_TO_BOX2D);
-
-		return ps;
+	private static FixtureDef createFixture() {
+		final FixtureDef fixture = new FixtureDef();
+		fixture.density = 1f;
+		final PolygonShape ps = new PolygonShape();
+		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.SPACESHIP.getHeight() / 2f * PIXEL_TO_BOX2D);
+		fixture.shape = ps;
+		return fixture;
 	}
 }
