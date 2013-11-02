@@ -1,6 +1,7 @@
-package ch.kanti_wohlen.asteroidminer.entities;
+package ch.kanti_wohlen.asteroidminer.entities.asteroids;
 
 import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.entities.Entity;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,13 +13,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class Asteroid extends Entity {
+public class StoneAsteroid extends Entity {
 
-	public Asteroid(World world, Vector2 location, float radius) {
+	public StoneAsteroid(World world, Vector2 location, float radius) {
 		this(world, location, radius, null);
 	}
 
-	public Asteroid(World world, Vector2 location, float radius, Vector2 velocity) {
+	public StoneAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
 		super(world, createBodyDef(location, velocity), createCircle(radius));
 	}
 

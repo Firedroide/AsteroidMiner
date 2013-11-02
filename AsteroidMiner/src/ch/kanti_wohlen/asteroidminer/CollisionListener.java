@@ -1,8 +1,8 @@
 package ch.kanti_wohlen.asteroidminer;
 
-import ch.kanti_wohlen.asteroidminer.entities.Asteroid;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.Laser;
+import ch.kanti_wohlen.asteroidminer.entities.asteroids.StoneAsteroid;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
@@ -22,10 +22,10 @@ public class CollisionListener implements ContactFilter, ContactListener {
 		Entity e2 = (Entity) fixtureB.getBody().getUserData();
 
 		if (e1 instanceof Laser || e2 instanceof Laser) {
-			if (e1 instanceof Laser && e2 instanceof Asteroid) {
-				contactLaserAsteroid((Laser) e1, (Asteroid) e2);
-			} else if (e1 instanceof Asteroid && e2 instanceof Laser) {
-				contactLaserAsteroid((Laser) e2, (Asteroid) e1);
+			if (e1 instanceof Laser && e2 instanceof StoneAsteroid) {
+				contactLaserAsteroid((Laser) e1, (StoneAsteroid) e2);
+			} else if (e1 instanceof StoneAsteroid && e2 instanceof Laser) {
+				contactLaserAsteroid((Laser) e2, (StoneAsteroid) e1);
 			}
 			return false;
 		}
@@ -33,7 +33,7 @@ public class CollisionListener implements ContactFilter, ContactListener {
 		return true;
 	}
 
-	private void contactLaserAsteroid(Laser laser, Asteroid asteroid) {
+	private void contactLaserAsteroid(Laser laser, StoneAsteroid asteroid) {
 		final float x = -MathUtils.sin(laser.getPhysicsBody().getAngle());
 		final float y = MathUtils.cos(laser.getPhysicsBody().getAngle());
 
