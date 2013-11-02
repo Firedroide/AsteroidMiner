@@ -39,7 +39,9 @@ public class Asteroid extends Entity {
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(position);
 		bodyDef.angle = MathUtils.random(2 * MathUtils.PI);
-		bodyDef.linearVelocity.set(velocity);
+		if (velocity != null) {
+			bodyDef.linearVelocity.set(velocity);
+		}
 		bodyDef.gravityScale = 0.1f;
 
 		return bodyDef;
