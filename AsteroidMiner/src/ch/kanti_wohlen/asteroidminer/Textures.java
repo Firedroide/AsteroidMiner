@@ -13,6 +13,8 @@ public final class Textures {
 	public static Sprite ASTEROID;
 	public static Sprite LASER;
 	public static Sprite LIFEPOWERUPBOX;
+	public static Sprite POWERUPBOXMETAL;
+	public static Sprite POWERUPBOXALUMINIUM;
 
 	public static Sprite HEALTH_HIGH;
 	public static Sprite HEALTH_LOW;
@@ -44,6 +46,14 @@ public final class Textures {
 		LIFEPOWERUPBOX = new Sprite(sprites, 256, 154, 38, 38);
 		LIFEPOWERUPBOX.setOrigin(LIFEPOWERUPBOX.getRegionWidth() / 2, LIFEPOWERUPBOX.getRegionHeight() / 2);
 		LIFEPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		POWERUPBOXMETAL = new Sprite(sprites, 57, 154, 38, 38);
+		POWERUPBOXMETAL.setOrigin(POWERUPBOXMETAL.getRegionWidth() / 2, POWERUPBOXMETAL.getRegionHeight() / 2);
+		POWERUPBOXMETAL.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		POWERUPBOXALUMINIUM = new Sprite(sprites, 166, 154, 38, 38);
+		POWERUPBOXALUMINIUM.setOrigin(POWERUPBOXALUMINIUM.getRegionWidth() / 2, POWERUPBOXALUMINIUM.getRegionHeight() / 2);
+		POWERUPBOXALUMINIUM.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		HEALTH_HIGH = new Sprite(sprites, 20, 350, 80, 10);
 		HEALTH_HIGH.setOrigin(HEALTH_HIGH.getRegionWidth() / 2, 0);

@@ -20,6 +20,7 @@ public class SpaceShip extends Entity {
 	private final HealthBar healthBar;
 
 	private int health;
+	private boolean shieldEnabled = false;
 
 	public SpaceShip(World world) {
 		super(world, createBodyDef(), createFixture());
@@ -66,6 +67,14 @@ public class SpaceShip extends Entity {
 		setHealth(0);
 	}
 
+	public boolean getShieldEnabled() {
+		return shieldEnabled;
+	}
+
+	public void setShieldEnabled(boolean shieldEnabled) {
+		this.shieldEnabled = shieldEnabled;
+	}
+
 	public Laser fireLaser() {
 		return new Laser(getPhysicsBody().getWorld(), this);
 	}
@@ -85,8 +94,7 @@ public class SpaceShip extends Entity {
 		final FixtureDef fixture = new FixtureDef();
 		fixture.density = 1f;
 		final PolygonShape ps = new PolygonShape();
-		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.SPACESHIP.getHeight() / 2f
-				* PIXEL_TO_BOX2D);
+		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.SPACESHIP.getHeight() / 2f * PIXEL_TO_BOX2D);
 		fixture.shape = ps;
 		return fixture;
 	}
