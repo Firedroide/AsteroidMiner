@@ -4,12 +4,17 @@ import ch.kanti_wohlen.asteroidminer.entities.Asteroid;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.Laser;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactFilter;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class CollisionListener implements ContactFilter {
+public class CollisionListener implements ContactFilter, ContactListener {
 
 	@Override
 	public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
@@ -38,5 +43,29 @@ public class CollisionListener implements ContactFilter {
 		body.applyForceToCenter(x * 160f * mass, y * 160f * mass);
 		System.out.println("Applied force to Asteroid");
 		// laser.remove();
+	}
+
+	@Override
+	public void beginContact(Contact contact) {
+		Gdx.app.log("DEBUG", "Begin contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
+		
+	}
+
+	@Override
+	public void endContact(Contact contact) {
+		Gdx.app.log("DEBUG", "End contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
+		
+	}
+
+	@Override
+	public void preSolve(Contact contact, Manifold oldManifold) {
+		//Gdx.app.log("DEBUG", "Pre-Solve contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
+		
+	}
+
+	@Override
+	public void postSolve(Contact contact, ContactImpulse impulse) {
+		//Gdx.app.log("DEBUG", "Post-Solve contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
+		
 	}
 }

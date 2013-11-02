@@ -11,6 +11,7 @@ import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Asteroid;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
+import ch.kanti_wohlen.asteroidminer.powerups.LifePowerUp;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -47,15 +48,18 @@ public class GameScreen extends AbstractScreen {
 		world = new World(new Vector2(0, 0), true);
 		CollisionListener cl = new CollisionListener();
 		world.setContactFilter(cl);
+		world.setContactListener(cl);
 		batch = game.getSpriteBatch();
 
 		localPlayer = new LocalPlayer(game, world);
 		players = new ArrayList<Player>();
 		players.add(localPlayer);
 
-		new Asteroid(world, new Vector2(20, 20), Textures.ASTEROID.getHeight() * 0.05f);
-		new Asteroid(world, new Vector2(50, 30), Textures.ASTEROID.getHeight() * 0.05f);
-		new Asteroid(world, new Vector2(40, 60), Textures.ASTEROID.getHeight() * 0.05f);
+		new Asteroid(world, new Vector2(20, 20), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, -2));
+		new Asteroid(world, new Vector2(50, 30), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(0, -2));
+		new Asteroid(world, new Vector2(40, 60), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, 0));
+
+		new LifePowerUp(world, new Vector2(10, 40));
 	}
 
 	@Override
@@ -141,7 +145,7 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	private void applyGravity() {
-		final float G = 7.5f;
+		final float G = 0.2f;
 
 		// Update to nightly GDX builds to fix this issue?
 		List<Body> bodies = new ArrayList<Body>();
