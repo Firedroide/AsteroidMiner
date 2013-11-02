@@ -1,6 +1,7 @@
 package ch.kanti_wohlen.asteroidminer.entities;
 
 import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
 
@@ -17,18 +18,21 @@ import com.badlogic.gdx.physics.box2d.World;
 public class SpaceShip extends Entity implements Damageable {
 
 	public static final int MAX_HEALTH = 100;
+	public static final double FIRING_DELAY = 0.3f;
 
 	private final HealthBar healthBar;
 	private final Player player;
 
 	private int health;
-	private boolean shieldEnabled = false;
+	private boolean shieldEnabled;
+	private boolean canShoot;
 
 	public SpaceShip(World world, Player owningPlayer) {
 		super(world, createBodyDef(), createFixture());
 		player = owningPlayer;
 		healthBar = new HealthBar(MAX_HEALTH);
 		health = MAX_HEALTH;
+		canShoot = true;
 	}
 
 	@Override
@@ -87,8 +91,17 @@ public class SpaceShip extends Entity implements Damageable {
 		this.shieldEnabled = shieldEnabled;
 	}
 
-	public Laser fireLaser() {
-		return new Laser(getPhysicsBody().getWorld(), this);
+	public void fireLaser() {
+		if (canShoot) {
+			canShoot = false;
+			new Laser(getPhysicsBody().getWorld(), this);
+			TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
+				@Override
+				public void run() {
+					canShoot = true;
+				}
+			}, FIRING_DELAY);
+		}
 	}
 
 	private static BodyDef createBodyDef() {
