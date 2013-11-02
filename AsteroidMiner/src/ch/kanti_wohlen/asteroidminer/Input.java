@@ -28,14 +28,14 @@ public class Input implements InputProcessor {
 		if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
 			float x = -MathUtils.sin(ship.getPhysicsBody().getAngle()) * factorSpeed;
 			float y = MathUtils.cos(ship.getPhysicsBody().getAngle()) * factorSpeed;
-			ship.getPhysicsBody().applyForceToCenter(x, y);
+			ship.getPhysicsBody().applyForceToCenter(x, y, true);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
-			ship.getPhysicsBody().applyAngularImpulse(factorTurn);
+			ship.getPhysicsBody().applyAngularImpulse(factorTurn, true);
 		}
 		if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			ship.getPhysicsBody().applyAngularImpulse(-factorTurn);
+			ship.getPhysicsBody().applyAngularImpulse(-factorTurn, true);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {

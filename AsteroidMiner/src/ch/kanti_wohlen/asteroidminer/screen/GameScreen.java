@@ -1,7 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
@@ -19,6 +18,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Array.ArrayIterator;
 
 public class GameScreen extends AbstractScreen {
 
@@ -88,14 +89,17 @@ public class GameScreen extends AbstractScreen {
 		// Draw background
 		renderBackground();
 
-		Iterator<Body> bodies = world.getBodies();
-		while (bodies.hasNext()) {
-			Body body = bodies.next();
+		Array<Body> bodies = new Array<Body>(world.getBodyCount());
+		world.getBodies(bodies);
+		ArrayIterator<Body> i = new ArrayIterator<Body>(bodies, true);
+
+		while (i.hasNext()) {
+			Body body = i.next();
 			if (body == null) continue;
 			Entity e = (Entity) body.getUserData();
 
 			if (e.isRemoved()) {
-				bodies.remove();
+				i.remove();
 				world.destroyBody(body);
 				body.setUserData(null);
 			} else {
@@ -127,7 +131,7 @@ public class GameScreen extends AbstractScreen {
 
 	private void moveCamera() {
 		// Get the spaceship's current distance from the center of the screen
-		final Vector2 movement = new Vector2(localPlayer.getSpaceShip().getPhysicsBody().getPosition().mul(10f));
+		final Vector2 movement = new Vector2(localPlayer.getSpaceShip().getPhysicsBody().getPosition().scl(10f));
 		movement.sub(camera.position.x, camera.position.y);
 
 		// Get the ship's distance from the border, keeping the direction
@@ -136,7 +140,7 @@ public class GameScreen extends AbstractScreen {
 		movement.set(Math.abs(movement.x), Math.abs(movement.y));
 		movement.sub(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.15f);
 		movement.set(Math.max(movement.x, 0f), Math.max(movement.y, 0f));
-		movement.mul(xDir, yDir).mul(0.1f); // TODO: Use Box2DToPixel
+		movement.scl(xDir, yDir).scl(0.1f); // TODO: Use Box2DToPixel
 
 		// Apply movement to foreground camera
 		camera.position.add(movement.x, movement.y, 0f);
@@ -148,19 +152,14 @@ public class GameScreen extends AbstractScreen {
 		final float G = 0.2f;
 
 		// Update to nightly GDX builds to fix this issue?
-		List<Body> bodies = new ArrayList<Body>();
-		Iterator<Body> bodyIterator = world.getBodies();
-		while (bodyIterator.hasNext()) {
-			Body body = bodyIterator.next();
-			if (body != null) {
-				bodies.add(body);
-			}
-		}
+		Array<Body> bodies = new Array<Body>(world.getBodyCount());
+		world.getBodies(bodies);
+		ArrayIterator<Body> ai = new ArrayIterator<Body>(bodies, false);
 
-		for (Body body : bodies) {
+		for (Body body : ai) {
 			if (body == null) continue;
 
-			for (Body target : bodies) {
+			for (Body target : ai) {
 				if (target == null) continue;
 				if (target.getGravityScale() == 0f) continue;
 
@@ -170,7 +169,7 @@ public class GameScreen extends AbstractScreen {
 				final float w2 = body.getMass() * target.getMass();
 				final float force = G * w2 / dist;
 
-				target.applyForceToCenter(dir.mul(force).mul(target.getGravityScale()));
+				target.applyForceToCenter(dir.scl(force).scl(target.getGravityScale()), true);
 			}
 		}
 	}
