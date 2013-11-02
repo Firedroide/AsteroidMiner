@@ -75,6 +75,7 @@ public class IceAsteroid extends Entity implements Damageable {
 			currentRadius = (float) health / MAX_HEALTH * firstRadius;
 			renderScale = (currentRadius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
 			circleFixture.getShape().setRadius(currentRadius);
+			getPhysicsBody().resetMassData();
 		}
 	}
 
