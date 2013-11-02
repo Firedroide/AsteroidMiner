@@ -6,9 +6,14 @@ import java.util.Map.Entry;
 
 public class TaskScheduler {
 
+	/**
+	 * The current and only instance of TaskScheduler. Is never null.
+	 */
+	public static final TaskScheduler INSTANCE = new TaskScheduler();
+
 	private HashMap<Runnable, Long> tasks;
 
-	public TaskScheduler() {
+	private TaskScheduler() {
 		tasks = new HashMap<Runnable, Long>();
 	}
 
