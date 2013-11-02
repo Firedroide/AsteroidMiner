@@ -43,7 +43,7 @@ public abstract class Entity {
 
 	protected void positionSprite(Sprite sprite) {
 		Vector2 loc = new Vector2(body.getPosition());
-		loc.mul(Entity.BOX2D_TO_PIXEL);
+		loc.scl(Entity.BOX2D_TO_PIXEL);
 
 		sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 		sprite.setPosition(loc.x - sprite.getWidth() / 2f, loc.y - sprite.getHeight() / 2f);
