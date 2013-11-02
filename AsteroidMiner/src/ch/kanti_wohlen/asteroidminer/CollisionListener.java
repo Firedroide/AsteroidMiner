@@ -42,7 +42,8 @@ public class CollisionListener implements ContactFilter, ContactListener {
 		final float mass = body.getMass();
 		body.applyForceToCenter(x * 160f * mass, y * 160f * mass, true);
 		System.out.println("Applied force to Asteroid");
-		// laser.remove();
+		asteroid.damage(5);
+		laser.remove();
 	}
 
 	@Override

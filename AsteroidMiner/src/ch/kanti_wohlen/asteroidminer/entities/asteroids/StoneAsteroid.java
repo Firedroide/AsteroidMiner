@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.entities.asteroids;
 
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
@@ -72,17 +73,9 @@ public class StoneAsteroid extends Entity {
 					return;
 				}
 
-				Vector2 locOff = new Vector2(body.getLinearVelocity().nor());
-				Vector2 loc1 = body.getPosition().cpy().add(locOff.rotate(90f));
-				Vector2 loc2 = body.getPosition().cpy().add(locOff.rotate(180f));
-				StoneAsteroid a1 = new StoneAsteroid(w, loc1, nextRadius, body.getLinearVelocity());
-				StoneAsteroid a2 = new StoneAsteroid(w, loc2, nextRadius, body.getLinearVelocity());
-
-				Vector2 impulse = new Vector2(body.getLinearVelocity());
-				impulse.scl(body.getMass()).scl(0.25f);
-
-				a1.getPhysicsBody().applyLinearImpulse(impulse.rotate(90f), body.getWorldCenter(), true);
-				a2.getPhysicsBody().applyLinearImpulse(impulse.rotate(180f), body.getWorldCenter(), true);
+				SplitAsteroidLauncher l = new SplitAsteroidLauncher(w, body.getPosition(),
+						body.getLinearVelocity(), nextRadius, body.getMass());
+				TaskScheduler.INSTANCE.runTask(l);
 			}
 		}
 	}
@@ -120,5 +113,39 @@ public class StoneAsteroid extends Entity {
 		cs.setRadius(radius);
 		fixture.shape = cs;
 		return fixture;
+	}
+	
+	private class SplitAsteroidLauncher implements Runnable {
+
+		private final World w;
+		private final Vector2 position;
+		private final Vector2 velocity;
+		private final float radius;
+		private final float mass;
+
+		public SplitAsteroidLauncher(World world, Vector2 pos, Vector2 vel, float r, float m) {
+			w = world;
+			position = pos;
+			velocity = vel;
+			radius = r;
+			mass = m;
+		}
+
+		@Override
+		public void run() {
+			Vector2 locOff = new Vector2(velocity.cpy().nor());
+			Vector2 loc1 = position.cpy().add(locOff.rotate(90f));
+			Vector2 loc2 = position.cpy().add(locOff.rotate(180f));
+
+			Vector2 impulse = new Vector2(velocity);
+			impulse.scl(mass).scl(0.25f);
+			
+			StoneAsteroid a1 = new StoneAsteroid(w, loc1, radius, velocity);
+			StoneAsteroid a2 = new StoneAsteroid(w, loc2, radius, velocity);
+			
+			a1.getPhysicsBody().applyLinearImpulse(impulse.rotate(90f), position, true);
+			a2.getPhysicsBody().applyLinearImpulse(impulse.rotate(180f), position, true);
+		}
+		
 	}
 }

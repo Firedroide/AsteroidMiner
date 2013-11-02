@@ -54,7 +54,7 @@ public class GameScreen extends AbstractScreen {
 		world.setContactListener(cl);
 		batch = game.getSpriteBatch();
 
-		scheduler = new TaskScheduler();
+		scheduler = TaskScheduler.INSTANCE;
 
 		localPlayer = new LocalPlayer(game, world);
 		players = new ArrayList<Player>();
