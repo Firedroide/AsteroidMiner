@@ -42,8 +42,7 @@ public class SpaceShip extends Entity {
 
 	private void renderHealthBar(SpriteBatch batch, Sprite s) {
 		// Render health overlay
-		final float x = s.getX() - s.getWidth() * 0.05f; // Space ship texture
-															// is off....
+		final float x = s.getX() - s.getWidth() * 0.05f; // Space ship texture is off....
 		final float y = s.getY() + s.getHeight() * 1.15f;
 
 		final int xm = Math.round((float) health / SpaceShip.MAX_HEALTH * Textures.HEALTH_HIGH.getRegionWidth());
