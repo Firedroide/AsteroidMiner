@@ -160,12 +160,13 @@ public class GameScreen extends AbstractScreen {
 		// Update to nightly GDX builds to fix this issue?
 		Array<Body> bodies = new Array<Body>(world.getBodyCount());
 		world.getBodies(bodies);
-		ArrayIterator<Body> ai = new ArrayIterator<Body>(bodies, false);
+		ArrayIterator<Body> outer = new ArrayIterator<Body>(bodies, false);
 
-		for (Body body : ai) {
+		for (Body body : outer) {
 			if (body == null) continue;
 
-			for (Body target : ai) {
+			ArrayIterator<Body> inner = new ArrayIterator<Body>(bodies, false);
+			for (Body target : inner) {
 				if (target == null) continue;
 				if (target.getGravityScale() == 0f) continue;
 
