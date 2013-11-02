@@ -59,7 +59,7 @@ public class GameScreen extends AbstractScreen {
 		players = new ArrayList<Player>();
 		players.add(localPlayer);
 
-		new StoneAsteroid(world, new Vector2(20, 20), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, -2));
+		new IceAsteroid(world, new Vector2(20, 20), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, -2));
 		new StoneAsteroid(world, new Vector2(50, 30), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(0, -2));
 		new StoneAsteroid(world, new Vector2(40, 60), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, 0));
 
