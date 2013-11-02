@@ -145,7 +145,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 			Vector2 loc2 = position.cpy().add(locOff.rotate(180f));
 
 			Vector2 impulse = new Vector2(velocity);
-			impulse.scl(mass).scl(0.25f);
+			impulse.scl(mass).scl(0.75f);
 			
 			StoneAsteroid a1 = new StoneAsteroid(w, loc1, radius, velocity);
 			StoneAsteroid a2 = new StoneAsteroid(w, loc2, radius, velocity);
