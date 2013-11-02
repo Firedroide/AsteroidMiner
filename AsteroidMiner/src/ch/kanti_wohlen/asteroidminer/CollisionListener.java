@@ -47,12 +47,14 @@ public class CollisionListener implements ContactFilter, ContactListener {
 
 	@Override
 	public void beginContact(Contact contact) {
+		if (contact.getFixtureA() == null || contact.getFixtureB() == null) return;
 		Gdx.app.log("DEBUG", "Begin contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
 		
 	}
 
 	@Override
 	public void endContact(Contact contact) {
+		if (contact.getFixtureA() == null || contact.getFixtureB() == null) return;
 		Gdx.app.log("DEBUG", "End contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
 		
 	}
