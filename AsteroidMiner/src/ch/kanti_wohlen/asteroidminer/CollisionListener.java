@@ -6,6 +6,7 @@ import ch.kanti_wohlen.asteroidminer.entities.asteroids.StoneAsteroid;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactFilter;
@@ -37,11 +38,10 @@ public class CollisionListener implements ContactFilter, ContactListener {
 		final float x = -MathUtils.sin(laser.getPhysicsBody().getAngle());
 		final float y = MathUtils.cos(laser.getPhysicsBody().getAngle());
 
-		asteroid.getPhysicsBody().setLinearVelocity(x * 10, y * 10);
-		Body body = asteroid.getPhysicsBody();
-		final float mass = body.getMass();
-		body.applyForceToCenter(x * 160f * mass, y * 160f * mass, true);
-		System.out.println("Applied force to Asteroid");
+		final float mass = asteroid.getPhysicsBody().getMass();
+		final Vector2 force = new Vector2(x * 4f * mass, y * 4f * mass);
+		TaskScheduler.INSTANCE.runTask(new ForceApplier(asteroid, force));
+
 		asteroid.damage(5);
 		laser.remove();
 	}
@@ -50,25 +50,41 @@ public class CollisionListener implements ContactFilter, ContactListener {
 	public void beginContact(Contact contact) {
 		if (contact.getFixtureA() == null || contact.getFixtureB() == null) return;
 		Gdx.app.log("DEBUG", "Begin contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
-		
+
 	}
 
 	@Override
 	public void endContact(Contact contact) {
 		if (contact.getFixtureA() == null || contact.getFixtureB() == null) return;
 		Gdx.app.log("DEBUG", "End contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
-		
+
 	}
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		//Gdx.app.log("DEBUG", "Pre-Solve contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
-		
+		// Gdx.app.log("DEBUG", "Pre-Solve contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
+
 	}
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-		//Gdx.app.log("DEBUG", "Post-Solve contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
-		
+		// Gdx.app.log("DEBUG", "Post-Solve contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
+
+	}
+
+	private class ForceApplier implements Runnable {
+
+		final Body physicsBody;
+		final Vector2 forceApplied;
+
+		public ForceApplier(Entity entity, Vector2 force) {
+			physicsBody = entity.getPhysicsBody();
+			forceApplied = force;
+		}
+
+		@Override
+		public void run() {
+			physicsBody.applyForceToCenter(forceApplied, true);
+		}
 	}
 }
