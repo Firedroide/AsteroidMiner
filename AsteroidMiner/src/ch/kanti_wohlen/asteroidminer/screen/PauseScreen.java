@@ -32,6 +32,8 @@ public class PauseScreen extends AbstractScreen {
 
 		// Draw overlay
 		overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
+		batch.begin();
 		overlay.draw(batch);
 	}
 

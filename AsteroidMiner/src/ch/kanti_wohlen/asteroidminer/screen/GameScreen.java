@@ -91,6 +91,7 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void renderGame() {
+		camera.apply(Gdx.gl11);
 		// Draw background
 		renderBackground();
 
@@ -151,7 +152,6 @@ public class GameScreen extends AbstractScreen {
 		// Apply movement to foreground camera
 		camera.position.add(movement.x, movement.y, 0f);
 		camera.update(false);
-		camera.apply(Gdx.gl11);
 	}
 
 	private void applyGravity() {
