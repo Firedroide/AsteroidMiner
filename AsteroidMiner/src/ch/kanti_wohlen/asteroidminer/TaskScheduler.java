@@ -12,10 +12,10 @@ public class TaskScheduler {
 	 */
 	public static final TaskScheduler INSTANCE = new TaskScheduler();
 
-	private Map<Runnable, Long> tasks;
+	private Map<Long, Runnable> tasks;
 
 	private TaskScheduler() {
-		tasks = new TreeMap<Runnable, Long>();
+		tasks = new TreeMap<Long, Runnable>();
 	}
 
 	public void dispose() {
@@ -30,7 +30,7 @@ public class TaskScheduler {
 	 */
 	public void runTask(Runnable r) {
 		if (r == null) return;
-		tasks.put(r, 0L);
+		tasks.put(0L, r);
 	}
 
 	/**
@@ -44,20 +44,20 @@ public class TaskScheduler {
 	public void runTaskLater(Runnable r, double delay) {
 		if (r == null) return;
 		long executionTime = System.currentTimeMillis() + (long) (1000 * Math.max(0d, delay));
-		tasks.put(r, executionTime);
+		tasks.put(executionTime, r);
 	}
 
 	/**
 	 * Method to actually execute the stored Runnables. Should only ever be called once in GameScreen.
 	 */
 	public void onGameTick() {
-		Iterator<Entry<Runnable, Long>> i = tasks.entrySet().iterator();
+		Iterator<Entry<Long, Runnable>> i = tasks.entrySet().iterator();
 
 		while (i.hasNext()) {
-			Entry<Runnable, Long> entry = i.next();
+			Entry<Long, Runnable> entry = i.next();
 
-			if (entry.getValue() <= System.currentTimeMillis()) {
-				entry.getKey().run();
+			if (entry.getKey() <= System.currentTimeMillis()) {
+				entry.getValue().run();
 				i.remove();
 			} else {
 				break;
