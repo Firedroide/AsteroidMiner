@@ -8,14 +8,14 @@ import java.util.TreeMap;
 public class TaskScheduler {
 
 	/**
-	 * The current and only instance of TaskScheduler. Is never null.
+	 * The current and only instance of TaskScheduler. Is never <code>null</code>.
 	 */
 	public static final TaskScheduler INSTANCE = new TaskScheduler();
 
-	private Map<Long, Runnable> tasks;
+	private Map<Long, Runnable[]> tasks;
 
 	private TaskScheduler() {
-		tasks = new TreeMap<Long, Runnable>();
+		tasks = new TreeMap<Long, Runnable[]>();
 	}
 
 	public void dispose() {
@@ -26,38 +26,52 @@ public class TaskScheduler {
 	 * Run task after rendering and after simulating the world. This way the Runnable can be executed safely.
 	 * 
 	 * @param r
-	 *            the Runnable you want to run. Cannot be null.
+	 *            the {@link Runnable} you want to run. Won't add to queue if <code>null</code>
 	 */
 	public void runTask(Runnable r) {
 		if (r == null) return;
-		tasks.put(0L, r);
+		addTask(0l, r);
 	}
 
 	/**
 	 * Runs a task after a delay in seconds.
 	 * 
 	 * @param r
-	 *            the Runnable you want to run. Cannot be null.
+	 *            the {@link Runnable} you want to run. Won't add to queue if <code>null</code>
 	 * @param delay
-	 *            the time in seconds until the method should be ran.
+	 *            the time in seconds until the method should be called
 	 */
 	public void runTaskLater(Runnable r, double delay) {
 		if (r == null) return;
 		long executionTime = System.currentTimeMillis() + (long) (1000 * Math.max(0d, delay));
-		tasks.put(executionTime, r);
+		addTask(executionTime, r);
+	}
+
+	private void addTask(long when, Runnable what) {
+		if (tasks.containsKey(when)) {
+			Runnable[] oldArr = tasks.get(when);
+			Runnable[] newArr = new Runnable[oldArr.length + 1];
+			System.arraycopy(oldArr, 0, newArr, 0, oldArr.length);
+			newArr[oldArr.length] = what;
+			tasks.put(when, newArr);
+		} else {
+			tasks.put(when, new Runnable[] {what});
+		}
 	}
 
 	/**
 	 * Method to actually execute the stored Runnables. Should only ever be called once in GameScreen.
 	 */
 	public void onGameTick() {
-		Iterator<Entry<Long, Runnable>> i = tasks.entrySet().iterator();
+		Iterator<Entry<Long, Runnable[]>> i = tasks.entrySet().iterator();
 
 		while (i.hasNext()) {
-			Entry<Long, Runnable> entry = i.next();
+			Entry<Long, Runnable[]> entry = i.next();
 
 			if (entry.getKey() <= System.currentTimeMillis()) {
-				entry.getValue().run();
+				for (Runnable task : entry.getValue()) {
+					task.run();
+				}
 				i.remove();
 			} else {
 				break;
