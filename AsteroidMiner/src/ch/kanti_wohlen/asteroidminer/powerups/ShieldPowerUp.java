@@ -19,7 +19,7 @@ public class ShieldPowerUp extends PowerUp {
 	@Override
 	public void onPickUp(Player player) {
 		if (player.getSpaceShip().getShieldEnabled()) {
-			// TODO If Shield already enabled, refresh shield.
+			player.getSpaceShip().addShield();
 		} else {
 			player.getSpaceShip().setShieldEnabled(true);
 		}

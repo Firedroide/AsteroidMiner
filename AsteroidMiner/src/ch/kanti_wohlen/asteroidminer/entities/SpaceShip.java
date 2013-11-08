@@ -24,6 +24,7 @@ public class SpaceShip extends Entity implements Damageable {
 	private final Player player;
 
 	private int health;
+	private int shieldCount;// TODO If Shield already enabled, refresh shield.
 	private boolean shieldEnabled;
 	private boolean canShoot;
 
@@ -33,6 +34,7 @@ public class SpaceShip extends Entity implements Damageable {
 		healthBar = new HealthBar(MAX_HEALTH);
 		health = MAX_HEALTH;
 		canShoot = true;
+		shieldCount = 0;
 	}
 
 	@Override
@@ -42,8 +44,7 @@ public class SpaceShip extends Entity implements Damageable {
 		s.draw(batch);
 		getPhysicsBody().setGravityScale(5f);
 
-		healthBar.render(batch, health,
-				new Vector2(s.getX() - s.getWidth() * 0.05f, s.getY() + s.getHeight() * 1.15f));
+		healthBar.render(batch, health, new Vector2(s.getX() - s.getWidth() * 0.05f, s.getY() + s.getHeight() * 1.15f));
 	}
 
 	@Override
@@ -89,6 +90,14 @@ public class SpaceShip extends Entity implements Damageable {
 
 	public void setShieldEnabled(boolean shieldEnabled) {
 		this.shieldEnabled = shieldEnabled;
+	}
+
+	public void addShield() {
+		shieldCount += 1;
+	}
+
+	public int getShieldCount() {
+		return shieldCount;
 	}
 
 	public void fireLaser() {
