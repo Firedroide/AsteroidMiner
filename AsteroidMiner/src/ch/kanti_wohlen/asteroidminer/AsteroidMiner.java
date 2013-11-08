@@ -30,7 +30,7 @@ public class AsteroidMiner extends Game {
 		batch = new SpriteBatch();
 
 		screens = new Screens(this);
-		setScreen(screens.GAME_SCREEN);
+		setScreen(screens.MENU_SCREEN);
 	}
 
 	@Override

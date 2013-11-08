@@ -13,7 +13,7 @@ public class Input implements InputProcessor {
 
 	public Input(AsteroidMiner asteroidMiner) {
 		game = asteroidMiner;
-		Gdx.input.setInputProcessor(this);
+		// Gdx.input.setInputProcessor(this);
 	}
 
 	public void onGameRunning(LocalPlayer player) {
@@ -41,6 +41,9 @@ public class Input implements InputProcessor {
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			ship.fireLaser();
 		}
+
+		// TEMP!
+		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override

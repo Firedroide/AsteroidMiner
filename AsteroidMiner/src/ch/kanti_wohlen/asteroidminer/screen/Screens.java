@@ -6,9 +6,11 @@ public final class Screens {
 
 	public final GameScreen GAME_SCREEN;
 	public final PauseScreen PAUSE_SCREEN;
+	public final MenuScreen MENU_SCREEN;
 
 	public Screens(AsteroidMiner asteroidMiner) {
 		GAME_SCREEN = new GameScreen(asteroidMiner);
 		PAUSE_SCREEN = new PauseScreen(asteroidMiner);
+		MENU_SCREEN = new MenuScreen(asteroidMiner);
 	}
 }
