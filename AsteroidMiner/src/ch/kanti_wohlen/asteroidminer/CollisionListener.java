@@ -18,6 +18,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class CollisionListener implements ContactListener {
 
+	private static final float JOULES_PER_HEALTH = 2000f;
+
 	@Override
 	public void beginContact(Contact contact) {
 		if (contact.getFixtureA() == null || contact.getFixtureB() == null) return;
@@ -40,9 +42,9 @@ public class CollisionListener implements ContactListener {
 			break;
 		case SPACESHIP:
 			SpaceShip ship = (SpaceShip) e1;
-			switch(e2.getType()) {
+			switch (e2.getType()) {
 			case ASTEROID:
-				ship.damage(1); // TODO
+				collisionDamage(ship, (Damageable) e2);
 				break;
 			case POWER_UP:
 				PowerUp powerUp = (PowerUp) e2;
@@ -52,11 +54,18 @@ public class CollisionListener implements ContactListener {
 			default:
 				break;
 			}
+			break;
+		case ASTEROID:
+			switch (e2.getType()) {
+			case ASTEROID:
+				collisionDamage((Damageable) e1, (Damageable) e2);
+				break;
+			default:
+				break;
+			}
+			break;
 		default:
 			break;
-		}
-		if (e1.getType() == EntityType.LASER && e2.getType() == EntityType.ASTEROID) {
-			contactLaserAsteroid((Laser) e1, e2);
 		}
 	}
 
@@ -72,6 +81,20 @@ public class CollisionListener implements ContactListener {
 			((Damageable) asteroid).damage(5);
 		}
 		laser.remove();
+	}
+
+	private void collisionDamage(Damageable e1, Damageable e2) {
+		final float v = e1.getPhysicsBody().getLinearVelocity().sub(e2.getPhysicsBody().getLinearVelocity()).len2();
+		final float m1 = e1.getPhysicsBody().getMass();
+		final float m2 = e2.getPhysicsBody().getMass();
+
+		final float eDeformation = (m1 * m2 * v) / (2 * (m1 + m2));
+		final int dmg = (int) (eDeformation / JOULES_PER_HEALTH);
+
+		e1.damage(dmg);
+		e2.damage(dmg);
+		Gdx.app.log("Collision", "Deformation energy: " + String.valueOf(eDeformation)
+				+ ", Resulting damage: " + String.valueOf(dmg));
 	}
 
 	@Override
