@@ -115,7 +115,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 	private static FixtureDef createCircle(float radius) {
 		final FixtureDef fixture = new FixtureDef();
 		fixture.density = 100f;
-		fixture.restitution = 0.9f;
+		fixture.restitution = 0.7f;
 		final CircleShape cs = new CircleShape();
 		cs.setRadius(radius);
 		fixture.shape = cs;
