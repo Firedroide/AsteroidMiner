@@ -19,7 +19,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class IceAsteroid extends Entity implements Damageable {
 
-	public static final int MAX_HEALTH = 200;
+	public static final int MAX_HEALTH = 150;
 
 	private final HealthBar healthBar;
 	private final Fixture circleFixture;
