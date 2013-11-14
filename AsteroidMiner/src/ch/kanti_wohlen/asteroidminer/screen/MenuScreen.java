@@ -12,13 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-public class MenuScreen extends AbstractScreen {
+public class MenuScreen extends PauseScreen {
 
 	private final AsteroidMiner game;
 	private final Stage stage;
 	private final Table table;
 
 	public MenuScreen(AsteroidMiner asteroidMiner) {
+		super(asteroidMiner);
+
 		game = asteroidMiner;
 		width = 960;
 		height = 640;
@@ -44,21 +46,24 @@ public class MenuScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				Gdx.app.log("DEBUG:", "Launched single player session.");
-				game.setScreen(game.getScreens().GAME_SCREEN);
+				game.getGame().startGame();
+				game.setScreen(null);
 				return false;
 			}
 		});
 		table.add(singlePlayer).row();
 
-		Gdx.input.setInputProcessor(stage);
-
+		// TODO: Debug...
 		table.debug();
 	}
 
 	@Override
 	public void render(float delta) {
+		super.render(delta);
+		game.getSpriteBatch().begin();
 		stage.draw();
 		Table.drawDebug(stage);
+		game.getSpriteBatch().end();
 	}
 
 	@Override
@@ -71,21 +76,27 @@ public class MenuScreen extends AbstractScreen {
 
 	@Override
 	public void hide() {
-
+		super.hide();
 	}
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		stage.dispose();
 	}
 
 	@Override
-	public void pause() {
+	public void show() {
+		Gdx.input.setInputProcessor(stage);
+	}
 
+	@Override
+	public void pause() {
+		super.pause();
 	}
 
 	@Override
 	public void resume() {
-
+		super.resume();
 	}
 }

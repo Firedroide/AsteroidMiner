@@ -6,16 +6,16 @@ import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
 public class LocalPlayer implements Player {
 
-	private final Input input;
+	private final LocalInput input;
 	private final SpaceShip ship;
 	private long score;
 	private final int id;
 
-	public LocalPlayer(AsteroidMiner game, World w) {
+	public LocalPlayer(AsteroidMiner main, World w) {
 		ship = new SpaceShip(w, this);
 		id = 0;
 		score = 0;
-		input = new Input(game);
+		input = new LocalInput(main);
 	}
 
 	public SpaceShip getSpaceShip() {
@@ -41,6 +41,10 @@ public class LocalPlayer implements Player {
 
 	public void subtractScore(long difference) {
 		score -= difference;
+	}
+
+	public LocalInput getInput() {
+		return input;
 	}
 
 	@Override

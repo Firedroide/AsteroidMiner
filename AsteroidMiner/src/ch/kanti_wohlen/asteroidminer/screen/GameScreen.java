@@ -22,7 +22,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
 
-public class GameScreen extends AbstractScreen {
+public class GameScreen {
 
 	public static final float WORLD_SIZE = 200f;
 
@@ -30,34 +30,32 @@ public class GameScreen extends AbstractScreen {
 	private static final int velocityIterations = 8;
 	private static final int positionIterations = 3;
 
+	private final AsteroidMiner main;
 	private final OrthographicCamera camera;
 	private final World world;
 	private final SpriteBatch batch;
 	private final TaskScheduler scheduler;
 	private final List<Player> players;
-	private final Player localPlayer;
 
-	private float backgroundU2;
-	private float backgroundV2;
+	private LocalPlayer localPlayer;
+	private boolean running;
 
 	// Temp
 	private int counter = 0;
 
-	public GameScreen(AsteroidMiner game) {
+	public GameScreen(AsteroidMiner asteroidMiner) {
+		main = asteroidMiner;
+
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false);
 		camera.position.set(0f, 0f, 0f);
 
+		players = new ArrayList<Player>();
 		world = new World(new Vector2(0, 0), true);
 		CollisionListener cl = new CollisionListener();
 		world.setContactListener(cl);
-		batch = game.getSpriteBatch();
-
+		batch = main.getSpriteBatch();
 		scheduler = TaskScheduler.INSTANCE;
-
-		localPlayer = new LocalPlayer(game, world);
-		players = new ArrayList<Player>();
-		players.add(localPlayer);
 
 		new IceAsteroid(world, new Vector2(20, 20), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, -2));
 		new StoneAsteroid(world, new Vector2(50, 30), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(0, -2));
@@ -66,16 +64,30 @@ public class GameScreen extends AbstractScreen {
 		new LifePowerUp(world, new Vector2(10, 40));
 	}
 
-	@Override
-	public void render(float delta) {
-		moveCamera();
-		renderGame();
+	public void startGame() {
+		localPlayer = new LocalPlayer(main, world);
+		players.add(localPlayer);
+		Gdx.input.setInputProcessor(localPlayer.getInput());
+
+		running = true;
+	}
+
+	public void stopGame() {
+		running = false;
+	}
+
+	public void tick(float delta) {
+		if (running) moveCamera();
 
 		// Temp
 		counter += 1;
 		counter %= 60;
 		if (counter == 0) {
 			Gdx.app.log("World", (world.getBodyCount() - 2) + " LAZORS!");
+			if (localPlayer != null) {
+				Vector2 pos = localPlayer.getSpaceShip().getPhysicsBody().getPosition();
+				Gdx.app.log("SpaceShip", "Location: " + pos.toString());
+			}
 		}
 
 		// Process input
@@ -90,8 +102,7 @@ public class GameScreen extends AbstractScreen {
 		scheduler.onGameTick();
 	}
 
-	public void renderGame() {
-		camera.apply(Gdx.gl11);
+	public void render() {
 		// Draw background
 		renderBackground();
 
@@ -99,6 +110,8 @@ public class GameScreen extends AbstractScreen {
 		world.getBodies(bodies);
 		ArrayIterator<Body> i = new ArrayIterator<Body>(bodies, true);
 
+		batch.begin();
+		camera.apply(Gdx.gl11);
 		while (i.hasNext()) {
 			Body body = i.next();
 			if (body == null) continue;
@@ -113,9 +126,10 @@ public class GameScreen extends AbstractScreen {
 				e.render(batch);
 			}
 		}
+		batch.end();
 	}
 
-	public void renderBackground() {
+	private void renderBackground() {
 		// Make background move slower
 		float fx = camera.position.x * 0.2f;
 		float fy = camera.position.y * 0.2f;
@@ -130,10 +144,21 @@ public class GameScreen extends AbstractScreen {
 		fx = camera.position.x - fx;
 		fy = camera.position.y - fy;
 
-		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy - height, width, height, 0f, 0f, backgroundU2, backgroundV2);
-		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy, width, height, 0f, 0f, backgroundU2, backgroundV2);
-		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy - height, width, height, 0f, 0f, backgroundU2, backgroundV2);
-		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy, width, height, 0f, 0f, backgroundU2, backgroundV2);
+		final int width = Gdx.graphics.getWidth();
+		final int height = Gdx.graphics.getHeight();
+		final float u2 = width / Textures.BACKGROUND.getWidth();
+		final float v2 = height / Textures.BACKGROUND.getHeight();
+
+		batch.disableBlending();
+		batch.begin();
+		camera.update(false);
+		camera.apply(Gdx.gl11);
+		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy - height, width, height, 0f, 0f, u2, v2);
+		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy, width, height, 0f, 0f, u2, v2);
+		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy - height, width, height, 0f, 0f, u2, v2);
+		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy, width, height, 0f, 0f, u2, v2);
+		batch.end();
+		batch.enableBlending();
 	}
 
 	private void moveCamera() {
@@ -151,7 +176,6 @@ public class GameScreen extends AbstractScreen {
 
 		// Apply movement to foreground camera
 		camera.position.add(movement.x, movement.y, 0f);
-		camera.update(false);
 	}
 
 	private void applyGravity() {
@@ -189,41 +213,11 @@ public class GameScreen extends AbstractScreen {
 		return localPlayer;
 	}
 
-	@Override
-	public void resize(int width, int height) {
-		super.resize(width, height);
-		backgroundU2 = width / Textures.BACKGROUND.getWidth();
-		backgroundV2 = height / Textures.BACKGROUND.getHeight();
-	}
-
-	@Override
-	public void show() {
-		super.show();
-		backgroundU2 = width / Textures.BACKGROUND.getWidth();
-		backgroundV2 = height / Textures.BACKGROUND.getHeight();
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		for (Player player : players) {
+			player.dispose();
+		}
+		scheduler.dispose();
+		world.dispose();
 	}
 }

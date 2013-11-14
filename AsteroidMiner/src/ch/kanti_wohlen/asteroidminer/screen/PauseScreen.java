@@ -28,48 +28,30 @@ public class PauseScreen extends AbstractScreen {
 
 	@Override
 	public void render(float delta) {
-		game.getScreens().GAME_SCREEN.renderGame();
-
 		// Draw overlay
 		overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.end();
 		batch.begin();
 		overlay.draw(batch);
+		batch.end();
 	}
 
 	@Override
-	public void resize(int width, int height) {
-
-	}
+	public void resize(int width, int height) {}
 
 	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-
-	}
+	public void show() {}
 
 	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
+	public void hide() {}
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
+	public void pause() {}
 
 	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
+	public void resume() {}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		overlay.getTexture().dispose();
 	}
-
 }

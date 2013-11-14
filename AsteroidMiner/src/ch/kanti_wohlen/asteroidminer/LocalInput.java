@@ -7,13 +7,12 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Input implements InputProcessor {
+public class LocalInput implements InputProcessor {
 
-	private final AsteroidMiner game;
+	private final AsteroidMiner main;
 
-	public Input(AsteroidMiner asteroidMiner) {
-		game = asteroidMiner;
-		// Gdx.input.setInputProcessor(this);
+	public LocalInput(AsteroidMiner asteroidMiner) {
+		main = asteroidMiner;
 	}
 
 	public void onGameRunning(LocalPlayer player) {
@@ -41,18 +40,15 @@ public class Input implements InputProcessor {
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			ship.fireLaser();
 		}
-
-		// TEMP!
-		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == Keys.ESCAPE) {
-			if (game.getScreen() == game.getScreens().GAME_SCREEN) {
-				game.setScreen(game.getScreens().PAUSE_SCREEN);
-			} else if (game.getScreen() == game.getScreens().PAUSE_SCREEN) {
-				game.setScreen(game.getScreens().GAME_SCREEN);
+			if (main.getScreen() == null) {
+				main.setScreen(main.getScreens().PAUSE_SCREEN);
+			} else if (main.getScreen() == main.getScreens().PAUSE_SCREEN) {
+				main.setScreen(null);
 			}
 		}
 		return false;
