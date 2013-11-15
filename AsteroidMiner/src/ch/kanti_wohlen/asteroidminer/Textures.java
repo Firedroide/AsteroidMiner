@@ -15,6 +15,8 @@ public final class Textures {
 	public static Sprite LIFEPOWERUPBOX;
 	public static Sprite POWERUPBOXMETAL;
 	public static Sprite POWERUPBOXALUMINIUM;
+	public static Sprite BOARDER;
+	public static Sprite EXPLOSION;
 
 	public static Sprite HEALTH_HIGH;
 	public static Sprite HEALTH_LOW;
@@ -61,5 +63,13 @@ public final class Textures {
 		HEALTH_LOW = new Sprite(sprites, 20, 360, 80, 10);
 		HEALTH_LOW.setOrigin(HEALTH_LOW.getRegionWidth() / 2, 0);
 		HEALTH_LOW.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		BOARDER = new Sprite(sprites, 128, 351, 118, 33);
+		BOARDER.setOrigin(BOARDER.getRegionWidth() / 2, BOARDER.getRegionHeight() / 2);
+		BOARDER.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		EXPLOSION = new Sprite(sprites, 268, 360, 472, 496);
+		EXPLOSION.setOrigin(490, 623);
+		EXPLOSION.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 }
