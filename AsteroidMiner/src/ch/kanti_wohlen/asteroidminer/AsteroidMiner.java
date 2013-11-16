@@ -7,14 +7,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AsteroidMiner extends Game {
 
 	private GameScreen game;
 	private FPSLogger fpsLogger;
-	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Screens screens;
 
@@ -22,13 +20,7 @@ public class AsteroidMiner extends Game {
 	public void create() {
 		Textures.load(); // TODO: Loading system.
 
-		float height = Gdx.graphics.getHeight();
-		float width = Gdx.graphics.getWidth();
-
 		fpsLogger = new FPSLogger();
-		camera = new OrthographicCamera(width, height);
-		camera.translate(-width / 2f, -height / 2f);
-		camera.update();
 		batch = new SpriteBatch();
 
 		game = new GameScreen(this);
