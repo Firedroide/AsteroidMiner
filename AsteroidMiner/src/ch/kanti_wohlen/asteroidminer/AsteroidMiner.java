@@ -31,6 +31,8 @@ public class AsteroidMiner extends Game {
 	@Override
 	public void dispose() {
 		game.dispose();
+		screens.MENU_SCREEN.dispose();
+		screens.PAUSE_SCREEN.dispose();
 		batch.dispose();
 	}
 
