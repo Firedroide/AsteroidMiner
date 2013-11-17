@@ -18,14 +18,14 @@ import com.badlogic.gdx.physics.box2d.World;
 public class SpaceShip extends Entity implements Damageable {
 
 	public static final int MAX_HEALTH = 100;
+	public static final int MAX_SHIELD = 100;
 	public static final double FIRING_DELAY = 0.3f;
 
 	private final HealthBar healthBar;
 	private final Player player;
 
 	private int health;
-	private int shieldCount;// TODO If Shield already enabled, refresh shield.
-	private boolean shieldEnabled;
+	private int shield;
 	private boolean canShoot;
 
 	public SpaceShip(World world, Player owningPlayer) {
@@ -34,7 +34,7 @@ public class SpaceShip extends Entity implements Damageable {
 		healthBar = new HealthBar(MAX_HEALTH);
 		health = MAX_HEALTH;
 		canShoot = true;
-		shieldCount = 0;
+		shield = 0;
 	}
 
 	@Override
@@ -76,28 +76,26 @@ public class SpaceShip extends Entity implements Damageable {
 		setHealth(health + healingAmoung);
 	}
 
+	public int getShield() {
+		return shield;
+	}
+
+	public void setShield(int newShield) {
+		if (shield != MAX_SHIELD) {
+			shield = MathUtils.clamp(newShield, 0, MAX_SHIELD);
+		}
+	}
+
 	public void damage(int damageAmount) {
-		setHealth(health - damageAmount);
+		if (shield == 0) {
+			setHealth(health - damageAmount);
+		} else {
+			setShield(shield - damageAmount);
+		}
 	}
 
 	public void kill() {
 		setHealth(0);
-	}
-
-	public boolean getShieldEnabled() {
-		return shieldEnabled;
-	}
-
-	public void setShieldEnabled(boolean shieldEnabled) {
-		this.shieldEnabled = shieldEnabled;
-	}
-
-	public void addShield() {
-		shieldCount += 1;
-	}
-
-	public int getShieldCount() {
-		return shieldCount;
 	}
 
 	public void fireLaser() {
