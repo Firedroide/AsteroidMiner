@@ -19,7 +19,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class IceAsteroid extends Entity implements Damageable {
 
-	public static final int MAX_HEALTH = 150;
+	public static final int MAX_HEALTH = 75;
+	public static final float MIN_RADIUS = 0.5f;
 
 	private final HealthBar healthBar;
 	private final Fixture circleFixture;
@@ -72,7 +73,7 @@ public class IceAsteroid extends Entity implements Damageable {
 			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
 			healthBar.resetAlpha();
 
-			currentRadius = (float) health / MAX_HEALTH * firstRadius;
+			currentRadius = MIN_RADIUS + ((float) health / MAX_HEALTH) * (firstRadius - MIN_RADIUS);
 			renderScale = (currentRadius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
 			circleFixture.getShape().setRadius(currentRadius);
 			getPhysicsBody().resetMassData();
