@@ -130,6 +130,7 @@ public class SpaceShip extends Entity implements Damageable {
 		final PolygonShape ps = new PolygonShape();
 		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.SPACESHIP.getHeight() / 2f * PIXEL_TO_BOX2D);
 		fixture.shape = ps;
+		fixture.filter.categoryBits = 2;
 		return fixture;
 	}
 }

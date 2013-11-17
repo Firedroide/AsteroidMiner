@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.Array.ArrayIterator;
 
 public class GameScreen {
 
-	public static final float WORLD_SIZE = 200f;
+	public static final float WORLD_SIZE = 160f;
 
 	private static final float timeStep = 1 / 60f; // TODO: Allow different maximum frame rates?
 	private static final int velocityIterations = 8;
@@ -56,6 +56,8 @@ public class GameScreen {
 		world.setContactListener(cl);
 		batch = main.getSpriteBatch();
 		scheduler = TaskScheduler.INSTANCE;
+
+		WorldBorder.addBorders(world);
 
 		new IceAsteroid(world, new Vector2(20, 20), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, -2));
 		new StoneAsteroid(world, new Vector2(50, 30), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(0, -2));
@@ -109,6 +111,7 @@ public class GameScreen {
 		Array<Body> bodies = new Array<Body>(world.getBodyCount());
 		world.getBodies(bodies);
 		ArrayIterator<Body> i = new ArrayIterator<Body>(bodies, true);
+		ArrayList<Entity> renderLater = new ArrayList<Entity>();
 
 		batch.begin();
 		camera.apply(Gdx.gl11);
@@ -123,8 +126,16 @@ public class GameScreen {
 				world.destroyBody(body);
 				body.setUserData(null);
 			} else {
-				e.render(batch);
+				if (e.getType() == EntityType.WORLD_BORDER) {
+					renderLater.add(e);
+				} else {
+					e.render(batch);
+				}
 			}
+		}
+
+		for (Entity e : renderLater) {
+			e.render(batch);
 		}
 		batch.end();
 	}
