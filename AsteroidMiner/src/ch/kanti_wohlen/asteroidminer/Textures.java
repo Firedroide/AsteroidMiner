@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 public final class Textures {
 
@@ -15,8 +17,9 @@ public final class Textures {
 	public static Sprite LIFEPOWERUPBOX;
 	public static Sprite POWERUPBOXMETAL;
 	public static Sprite POWERUPBOXALUMINIUM;
-	public static Sprite BOARDER;
 	public static Sprite EXPLOSION;
+	public static TiledDrawable BORDER;
+	public static TiledDrawable BORDER_LINE;
 
 	public static Sprite HEALTH_HIGH;
 	public static Sprite HEALTH_LOW;
@@ -48,11 +51,11 @@ public final class Textures {
 		LIFEPOWERUPBOX = new Sprite(sprites, 256, 154, 38, 38);
 		LIFEPOWERUPBOX.setOrigin(LIFEPOWERUPBOX.getRegionWidth() / 2, LIFEPOWERUPBOX.getRegionHeight() / 2);
 		LIFEPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		POWERUPBOXMETAL = new Sprite(sprites, 57, 154, 38, 38);
 		POWERUPBOXMETAL.setOrigin(POWERUPBOXMETAL.getRegionWidth() / 2, POWERUPBOXMETAL.getRegionHeight() / 2);
 		POWERUPBOXMETAL.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		POWERUPBOXALUMINIUM = new Sprite(sprites, 166, 154, 38, 38);
 		POWERUPBOXALUMINIUM.setOrigin(POWERUPBOXALUMINIUM.getRegionWidth() / 2, POWERUPBOXALUMINIUM.getRegionHeight() / 2);
 		POWERUPBOXALUMINIUM.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -63,13 +66,15 @@ public final class Textures {
 		HEALTH_LOW = new Sprite(sprites, 20, 360, 80, 10);
 		HEALTH_LOW.setOrigin(HEALTH_LOW.getRegionWidth() / 2, 0);
 		HEALTH_LOW.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		BOARDER = new Sprite(sprites, 128, 351, 118, 33);
-		BOARDER.setOrigin(BOARDER.getRegionWidth() / 2, BOARDER.getRegionHeight() / 2);
-		BOARDER.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		EXPLOSION = new Sprite(sprites, 268, 360, 472, 496);
 		EXPLOSION.setOrigin(490, 623);
 		EXPLOSION.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		TextureRegion borderRegion = new TextureRegion(sprites, 10, 950, 64, 64);
+		BORDER = new TiledDrawable(borderRegion);
+
+		TextureRegion borderLine = new TextureRegion(sprites, 10, 1020, 1, 1);
+		BORDER_LINE = new TiledDrawable(borderLine);
 	}
 }
