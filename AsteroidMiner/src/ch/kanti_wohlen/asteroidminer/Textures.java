@@ -16,6 +16,7 @@ public final class Textures {
 	public static Sprite LASER;
 	public static Sprite LIFEPOWERUPBOX;
 	public static Sprite SHILDPOWERUPBOX;
+	public static Sprite FIRINGSPEEDPOWERUPBOX;
 	public static Sprite POWERUPBOXMETAL;
 	public static Sprite POWERUPBOXALUMINIUM;
 	public static Sprite EXPLOSION;
@@ -56,6 +57,10 @@ public final class Textures {
 		SHILDPOWERUPBOX = new Sprite(sprites, 772, 151, 38, 39);
 		SHILDPOWERUPBOX.setOrigin(SHILDPOWERUPBOX.getRegionWidth() / 2, SHILDPOWERUPBOX.getRegionHeight() / 2);
 		SHILDPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		FIRINGSPEEDPOWERUPBOX = new Sprite(sprites, 825, 149, 38, 41);
+		FIRINGSPEEDPOWERUPBOX.setOrigin(FIRINGSPEEDPOWERUPBOX.getRegionWidth() / 2, FIRINGSPEEDPOWERUPBOX.getRegionHeight() / 2);
+		FIRINGSPEEDPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		POWERUPBOXMETAL = new Sprite(sprites, 57, 154, 38, 38);
 		POWERUPBOXMETAL.setOrigin(POWERUPBOXMETAL.getRegionWidth() / 2, POWERUPBOXMETAL.getRegionHeight() / 2);
