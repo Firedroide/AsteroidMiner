@@ -29,7 +29,7 @@ public class ShieldPowerUp extends PowerUp {
 
 	@Override
 	public void render(SpriteBatch batch) {
-		Sprite s = Textures.LIFEPOWERUPBOX;
+		Sprite s = Textures.SHILDPOWERUPBOX;
 		positionSprite(s);
 		s.draw(batch);
 	}
