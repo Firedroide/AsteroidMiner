@@ -26,6 +26,7 @@ public class SpaceShip extends Entity implements Damageable {
 
 	private int health;
 	private int shield;
+	private double firing_delay;
 	private boolean canShoot;
 
 	public SpaceShip(World world, Player owningPlayer) {
@@ -86,6 +87,16 @@ public class SpaceShip extends Entity implements Damageable {
 		}
 	}
 
+	public double getFiring_delay() {
+		return firing_delay;
+	}
+
+	public void setFiring_delay(double delay) {
+		if (firing_delay == 0.3f) {
+			firing_delay = delay;
+		}
+	}
+
 	public void damage(int damageAmount) {
 		if (shield == 0) {
 			setHealth(health - damageAmount);
@@ -131,4 +142,5 @@ public class SpaceShip extends Entity implements Damageable {
 		fixture.filter.categoryBits = 2;
 		return fixture;
 	}
+
 }
