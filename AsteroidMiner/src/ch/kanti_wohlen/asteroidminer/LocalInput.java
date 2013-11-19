@@ -18,6 +18,7 @@ public class LocalInput implements InputProcessor {
 	public void onGameRunning(LocalPlayer player) {
 		boolean k = Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT);
 		float factorSpeed = k ? 160f : 80f;
+		factorSpeed *= player.getSpaceShip().getSpeed();
 		float factorTurn = k ? 0.05f : 0.125f;
 		SpaceShip ship = player.getSpaceShip();
 

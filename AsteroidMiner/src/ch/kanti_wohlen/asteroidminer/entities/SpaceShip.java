@@ -20,8 +20,8 @@ public class SpaceShip extends Entity implements Damageable {
 	public static final int MAX_HEALTH = 100;
 	public static final int MAX_SHIELD = 100;
 	public static final double FIRING_DELAY = 0.3f;
-	public static final float LINEAR_DAMPING = 2.5f;
-	
+	public static final float SPEED_DEFAULT = 1f;
+	public static final float SPEED_INCREASED = 1.5f;
 
 	private final HealthBar healthBar;
 	private final Player player;
@@ -29,7 +29,7 @@ public class SpaceShip extends Entity implements Damageable {
 	private int health;
 	private int shield;
 	private double firing_delay;
-	private static float linear_damping;
+	private float speed;
 	private boolean canShoot;
 
 	public SpaceShip(World world, Player owningPlayer) {
@@ -40,7 +40,7 @@ public class SpaceShip extends Entity implements Damageable {
 		canShoot = true;
 		shield = 0;
 		firing_delay = FIRING_DELAY;
-		linear_damping = LINEAR_DAMPING;
+		speed = SPEED_DEFAULT;
 	}
 
 	@Override
@@ -102,12 +102,12 @@ public class SpaceShip extends Entity implements Damageable {
 		}
 	}
 
-	public double getLinear_damping() {
-		return linear_damping;
+	public float getSpeed() {
+		return speed;
 	}
 
-	public void setLinear_damping(float damping) {
-		SpaceShip.linear_damping = damping;
+	public void setSpeed(float newSpeed) {
+		speed = newSpeed;
 	}
 
 	public void damage(int damageAmount) {
@@ -127,6 +127,7 @@ public class SpaceShip extends Entity implements Damageable {
 			canShoot = false;
 			new Laser(getPhysicsBody().getWorld(), this);
 			TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
+
 				@Override
 				public void run() {
 					canShoot = true;
@@ -140,7 +141,7 @@ public class SpaceShip extends Entity implements Damageable {
 		bd.allowSleep = false;
 		bd.type = BodyType.DynamicBody;
 		bd.angularDamping = 10f;
-		bd.linearDamping = linear_damping;
+		bd.linearDamping = 2.5f;
 		bd.position.set(2f, 2f);
 
 		return bd;
