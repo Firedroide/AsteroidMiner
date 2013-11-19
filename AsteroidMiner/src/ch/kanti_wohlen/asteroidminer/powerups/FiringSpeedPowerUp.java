@@ -19,7 +19,7 @@ public class FiringSpeedPowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player player) {
-		player.getSpaceShip().setFiring_delay(FIRING_AMOUNT);
+		player.getSpaceShip().setFiringDelay(FIRING_AMOUNT);
 	}
 
 	@Override
