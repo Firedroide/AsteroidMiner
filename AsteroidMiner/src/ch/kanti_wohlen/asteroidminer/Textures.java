@@ -18,6 +18,7 @@ public final class Textures {
 	public static Sprite SHILDPOWERUPBOX;
 	public static Sprite FIRINGSPEEDPOWERUPBOX;
 	public static Sprite SPEEDPOWERUPBOX;
+	public static Sprite FIRINGFORCEPOWERUPBOX;
 	public static Sprite POWERUPBOXMETAL;
 	public static Sprite BOMBPOWERUPBOX;
 	public static Sprite POWERUPBOXALUMINIUM;
@@ -71,6 +72,10 @@ public final class Textures {
 		BOMBPOWERUPBOX = new Sprite(sprites, 932, 152, 40, 37);
 		BOMBPOWERUPBOX.setOrigin(BOMBPOWERUPBOX.getRegionWidth() / 2, BOMBPOWERUPBOX.getRegionHeight() / 2);
 		BOMBPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		FIRINGFORCEPOWERUPBOX = new Sprite(sprites, 739, 206, 43, 39);
+		FIRINGFORCEPOWERUPBOX.setOrigin(FIRINGFORCEPOWERUPBOX.getRegionWidth() / 2, FIRINGFORCEPOWERUPBOX.getRegionHeight() / 2);
+		FIRINGFORCEPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		POWERUPBOXMETAL = new Sprite(sprites, 57, 154, 38, 38);
 		POWERUPBOXMETAL.setOrigin(POWERUPBOXMETAL.getRegionWidth() / 2, POWERUPBOXMETAL.getRegionHeight() / 2);
