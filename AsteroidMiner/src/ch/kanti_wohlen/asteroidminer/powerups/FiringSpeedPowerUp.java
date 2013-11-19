@@ -1,7 +1,9 @@
 package ch.kanti_wohlen.asteroidminer.powerups;
 
 import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,15 +13,16 @@ import com.badlogic.gdx.physics.box2d.World;
 public class FiringSpeedPowerUp extends PowerUp {
 
 	private static final float DROP_FREQUENCY = 1f;
-	private static final double FIRING_AMOUNT = 0.2f;
-	
+	private static final double POWER_UP_DURATION = 15000.0;
+
 	public FiringSpeedPowerUp(World world, Vector2 position) {
 		super(world, position);
 	}
 
 	@Override
 	public void onPickUp(Player player) {
-		player.getSpaceShip().setFiringDelay(FIRING_AMOUNT);
+		player.getSpaceShip().setFiringDelay(SpaceShip.FIRING_DELAY_DECREASED);
+		TaskScheduler.INSTANCE.runTaskLater(new PowerUpRemover(player), POWER_UP_DURATION);
 	}
 
 	@Override
@@ -32,7 +35,20 @@ public class FiringSpeedPowerUp extends PowerUp {
 		Sprite s = Textures.FIRINGSPEEDPOWERUPBOX;
 		positionSprite(s);
 		s.draw(batch);
-
 	}
 
+	private class PowerUpRemover implements Runnable {
+
+		private final Player player;
+
+		private PowerUpRemover(Player player) {
+			this.player = player;
+		}
+
+		@Override
+		public void run() {
+			if (player == null || player.getSpaceShip() == null) return;
+			player.getSpaceShip().setFiringDelay(SpaceShip.FIRING_DELAY_DEFAULT);
+		}
+	}
 }
