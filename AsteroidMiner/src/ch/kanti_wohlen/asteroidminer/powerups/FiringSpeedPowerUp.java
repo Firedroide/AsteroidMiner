@@ -13,8 +13,8 @@ public class FiringSpeedPowerUp extends PowerUp {
 	private static final float DROP_FREQUENCY = 1f;
 	private static final double FIRING_AMOUNT = 0.2f;
 	
-	public FiringSpeedPowerUp(World world, Vector2 location) {
-		super(world, location);
+	public FiringSpeedPowerUp(World world, Vector2 position) {
+		super(world, position);
 	}
 
 	@Override

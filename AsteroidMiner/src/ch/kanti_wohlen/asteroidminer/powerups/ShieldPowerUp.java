@@ -13,8 +13,8 @@ public class ShieldPowerUp extends PowerUp {
 	private static final float DROP_FREQUENCY = 1f;
 	private static final int SHIELD_AMOUNT = 100;
 	
-	public ShieldPowerUp(World world, Vector2 location) {
-		super(world, location);
+	public ShieldPowerUp(World world, Vector2 position) {
+		super(world, position);
 	}
 
 	@Override
