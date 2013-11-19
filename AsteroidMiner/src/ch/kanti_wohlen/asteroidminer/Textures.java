@@ -56,27 +56,27 @@ public final class Textures {
 		LIFEPOWERUPBOX = new Sprite(sprites, 256, 154, 38, 38);
 		LIFEPOWERUPBOX.setOrigin(LIFEPOWERUPBOX.getRegionWidth() / 2, LIFEPOWERUPBOX.getRegionHeight() / 2);
 		LIFEPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		SHILDPOWERUPBOX = new Sprite(sprites, 772, 151, 38, 39);
 		SHILDPOWERUPBOX.setOrigin(SHILDPOWERUPBOX.getRegionWidth() / 2, SHILDPOWERUPBOX.getRegionHeight() / 2);
 		SHILDPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		FIRINGSPEEDPOWERUPBOX = new Sprite(sprites, 825, 149, 38, 41);
 		FIRINGSPEEDPOWERUPBOX.setOrigin(FIRINGSPEEDPOWERUPBOX.getRegionWidth() / 2, FIRINGSPEEDPOWERUPBOX.getRegionHeight() / 2);
 		FIRINGSPEEDPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		SPEEDPOWERUPBOX = new Sprite(sprites, 879, 148, 36, 43);
 		SPEEDPOWERUPBOX.setOrigin(SPEEDPOWERUPBOX.getRegionWidth() / 2, SPEEDPOWERUPBOX.getRegionHeight() / 2);
 		SPEEDPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		BOMBPOWERUPBOX = new Sprite(sprites, 932, 152, 40, 37);
 		BOMBPOWERUPBOX.setOrigin(BOMBPOWERUPBOX.getRegionWidth() / 2, BOMBPOWERUPBOX.getRegionHeight() / 2);
 		BOMBPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		FIRINGFORCEPOWERUPBOX = new Sprite(sprites, 739, 206, 43, 39);
 		FIRINGFORCEPOWERUPBOX.setOrigin(FIRINGFORCEPOWERUPBOX.getRegionWidth() / 2, FIRINGFORCEPOWERUPBOX.getRegionHeight() / 2);
 		FIRINGFORCEPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		POWERUPBOXMETAL = new Sprite(sprites, 57, 154, 38, 38);
 		POWERUPBOXMETAL.setOrigin(POWERUPBOXMETAL.getRegionWidth() / 2, POWERUPBOXMETAL.getRegionHeight() / 2);
 		POWERUPBOXMETAL.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);

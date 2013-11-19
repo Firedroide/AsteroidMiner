@@ -38,8 +38,7 @@ public class Laser extends Entity {
 		Vector2 loc = getPhysicsBody().getPosition();
 		float w = Gdx.graphics.getWidth() * PIXEL_TO_BOX2D;
 		float h = Gdx.graphics.getHeight() * PIXEL_TO_BOX2D;
-		return Math.abs(loc.x) > GameScreen.WORLD_SIZE + w
-				|| Math.abs(loc.y) > GameScreen.WORLD_SIZE + h;
+		return Math.abs(loc.x) > GameScreen.WORLD_SIZE + w || Math.abs(loc.y) > GameScreen.WORLD_SIZE + h;
 	}
 
 	@Override
