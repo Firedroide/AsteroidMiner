@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class FiringSpeedPowerUp extends PowerUp {
 
 	private static final float DROP_FREQUENCY = 1f;
+	private static final float FIRING_DELAY_DECREASE = 0.1f;
 	private static final double POWER_UP_DURATION = 15000.0;
 
 	public FiringSpeedPowerUp(World world, Vector2 position) {
@@ -21,7 +22,7 @@ public class FiringSpeedPowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player player) {
-		player.getSpaceShip().setFiringDelay(SpaceShip.FIRING_DELAY_DECREASED);
+		player.getSpaceShip().setFiringDelay(SpaceShip.DEFAULT_FIRING_DELAY - FIRING_DELAY_DECREASE);
 		TaskScheduler.INSTANCE.runTaskLater(new PowerUpRemover(player), POWER_UP_DURATION);
 	}
 
@@ -48,7 +49,7 @@ public class FiringSpeedPowerUp extends PowerUp {
 		@Override
 		public void run() {
 			if (player == null || player.getSpaceShip() == null) return;
-			player.getSpaceShip().setFiringDelay(SpaceShip.FIRING_DELAY_DEFAULT);
+			player.getSpaceShip().setFiringDelay(SpaceShip.DEFAULT_FIRING_DELAY);
 		}
 	}
 }

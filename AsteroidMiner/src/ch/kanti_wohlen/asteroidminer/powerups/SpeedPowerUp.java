@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class SpeedPowerUp extends PowerUp {
 
 	private static final float DROP_FREQUENCY = 1f;
+	private static final float SPEED_INCREASE = 0.5f;
 	private static final double POWER_UP_DURATION = 10000.0;
 
 	public SpeedPowerUp(World world, Vector2 position) {
@@ -21,7 +22,7 @@ public class SpeedPowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player player) {
-		player.getSpaceShip().setSpeed(SpaceShip.SPEED_INCREASED);
+		player.getSpaceShip().setSpeed(SpaceShip.DEFAULT_SPEED + SPEED_INCREASE);
 		TaskScheduler.INSTANCE.runTaskLater(new PowerUpRemover(player), POWER_UP_DURATION);
 	}
 
@@ -48,7 +49,7 @@ public class SpeedPowerUp extends PowerUp {
 		@Override
 		public void run() {
 			if (player == null || player.getSpaceShip() == null) return;
-			player.getSpaceShip().setSpeed(SpaceShip.SPEED_DEFAULT);
+			player.getSpaceShip().setSpeed(SpaceShip.DEFAULT_SPEED);
 		}
 	}
 }
