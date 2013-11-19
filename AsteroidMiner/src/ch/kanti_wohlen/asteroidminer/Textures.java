@@ -19,6 +19,7 @@ public final class Textures {
 	public static Sprite FIRINGSPEEDPOWERUPBOX;
 	public static Sprite SPEEDPOWERUPBOX;
 	public static Sprite POWERUPBOXMETAL;
+	public static Sprite BOMBPOWERUPBOX;
 	public static Sprite POWERUPBOXALUMINIUM;
 	public static Sprite EXPLOSION;
 	public static TiledDrawable BORDER;
@@ -66,6 +67,10 @@ public final class Textures {
 		SPEEDPOWERUPBOX = new Sprite(sprites, 879, 148, 36, 43);
 		SPEEDPOWERUPBOX.setOrigin(SPEEDPOWERUPBOX.getRegionWidth() / 2, SPEEDPOWERUPBOX.getRegionHeight() / 2);
 		SPEEDPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		BOMBPOWERUPBOX = new Sprite(sprites, 932, 152, 40, 37);
+		BOMBPOWERUPBOX.setOrigin(BOMBPOWERUPBOX.getRegionWidth() / 2, BOMBPOWERUPBOX.getRegionHeight() / 2);
+		BOMBPOWERUPBOX.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		POWERUPBOXMETAL = new Sprite(sprites, 57, 154, 38, 38);
 		POWERUPBOXMETAL.setOrigin(POWERUPBOXMETAL.getRegionWidth() / 2, POWERUPBOXMETAL.getRegionHeight() / 2);
