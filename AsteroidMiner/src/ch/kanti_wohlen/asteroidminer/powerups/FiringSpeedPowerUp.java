@@ -12,7 +12,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class FiringSpeedPowerUp extends PowerUp {
 
-	private static final float DROP_FREQUENCY = 1f;
 	private static final float FIRING_DELAY_DECREASE = 0.1f;
 	private static final double POWER_UP_DURATION = 15.0;
 
@@ -27,8 +26,8 @@ public class FiringSpeedPowerUp extends PowerUp {
 	}
 
 	@Override
-	public float getDropFrequency() {
-		return DROP_FREQUENCY;
+	public PowerUpType getPowerUpType() {
+		return PowerUpType.FIRING_SPEED;
 	}
 
 	@Override

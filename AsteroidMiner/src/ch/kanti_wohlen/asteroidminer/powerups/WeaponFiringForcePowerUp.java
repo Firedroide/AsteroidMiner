@@ -11,8 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class WeaponFiringForcePowerUp extends PowerUp {
-	
-	private static final float DROP_FREQUENCY = 1f;
+
 	private static final int DAMAGE_INCREASE = 5;
 	private static final double POWER_UP_DURATION = 10.0;
 
@@ -27,8 +26,8 @@ public class WeaponFiringForcePowerUp extends PowerUp {
 	}
 
 	@Override
-	public float getDropFrequency() {
-		return DROP_FREQUENCY;
+	public PowerUpType getPowerUpType() {
+		return PowerUpType.FIRING_DAMAGE;
 	}
 
 	@Override

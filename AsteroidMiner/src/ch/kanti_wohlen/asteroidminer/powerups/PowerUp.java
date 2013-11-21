@@ -19,6 +19,11 @@ public abstract class PowerUp extends Entity {
 		super(world, createBodyDef(position), createCircle());
 	}
 
+	@Override
+	public EntityType getType() {
+		return EntityType.POWER_UP;
+	}
+
 	private static BodyDef createBodyDef(Vector2 position) {
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
@@ -38,12 +43,7 @@ public abstract class PowerUp extends Entity {
 		return fixture;
 	}
 
-	@Override
-	public EntityType getType() {
-		return EntityType.POWER_UP;
-	}
-
 	public abstract void onPickUp(Player player);
 
-	public abstract float getDropFrequency();
+	public abstract PowerUpType getPowerUpType();
 }

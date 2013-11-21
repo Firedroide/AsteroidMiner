@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class HealthPowerUp extends PowerUp {
 
-	private static final float DROP_FREQUENCY = 1f;
 	private static final int HEALING_AMOUNT = 40;
 
 	public HealthPowerUp(World world, Vector2 position) {
@@ -23,8 +22,8 @@ public class HealthPowerUp extends PowerUp {
 	}
 
 	@Override
-	public float getDropFrequency() {
-		return DROP_FREQUENCY;
+	public PowerUpType getPowerUpType() {
+		return PowerUpType.HEALTH;
 	}
 
 	@Override

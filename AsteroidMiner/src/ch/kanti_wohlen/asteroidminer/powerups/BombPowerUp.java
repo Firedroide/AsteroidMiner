@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.Array;
 
 public class BombPowerUp extends PowerUp {
 
-	private static final float DROP_FREQUENCY = 1f;
 	private final World world;
 
 	public BombPowerUp(World world, Vector2 position) {
@@ -38,8 +37,8 @@ public class BombPowerUp extends PowerUp {
 	}
 
 	@Override
-	public float getDropFrequency() {
-		return DROP_FREQUENCY;
+	public PowerUpType getPowerUpType() {
+		return PowerUpType.BOMB;
 	}
 
 	@Override
