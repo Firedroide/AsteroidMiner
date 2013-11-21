@@ -36,6 +36,8 @@ public class AsteroidMiner extends Game {
 		screens.MENU_SCREEN.dispose();
 		screens.PAUSE_SCREEN.dispose();
 		batch.dispose();
+
+		SoundPlayer.dispose();
 	}
 
 	@Override
