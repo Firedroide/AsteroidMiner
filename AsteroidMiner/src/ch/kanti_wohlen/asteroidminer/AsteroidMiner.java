@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer;
 
+import ch.kanti_wohlen.asteroidminer.audio.MusicPlayer;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 import ch.kanti_wohlen.asteroidminer.screen.Screens;
@@ -21,6 +22,7 @@ public class AsteroidMiner extends Game {
 	public void create() {
 		Textures.load(); // TODO: Loading system.
 		SoundPlayer.loadSounds();
+		MusicPlayer.load();
 
 		fpsLogger = new FPSLogger();
 		batch = new SpriteBatch();
@@ -28,6 +30,7 @@ public class AsteroidMiner extends Game {
 		game = new GameScreen(this);
 		screens = new Screens(this);
 		setScreen(screens.MENU_SCREEN);
+		MusicPlayer.start();
 	}
 
 	@Override
@@ -38,6 +41,7 @@ public class AsteroidMiner extends Game {
 		batch.dispose();
 
 		SoundPlayer.dispose();
+		MusicPlayer.dispose();
 	}
 
 	@Override
