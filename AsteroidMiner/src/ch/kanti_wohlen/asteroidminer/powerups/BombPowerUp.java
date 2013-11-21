@@ -1,0 +1,54 @@
+package ch.kanti_wohlen.asteroidminer.powerups;
+
+import java.util.ArrayList;
+
+import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.entities.Entity;
+import ch.kanti_wohlen.asteroidminer.entities.EntityType;
+
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+
+public class BombPowerUp extends PowerUp {
+
+	private static final float DROP_FREQUENCY = 1f;
+	private final World world;
+
+	public BombPowerUp(World world, Vector2 position) {
+		super(world, position);
+		this.world = world;
+	}
+
+	@Override
+	public void onPickUp(Player player) {
+
+		//TODO!
+		Array<Body> bodies = new Array<Body>(world.getBodyCount());
+		world.getBodies(bodies);
+		ArrayList<Entity> asteroids = new ArrayList<Entity>();
+
+		for (Entity e : asteroids) {
+			if (e.getPhysicsBody().equals(EntityType.ASTEROID)) {
+				e.remove();
+			}
+		}
+	}
+
+	@Override
+	public float getDropFrequency() {
+		return DROP_FREQUENCY;
+	}
+
+	@Override
+	public void render(SpriteBatch batch) {
+		Sprite s = Textures.BOMBPOWERUPBOX;
+		positionSprite(s);
+		s.draw(batch);
+	}
+
+}
