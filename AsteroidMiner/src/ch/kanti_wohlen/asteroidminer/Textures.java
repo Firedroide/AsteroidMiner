@@ -13,6 +13,9 @@ public final class Textures {
 	public static Sprite BACKGROUND;
 	public static Sprite SPACESHIP;
 	public static Sprite ASTEROID;
+	public static Sprite METALASTEROID;
+	public static Sprite ICEASTREOID;
+	public static Sprite EXPLOSIVEASTEROID;
 	public static Sprite LASER;
 	public static Sprite LIFEPOWERUPBOX;
 	public static Sprite SHILDPOWERUPBOX;
@@ -48,6 +51,18 @@ public final class Textures {
 		ASTEROID = new Sprite(sprites, 164, 237, 84, 83);
 		ASTEROID.setOrigin(ASTEROID.getRegionWidth() / 2, ASTEROID.getRegionHeight() / 2);
 		ASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		METALASTEROID = new Sprite(sprites, 797, 221, 89, 90);
+		METALASTEROID.setOrigin(METALASTEROID.getRegionWidth() / 2, METALASTEROID.getRegionHeight() / 2);
+		METALASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		ICEASTREOID = new Sprite(sprites, 906, 220, 93, 93);
+		ICEASTREOID.setOrigin(ICEASTREOID.getRegionWidth() / 2, ICEASTREOID.getRegionHeight() / 2);
+		ICEASTREOID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		EXPLOSIVEASTEROID = new Sprite(sprites, 845, 336, 114, 114);
+		EXPLOSIVEASTEROID.setOrigin(EXPLOSIVEASTEROID.getRegionWidth() / 2, EXPLOSIVEASTEROID.getRegionHeight() / 2);
+		EXPLOSIVEASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		LASER = new Sprite(sprites, 364, 177, 7, 12);
 		LASER.setOrigin(LASER.getRegionWidth() / 2, LASER.getRegionHeight() / 2);
