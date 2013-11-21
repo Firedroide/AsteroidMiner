@@ -17,12 +17,20 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Laser extends Entity {
 
-	private static final float SPEED = 60f;
+	public static final int DEFAULT_DAMAGE = 5;
+	public static final float SPEED = 60f;
+
 	private final SpaceShip ship;
+	private final int dmg;
 
 	public Laser(World world, SpaceShip spaceShip) {
+		this(world, spaceShip, DEFAULT_DAMAGE);
+	}
+
+	public Laser(World world, SpaceShip spaceShip, int damage) {
 		super(world, createBodyDef(spaceShip), createFixture());
 		ship = spaceShip;
+		dmg = damage;
 	}
 
 	@Override
@@ -48,6 +56,10 @@ public class Laser extends Entity {
 
 	public SpaceShip getShooter() {
 		return ship;
+	}
+
+	public int getDamage() {
+		return dmg;
 	}
 
 	private static BodyDef createBodyDef(SpaceShip ship) {

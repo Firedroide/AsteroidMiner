@@ -78,7 +78,7 @@ public class CollisionListener implements ContactListener {
 		TaskScheduler.INSTANCE.runTask(new ForceApplier(asteroid, force));
 
 		if (asteroid instanceof Damageable) {
-			((Damageable) asteroid).damage(5);
+			((Damageable) asteroid).damage(laser.getDamage());
 		}
 		laser.remove();
 	}
