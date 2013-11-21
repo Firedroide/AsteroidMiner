@@ -6,6 +6,7 @@ import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
+import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,6 +23,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 
 	public static final int HEALTH_PER_SIZE = 20;
 	public static final float STONE_ASTEROID_MIN_SIZE = 0.75f;
+	private static final float POWER_UP_SPAWN_CHANCE = 0.075f;
 
 	private final HealthBar healthBar;
 	private final float currentRadius;
@@ -72,13 +74,17 @@ public class StoneAsteroid extends Entity implements Damageable {
 			health = MathUtils.clamp(newHealth, 0, maxHealth);
 			healthBar.resetAlpha();
 
-			if (health == 0f) {
+			if (health == 0) {
 				final World w = getPhysicsBody().getWorld();
 				final Body body = getPhysicsBody();
 				final float nextRadius = currentRadius / 2f;
 
 				if (nextRadius <= STONE_ASTEROID_MIN_SIZE) {
-					// TODO: Spawn PowerUps? Use separate PowerUpSpawner class
+					if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
+					final World world = getPhysicsBody().getWorld();
+					final Vector2 loc = getPhysicsBody().getPosition();
+					PowerUpLauncher pul = new PowerUpLauncher(world, loc);
+					TaskScheduler.INSTANCE.runTask(pul);
 					return;
 				}
 

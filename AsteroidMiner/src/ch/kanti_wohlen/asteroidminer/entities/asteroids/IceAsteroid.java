@@ -1,10 +1,12 @@
 package ch.kanti_wohlen.asteroidminer.entities.asteroids;
 
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
+import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +23,7 @@ public class IceAsteroid extends Entity implements Damageable {
 
 	public static final int MAX_HEALTH = 75;
 	public static final float MIN_RADIUS = 0.5f;
+	private static final float POWER_UP_SPAWN_CHANCE = 0.2f;
 
 	private final HealthBar healthBar;
 	private final Fixture circleFixture;
@@ -73,10 +76,18 @@ public class IceAsteroid extends Entity implements Damageable {
 			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
 			healthBar.resetAlpha();
 
-			currentRadius = MIN_RADIUS + ((float) health / MAX_HEALTH) * (firstRadius - MIN_RADIUS);
-			renderScale = (currentRadius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
-			circleFixture.getShape().setRadius(currentRadius);
-			getPhysicsBody().resetMassData();
+			if (health == 0) {
+				if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
+				final World world = getPhysicsBody().getWorld();
+				final Vector2 loc = getPhysicsBody().getPosition();
+				PowerUpLauncher pul = new PowerUpLauncher(world, loc);
+				TaskScheduler.INSTANCE.runTask(pul);
+			} else {
+				currentRadius = MIN_RADIUS + ((float) health / MAX_HEALTH) * (firstRadius - MIN_RADIUS);
+				renderScale = (currentRadius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
+				circleFixture.getShape().setRadius(currentRadius);
+				getPhysicsBody().resetMassData();
+			}
 		}
 	}
 
