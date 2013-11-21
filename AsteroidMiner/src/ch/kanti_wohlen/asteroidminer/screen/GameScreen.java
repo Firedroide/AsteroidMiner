@@ -63,7 +63,7 @@ public class GameScreen {
 		new StoneAsteroid(world, new Vector2(50, 30), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(0, -2));
 		new StoneAsteroid(world, new Vector2(40, 60), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, 0));
 
-		new HealthPowerUp(world, new Vector2(10, 40));
+		new LifePowerUp(world, new Vector2(10, 40));
 	}
 
 	public void startGame() {
