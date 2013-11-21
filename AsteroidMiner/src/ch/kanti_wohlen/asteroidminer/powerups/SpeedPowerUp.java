@@ -14,7 +14,7 @@ public class SpeedPowerUp extends PowerUp {
 
 	private static final float DROP_FREQUENCY = 1f;
 	private static final float SPEED_INCREASE = 0.5f;
-	private static final double POWER_UP_DURATION = 10000.0;
+	private static final double POWER_UP_DURATION = 10.0;
 
 	public SpeedPowerUp(World world, Vector2 position) {
 		super(world, position);

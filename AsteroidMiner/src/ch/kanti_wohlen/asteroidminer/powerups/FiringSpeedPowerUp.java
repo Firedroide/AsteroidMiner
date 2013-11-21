@@ -14,7 +14,7 @@ public class FiringSpeedPowerUp extends PowerUp {
 
 	private static final float DROP_FREQUENCY = 1f;
 	private static final float FIRING_DELAY_DECREASE = 0.1f;
-	private static final double POWER_UP_DURATION = 15000.0;
+	private static final double POWER_UP_DURATION = 15.0;
 
 	public FiringSpeedPowerUp(World world, Vector2 position) {
 		super(world, position);

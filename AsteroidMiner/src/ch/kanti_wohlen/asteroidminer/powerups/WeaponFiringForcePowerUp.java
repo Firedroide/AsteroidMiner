@@ -14,7 +14,7 @@ public class WeaponFiringForcePowerUp extends PowerUp {
 	
 	private static final float DROP_FREQUENCY = 1f;
 	private static final int DAMAGE_INCREASE = 25;
-	private static final double POWER_UP_DURATION = 10000.0;
+	private static final double POWER_UP_DURATION = 10.0;
 
 	public WeaponFiringForcePowerUp(World world, Vector2 position) {
 		super(world, position);
