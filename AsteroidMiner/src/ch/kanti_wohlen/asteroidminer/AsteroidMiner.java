@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer;
 
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 import ch.kanti_wohlen.asteroidminer.screen.Screens;
 
@@ -19,6 +20,7 @@ public class AsteroidMiner extends Game {
 	@Override
 	public void create() {
 		Textures.load(); // TODO: Loading system.
+		SoundPlayer.loadSounds();
 
 		fpsLogger = new FPSLogger();
 		batch = new SpriteBatch();

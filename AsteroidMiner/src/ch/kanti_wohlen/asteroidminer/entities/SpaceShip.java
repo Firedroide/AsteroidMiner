@@ -3,6 +3,8 @@ package ch.kanti_wohlen.asteroidminer.entities;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
 import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -134,6 +136,7 @@ public class SpaceShip extends Entity implements Damageable {
 					canShoot = true;
 				}
 			}, firingDelay);
+			SoundPlayer.playSound(SoundEffect.LASER_SHOOT, 0.05f);
 		}
 	}
 
