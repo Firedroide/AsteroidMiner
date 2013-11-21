@@ -3,8 +3,10 @@ package ch.kanti_wohlen.asteroidminer.entities;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -20,6 +22,17 @@ public class WorldBorder extends Entity {
 		for (BorderSide side : BorderSide.values()) {
 			new WorldBorder(world, side);
 		}
+	}
+
+	public static boolean isOutside(Entity e) {
+		return isOutside(e.getPhysicsBody());
+	}
+
+	public static boolean isOutside(Body b) {
+		Vector2 loc = b.getPosition();
+		float w = Gdx.graphics.getWidth() * PIXEL_TO_BOX2D;
+		float h = Gdx.graphics.getHeight() * PIXEL_TO_BOX2D;
+		return Math.abs(loc.x) > GameScreen.WORLD_SIZE + w || Math.abs(loc.y) > GameScreen.WORLD_SIZE + h;
 	}
 
 	public WorldBorder(World world, BorderSide side) {

@@ -56,7 +56,7 @@ public class IceAsteroid extends Entity implements Damageable {
 
 	@Override
 	public boolean isRemoved() {
-		return health == 0;
+		return super.isRemoved() || health == 0;
 	}
 
 	@Override

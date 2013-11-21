@@ -38,7 +38,7 @@ public abstract class Entity {
 	}
 
 	public boolean isRemoved() {
-		return removed;
+		return removed || WorldBorder.isOutside(this);
 	}
 
 	protected void positionSprite(Sprite sprite) {

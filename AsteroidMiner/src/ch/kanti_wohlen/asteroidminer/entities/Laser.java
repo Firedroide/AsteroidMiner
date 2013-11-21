@@ -1,9 +1,7 @@
 package ch.kanti_wohlen.asteroidminer.entities;
 
 import ch.kanti_wohlen.asteroidminer.Textures;
-import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -38,15 +36,6 @@ public class Laser extends Entity {
 		Sprite s = Textures.LASER;
 		positionSprite(s);
 		s.draw(batch);
-	}
-
-	@Override
-	public boolean isRemoved() {
-		if (super.isRemoved()) return true;
-		Vector2 loc = getPhysicsBody().getPosition();
-		float w = Gdx.graphics.getWidth() * PIXEL_TO_BOX2D;
-		float h = Gdx.graphics.getHeight() * PIXEL_TO_BOX2D;
-		return Math.abs(loc.x) > GameScreen.WORLD_SIZE + w || Math.abs(loc.y) > GameScreen.WORLD_SIZE + h;
 	}
 
 	@Override
