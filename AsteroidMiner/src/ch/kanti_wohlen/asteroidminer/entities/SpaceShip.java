@@ -29,6 +29,7 @@ public class SpaceShip extends Entity implements Damageable {
 
 	private int health;
 	private int shield;
+	private int laserDamage;
 	private double firingDelay;
 	private float speed;
 	private boolean canShoot;
@@ -42,6 +43,7 @@ public class SpaceShip extends Entity implements Damageable {
 		shield = 0;
 		firingDelay = DEFAULT_FIRING_DELAY;
 		speed = DEFAULT_SPEED;
+		laserDamage = Laser.DEFAULT_DAMAGE;
 	}
 
 	@Override
@@ -111,6 +113,14 @@ public class SpaceShip extends Entity implements Damageable {
 		speed = newSpeed;
 	}
 
+	public int getLaserDamage() {
+		return laserDamage;
+	}
+
+	public void setLaserDamage(int newDamage) {
+		laserDamage = newDamage;
+	}
+
 	public void damage(int damageAmount) {
 		if (shield >= damageAmount) {
 			setShield(shield - damageAmount);
@@ -128,7 +138,7 @@ public class SpaceShip extends Entity implements Damageable {
 	public void fireLaser() {
 		if (canShoot) {
 			canShoot = false;
-			new Laser(getPhysicsBody().getWorld(), this);
+			new Laser(getPhysicsBody().getWorld(), this, laserDamage);
 			TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
 
 				@Override

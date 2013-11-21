@@ -1,7 +1,5 @@
 package ch.kanti_wohlen.asteroidminer.powerups;
 
-import java.util.ArrayList;
-
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
@@ -26,14 +24,14 @@ public class BombPowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player player) {
-
-		//TODO!
 		Array<Body> bodies = new Array<Body>(world.getBodyCount());
 		world.getBodies(bodies);
-		ArrayList<Entity> asteroids = new ArrayList<Entity>();
 
-		for (Entity e : asteroids) {
-			if (e.getPhysicsBody().equals(EntityType.ASTEROID)) {
+		for (Body b : bodies) {
+			if (b == null) continue;
+			Entity e = (Entity) b.getUserData();
+
+			if (e.getType() == EntityType.ASTEROID) {
 				e.remove();
 			}
 		}
@@ -50,5 +48,4 @@ public class BombPowerUp extends PowerUp {
 		positionSprite(s);
 		s.draw(batch);
 	}
-
 }
