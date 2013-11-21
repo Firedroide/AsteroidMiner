@@ -20,12 +20,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class StoneAsteroid extends Entity implements Damageable {
 
-	public static final int MAX_HEALTH = 100;
+	public static final int HEALTH_PER_SIZE = 20;
 	public static final float STONE_ASTEROID_MIN_SIZE = 0.75f;
 
 	private final HealthBar healthBar;
 	private final float currentRadius;
 	private final float renderScale;
+	private final int maxHealth;
 
 	private int health;
 
@@ -35,10 +36,11 @@ public class StoneAsteroid extends Entity implements Damageable {
 
 	public StoneAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
 		super(world, createBodyDef(location, velocity), createCircle(radius));
-		healthBar = new HealthBar(MAX_HEALTH);
+		maxHealth = (int) (radius * HEALTH_PER_SIZE);
+		health = maxHealth;
+		healthBar = new HealthBar(maxHealth);
 		currentRadius = radius;
 		renderScale = (radius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
-		health = MAX_HEALTH;
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 
 	public void setHealth(int newHealth) {
 		if (newHealth != health) {
-			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
+			health = MathUtils.clamp(newHealth, 0, maxHealth);
 			healthBar.resetAlpha();
 
 			if (health == 0f) {
