@@ -8,7 +8,8 @@ import java.util.TreeMap;
 public class TaskScheduler {
 
 	/**
-	 * The current and only instance of TaskScheduler. Is never <code>null</code>.
+	 * The current and only instance of TaskScheduler.<br>
+	 * Is never <code>null</code>.
 	 */
 	public static final TaskScheduler INSTANCE = new TaskScheduler();
 
@@ -23,7 +24,8 @@ public class TaskScheduler {
 	}
 
 	/**
-	 * Run task after rendering and after simulating the world. This way the Runnable can be executed safely.
+	 * Run task after rendering and after simulating the world.<br>
+	 * This way the Runnable can be executed safely.
 	 * 
 	 * @param r
 	 *            the {@link Runnable} you want to run. Won't add to queue if <code>null</code>
@@ -60,7 +62,8 @@ public class TaskScheduler {
 	}
 
 	/**
-	 * Method to actually execute the stored Runnables. Should only ever be called once in GameScreen.
+	 * Method to actually execute the stored Runnables.<br>
+	 * Should only ever be called once in GameScreen.
 	 */
 	public void onGameTick() {
 		Iterator<Entry<Long, Runnable[]>> i = tasks.entrySet().iterator();

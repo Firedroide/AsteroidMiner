@@ -7,7 +7,6 @@ import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.CollisionListener;
 import ch.kanti_wohlen.asteroidminer.LocalPlayer;
 import ch.kanti_wohlen.asteroidminer.Player;
-import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.*;
 import ch.kanti_wohlen.asteroidminer.entities.asteroids.*;
@@ -34,7 +33,6 @@ public class GameScreen {
 	private final OrthographicCamera camera;
 	private final World world;
 	private final SpriteBatch batch;
-	private final TaskScheduler scheduler;
 	private final List<Player> players;
 
 	private LocalPlayer localPlayer;
@@ -55,7 +53,6 @@ public class GameScreen {
 		CollisionListener cl = new CollisionListener();
 		world.setContactListener(cl);
 		batch = main.getSpriteBatch();
-		scheduler = TaskScheduler.INSTANCE;
 
 		WorldBorder.addBorders(world);
 
@@ -100,8 +97,6 @@ public class GameScreen {
 		// Do physics
 		world.step(timeStep, velocityIterations, positionIterations);
 		applyGravity();
-
-		scheduler.onGameTick();
 	}
 
 	public void render() {
@@ -228,7 +223,6 @@ public class GameScreen {
 		for (Player player : players) {
 			player.dispose();
 		}
-		scheduler.dispose();
 		world.dispose();
 	}
 }

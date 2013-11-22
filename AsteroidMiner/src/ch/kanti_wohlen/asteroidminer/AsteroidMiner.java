@@ -16,6 +16,7 @@ public class AsteroidMiner extends Game {
 	private GameScreen game;
 	private FPSLogger fpsLogger;
 	private SpriteBatch batch;
+	private TaskScheduler scheduler;
 	private Screens screens;
 
 	@Override
@@ -26,6 +27,7 @@ public class AsteroidMiner extends Game {
 
 		fpsLogger = new FPSLogger();
 		batch = new SpriteBatch();
+		scheduler = TaskScheduler.INSTANCE;
 
 		game = new GameScreen(this);
 		screens = new Screens(this);
@@ -35,6 +37,8 @@ public class AsteroidMiner extends Game {
 
 	@Override
 	public void dispose() {
+		scheduler.dispose();
+
 		game.dispose();
 		screens.MENU_SCREEN.dispose();
 		screens.PAUSE_SCREEN.dispose();
@@ -64,6 +68,8 @@ public class AsteroidMiner extends Game {
 			// Log FPS only when the game is being simulated
 			fpsLogger.log();
 		}
+
+		scheduler.onGameTick();
 	}
 
 	@Override
