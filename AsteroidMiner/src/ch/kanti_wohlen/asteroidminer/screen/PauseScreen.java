@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 
 public class PauseScreen extends AbstractScreen {
 
@@ -29,7 +30,9 @@ public class PauseScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		// Draw overlay
+		overlay.setPosition(Gdx.graphics.getWidth() * -0.5f, Gdx.graphics.getHeight() * -0.5f);
 		overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.setProjectionMatrix(new Matrix4());
 		batch.begin();
 		overlay.draw(batch);
 		batch.end();

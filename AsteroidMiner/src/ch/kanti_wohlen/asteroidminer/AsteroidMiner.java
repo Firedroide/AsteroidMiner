@@ -33,6 +33,8 @@ public class AsteroidMiner extends Game {
 		screens = new Screens(this);
 		setScreen(screens.MENU_SCREEN);
 		MusicPlayer.start();
+
+		//FacebookIntegration fb = new FacebookIntegration();
 	}
 
 	@Override

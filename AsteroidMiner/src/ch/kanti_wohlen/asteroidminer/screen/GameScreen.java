@@ -108,8 +108,8 @@ public class GameScreen {
 		ArrayIterator<Body> i = new ArrayIterator<Body>(bodies, true);
 		ArrayList<Entity> renderLater = new ArrayList<Entity>();
 
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		camera.apply(Gdx.gl11);
 		while (i.hasNext()) {
 			Body body = i.next();
 			if (body == null) continue;
@@ -155,10 +155,10 @@ public class GameScreen {
 		final float u2 = width / Textures.BACKGROUND.getWidth();
 		final float v2 = height / Textures.BACKGROUND.getHeight();
 
+		camera.update(false);
+		batch.setProjectionMatrix(camera.combined);
 		batch.disableBlending();
 		batch.begin();
-		camera.update(false);
-		camera.apply(Gdx.gl11);
 		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy - height, width, height, 0f, 0f, u2, v2);
 		batch.draw(Textures.BACKGROUND.getTexture(), fx - width, fy, width, height, 0f, 0f, u2, v2);
 		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy - height, width, height, 0f, 0f, u2, v2);
