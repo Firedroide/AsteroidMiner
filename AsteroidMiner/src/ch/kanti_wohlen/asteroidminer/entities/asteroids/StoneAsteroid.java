@@ -11,8 +11,8 @@ import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -65,6 +65,13 @@ public class StoneAsteroid extends Entity implements Damageable {
 		return EntityType.ASTEROID;
 	}
 
+	@Override
+	public Rectangle getBoundingBox() {
+		final Rectangle rect = new Rectangle(0f, 0f, currentRadius, currentRadius);
+		rect.setCenter(body.getPosition());
+		return rect;
+	}
+
 	public int getHealth() {
 		return health;
 	}
@@ -75,14 +82,13 @@ public class StoneAsteroid extends Entity implements Damageable {
 			healthBar.resetAlpha();
 
 			if (health == 0) {
-				final World w = getPhysicsBody().getWorld();
-				final Body body = getPhysicsBody();
+				final World w = body.getWorld();
 				final float nextRadius = currentRadius / 2f;
 
 				if (nextRadius <= STONE_ASTEROID_MIN_SIZE) {
 					if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
-					final World world = getPhysicsBody().getWorld();
-					final Vector2 loc = getPhysicsBody().getPosition();
+					final World world = body.getWorld();
+					final Vector2 loc = body.getPosition();
 					PowerUpLauncher pul = new PowerUpLauncher(world, loc);
 					TaskScheduler.INSTANCE.runTask(pul);
 					return;

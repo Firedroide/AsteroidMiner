@@ -5,6 +5,7 @@ import ch.kanti_wohlen.asteroidminer.Textures;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -19,6 +20,7 @@ public class Laser extends Entity {
 	public static final float SPEED = 60f;
 
 	private final SpaceShip ship;
+	private final Rectangle boundingBox;
 	private final int dmg;
 
 	public Laser(World world, SpaceShip spaceShip) {
@@ -29,6 +31,9 @@ public class Laser extends Entity {
 		super(world, createBodyDef(spaceShip), createFixture());
 		ship = spaceShip;
 		dmg = damage;
+		final float width = Textures.LASER.getWidth() * PIXEL_TO_BOX2D;
+		final float height = Textures.LASER.getHeight() * PIXEL_TO_BOX2D;
+		boundingBox = new Rectangle(0f, 0f, width, height);
 	}
 
 	@Override
@@ -41,6 +46,13 @@ public class Laser extends Entity {
 	@Override
 	public EntityType getType() {
 		return EntityType.LASER;
+	}
+
+	@Override
+	public Rectangle getBoundingBox() {
+		final Rectangle rect = new Rectangle(boundingBox);
+		rect.setCenter(body.getPosition());
+		return rect;
 	}
 
 	public SpaceShip getShooter() {

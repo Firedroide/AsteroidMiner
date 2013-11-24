@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.powerups;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 
@@ -15,13 +17,25 @@ public abstract class PowerUp extends Entity {
 
 	protected static final float PICKUP_RADIUS = 0.5f;
 
+	private final Rectangle boundingBox;
+
 	public PowerUp(World world, Vector2 position) {
 		super(world, createBodyDef(position), createCircle());
+		final float width = Textures.POWERUPBOXMETAL.getWidth() * PIXEL_TO_BOX2D;
+		final float height = Textures.POWERUPBOXMETAL.getHeight() * PIXEL_TO_BOX2D;
+		boundingBox = new Rectangle(0f, 0f, width, height);
 	}
 
 	@Override
 	public EntityType getType() {
 		return EntityType.POWER_UP;
+	}
+
+	@Override
+	public Rectangle getBoundingBox() {
+		final Rectangle rect = new Rectangle(boundingBox);
+		rect.setCenter(body.getPosition());
+		return rect;
 	}
 
 	private static BodyDef createBodyDef(Vector2 position) {

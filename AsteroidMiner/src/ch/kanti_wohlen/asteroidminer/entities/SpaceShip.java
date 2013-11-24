@@ -10,6 +10,7 @@ import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -26,6 +27,7 @@ public class SpaceShip extends Entity implements Damageable {
 
 	private final HealthBar healthBar;
 	private final Player player;
+	private final Rectangle boundingBox;
 
 	private int health;
 	private int shield;
@@ -44,6 +46,10 @@ public class SpaceShip extends Entity implements Damageable {
 		firingDelay = DEFAULT_FIRING_DELAY;
 		speed = DEFAULT_SPEED;
 		laserDamage = Laser.DEFAULT_DAMAGE;
+
+		final float width = Textures.SPACESHIP.getWidth() * PIXEL_TO_BOX2D;
+		final float height = Textures.SPACESHIP.getHeight() * PIXEL_TO_BOX2D;
+		boundingBox = new Rectangle(0f, 0f, width, height);
 	}
 
 	@Override
@@ -51,7 +57,6 @@ public class SpaceShip extends Entity implements Damageable {
 		Sprite s = Textures.SPACESHIP;
 		positionSprite(s);
 		s.draw(batch);
-		getPhysicsBody().setGravityScale(5f);
 
 		healthBar.render(batch, health, new Vector2(s.getX() - s.getWidth() * 0.05f, s.getY() + s.getHeight() * 1.15f));
 	}
@@ -59,6 +64,13 @@ public class SpaceShip extends Entity implements Damageable {
 	@Override
 	public boolean isRemoved() {
 		return false;
+	}
+
+	@Override
+	public Rectangle getBoundingBox() {
+		final Rectangle rect = new Rectangle(boundingBox);
+		rect.setCenter(body.getPosition());
+		return rect;
 	}
 
 	@Override
@@ -138,7 +150,7 @@ public class SpaceShip extends Entity implements Damageable {
 	public void fireLaser() {
 		if (canShoot) {
 			canShoot = false;
-			new Laser(getPhysicsBody().getWorld(), this, laserDamage);
+			new Laser(body.getWorld(), this, laserDamage);
 			TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
 
 				@Override
@@ -157,6 +169,7 @@ public class SpaceShip extends Entity implements Damageable {
 		bd.angularDamping = 10f;
 		bd.linearDamping = 2.5f;
 		bd.position.set(2f, 2f);
+		bd.gravityScale = 5f;
 
 		return bd;
 	}

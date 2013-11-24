@@ -11,10 +11,10 @@ import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -26,7 +26,6 @@ public class IceAsteroid extends Entity implements Damageable {
 	private static final float POWER_UP_SPAWN_CHANCE = 0.2f;
 
 	private final HealthBar healthBar;
-	private final Fixture circleFixture;
 	private final float firstRadius;
 
 	private float currentRadius;
@@ -40,7 +39,6 @@ public class IceAsteroid extends Entity implements Damageable {
 	public IceAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
 		super(world, createBodyDef(location, velocity), createCircle(radius));
 		healthBar = new HealthBar(MAX_HEALTH);
-		circleFixture = getPhysicsBody().getFixtureList().get(0);
 		firstRadius = radius;
 		currentRadius = radius;
 		renderScale = (radius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
@@ -67,6 +65,14 @@ public class IceAsteroid extends Entity implements Damageable {
 		return EntityType.ASTEROID;
 	}
 
+	@Override
+	public Rectangle getBoundingBox() {
+		final float r = fixture.getShape().getRadius();
+		final Rectangle rect = new Rectangle(0f, 0f, r, r);
+		rect.setCenter(body.getPosition());
+		return rect;
+	}
+
 	public int getHealth() {
 		return health;
 	}
@@ -78,15 +84,15 @@ public class IceAsteroid extends Entity implements Damageable {
 
 			if (health == 0) {
 				if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
-				final World world = getPhysicsBody().getWorld();
-				final Vector2 loc = getPhysicsBody().getPosition();
+				final World world = body.getWorld();
+				final Vector2 loc = body.getPosition();
 				PowerUpLauncher pul = new PowerUpLauncher(world, loc);
 				TaskScheduler.INSTANCE.runTask(pul);
 			} else {
 				currentRadius = MIN_RADIUS + ((float) health / MAX_HEALTH) * (firstRadius - MIN_RADIUS);
 				renderScale = (currentRadius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
-				circleFixture.getShape().setRadius(currentRadius);
-				getPhysicsBody().resetMassData();
+				fixture.getShape().setRadius(currentRadius);
+				body.resetMassData();
 			}
 		}
 	}

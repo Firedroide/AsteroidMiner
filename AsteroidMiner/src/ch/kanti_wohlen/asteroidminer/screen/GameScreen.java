@@ -15,7 +15,9 @@ import ch.kanti_wohlen.asteroidminer.powerups.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -107,6 +109,11 @@ public class GameScreen {
 		world.getBodies(bodies);
 		ArrayIterator<Body> i = new ArrayIterator<Body>(bodies, true);
 		ArrayList<Entity> renderLater = new ArrayList<Entity>();
+		final float width = Gdx.graphics.getWidth() * Entity.PIXEL_TO_BOX2D;
+		final float height = Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D;
+		final Vector3 pos = camera.position.cpy().scl(Entity.PIXEL_TO_BOX2D);
+		pos.sub(width * 0.5f, height * 0.5f, 0f);
+		final Rectangle visibleRect = new Rectangle(pos.x, pos.y, width, height);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -121,6 +128,7 @@ public class GameScreen {
 				world.destroyBody(body);
 				body.setUserData(null);
 			} else {
+				if (!visibleRect.overlaps(e.getBoundingBox())) continue;
 				if (e.getType() == EntityType.WORLD_BORDER) {
 					renderLater.add(e);
 				} else {

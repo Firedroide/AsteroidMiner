@@ -5,6 +5,7 @@ import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 public class WorldBorder extends Entity {
 
 	private final BorderSide borderSide;
+	private final Rectangle boundingBox;
 
 	public static void addBorders(World world) {
 		for (BorderSide side : BorderSide.values()) {
@@ -38,13 +40,22 @@ public class WorldBorder extends Entity {
 	public WorldBorder(World world, BorderSide side) {
 		super(world, createBodyDef(side), createFixture(side));
 		borderSide = side;
+
+		final Vector2 pos = new Vector2(side.x, side.y);
+		final Vector2 size = side.getObjectSize();
+		if (side == BorderSide.LEFT) {
+			pos.sub(BorderSide.BORDER_DIAMETER, 0f);
+		} else if (side == BorderSide.BOTTOM) {
+			pos.sub(0f, BorderSide.BORDER_DIAMETER);
+		}
+		boundingBox = new Rectangle(pos.x, pos.y, size.x, size.y);
 	}
 
 	@Override
 	public void render(SpriteBatch batch) {
 		TiledDrawable border = Textures.BORDER;
 		TiledDrawable line = Textures.BORDER_LINE;
-		Vector2 borderLoc = getPhysicsBody().getPosition().cpy().scl(BOX2D_TO_PIXEL);
+		Vector2 borderLoc = body.getPosition().cpy().scl(BOX2D_TO_PIXEL);
 		Vector2 borderSize = borderSide.getObjectSize().scl(BOX2D_TO_PIXEL);
 		Vector2 lineLoc = borderSide.getLinePosition().scl(BOX2D_TO_PIXEL);
 		Vector2 lineSize = borderSide.getLineSize().scl(BOX2D_TO_PIXEL);
@@ -56,6 +67,11 @@ public class WorldBorder extends Entity {
 	@Override
 	public EntityType getType() {
 		return EntityType.WORLD_BORDER;
+	}
+
+	@Override
+	public Rectangle getBoundingBox() {
+		return new Rectangle(boundingBox);
 	}
 
 	private static BodyDef createBodyDef(BorderSide side) {
@@ -88,7 +104,7 @@ public class WorldBorder extends Entity {
 		LEFT(-GameScreen.WORLD_SIZE, -GameScreen.WORLD_SIZE),
 		RIGHT(GameScreen.WORLD_SIZE, -GameScreen.WORLD_SIZE);
 
-		private static final float BORDER_DIAMETER = 64f;
+		private static final float BORDER_DIAMETER = 48f;
 		private static final float LINE_DIAMETER = 0.4f;
 
 		private final float x;
