@@ -10,7 +10,9 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.width = 960;
 		cfg.height = 640;
-		
+		cfg.foregroundFPS = 60;
+		cfg.backgroundFPS = -1;
+
 		new LwjglApplication(new AsteroidMiner(), cfg);
 	}
 }

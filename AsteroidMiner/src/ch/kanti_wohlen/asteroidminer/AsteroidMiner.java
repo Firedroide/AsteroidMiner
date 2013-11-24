@@ -34,7 +34,7 @@ public class AsteroidMiner extends Game {
 		setScreen(screens.MENU_SCREEN);
 		MusicPlayer.start();
 
-		//FacebookIntegration fb = new FacebookIntegration();
+		Gdx.graphics.setVSync(false);
 	}
 
 	@Override
