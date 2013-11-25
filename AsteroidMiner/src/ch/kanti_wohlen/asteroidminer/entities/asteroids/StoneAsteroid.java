@@ -69,7 +69,8 @@ public class StoneAsteroid extends Entity implements Damageable {
 
 	@Override
 	public Rectangle getBoundingBox() {
-		final Rectangle rect = new Rectangle(0f, 0f, currentRadius, currentRadius);
+		final float d = currentRadius * 2f;
+		final Rectangle rect = new Rectangle(0f, 0f, d, d);
 		rect.setCenter(body.getPosition());
 		return rect;
 	}
