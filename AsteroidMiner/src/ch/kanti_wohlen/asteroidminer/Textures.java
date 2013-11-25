@@ -31,6 +31,8 @@ public final class Textures {
 
 	public static Sprite HEALTH_HIGH;
 	public static Sprite HEALTH_LOW;
+	public static Sprite SHIELD_HIGH;
+	public static Sprite SHIELD_LOW;
 
 	private Textures() {};
 
@@ -106,6 +108,13 @@ public final class Textures {
 		HEALTH_LOW = new Sprite(sprites, 20, 360, 80, 10);
 		HEALTH_LOW.setOrigin(HEALTH_LOW.getRegionWidth() / 2, 0);
 		HEALTH_LOW.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		SHIELD_HIGH = new Sprite(sprites, 20, 375, 80, 10);
+		SHIELD_HIGH.setOrigin(SHIELD_HIGH.getRegionWidth() / 2, 0);
+		SHIELD_HIGH.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		SHIELD_LOW = new Sprite(sprites, 20, 385, 80, 10);
+		SHIELD_LOW.setOrigin(SHIELD_LOW.getRegionWidth() / 2, 0);
+		SHIELD_LOW.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		EXPLOSION = new Sprite(sprites, 268, 360, 472, 496);
 		EXPLOSION.setOrigin(490, 623);

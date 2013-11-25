@@ -5,7 +5,7 @@ import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
-import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
+import ch.kanti_wohlen.asteroidminer.entities.bars.HealthBar;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

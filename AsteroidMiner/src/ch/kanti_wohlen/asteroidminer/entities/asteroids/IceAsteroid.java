@@ -5,7 +5,7 @@ import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
-import ch.kanti_wohlen.asteroidminer.entities.sub.HealthBar;
+import ch.kanti_wohlen.asteroidminer.entities.bars.HealthBar;
 import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
