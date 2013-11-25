@@ -16,20 +16,58 @@
 		<script type="text/javascript" src="ch.kanti_wohlen.asteroidminer.GwtDefinition/ch.kanti_wohlen.asteroidminer.GwtDefinition.nocache.js"></script>
 	</body>
 	
+	<div id="fb-root"></div>
+	<script src="//connect.facebook.net/en_US/all.js"></script>
+	
 	<script>
-		function handleMouseDown(evt) {
-		  evt.preventDefault();
-		  evt.stopPropagation();
-		  evt.target.style.cursor = 'default';
-		}
-		
-		function handleMouseUp(evt) {
-		  evt.preventDefault();
-		  evt.stopPropagation();
-		  evt.target.style.cursor = '';
-		}
-		
-		document.getElementById('embed-ch.kanti_wohlen.asteroidminer.GwtDefinition').addEventListener('mousedown', handleMouseDown, false);
-		document.getElementById('embed-ch.kanti_wohlen.asteroidminer.GwtDefinition').addEventListener('mouseup', handleMouseUp, false);
+	  document.connected = false;
+	  document.FB = FB;
+	
+	  // Initialize the Facebook JavaScript SDK
+	  FB.init({
+	    appId: '425756014191466',
+	    xfbml: true,
+	    status: true,
+	    cookie: true,
+	  });
+	
+	  // Check if the current user is logged in and has authorized the app
+	  document.logIn = function logIn() {
+	    FB.getLoginStatus(logInIfNecessary);
+	  }
+	
+	  function logInIfNecessary(response) {
+	    if (response && response.status == 'connected') {
+	      document.connected = true;
+	    } else {
+	      FB.login(checkLoginStatus, {scope:''});
+	    }
+	  }
+	
+	  // Check the result of the user status
+	  function checkLoginStatus(response) {
+	    if (response && response.status == 'connected') {
+	      document.connected = true;
+	    }
+	  }
+	
+	  logIn();
+	</script>
+	
+	<script>
+	    function handleMouseDown(evt) {
+	      evt.preventDefault();
+	      evt.stopPropagation();
+	      evt.target.style.cursor = 'default';
+	    }
+	
+	    function handleMouseUp(evt) {
+	      evt.preventDefault();
+	      evt.stopPropagation();
+	      evt.target.style.cursor = '';
+	    }
+	
+	    document.getElementById('embed-ch.kanti_wohlen.asteroidminer.GwtDefinition').addEventListener('mousedown', handleMouseDown, false);
+	    document.getElementById('embed-ch.kanti_wohlen.asteroidminer.GwtDefinition').addEventListener('mouseup', handleMouseUp, false);
 	</script>
 </html>
