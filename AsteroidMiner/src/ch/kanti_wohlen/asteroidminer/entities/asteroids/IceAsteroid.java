@@ -52,7 +52,9 @@ public class IceAsteroid extends Entity implements Damageable {
 		s.setScale(renderScale);
 		s.draw(batch);
 
-		healthBar.render(batch, health, new Vector2(s.getX() + s.getWidth() * 0.025f, s.getY() + s.getHeight() * 1.15f));
+		final float healthBarX = s.getX() + s.getWidth() * 0.025f;
+		final float healthBarY = s.getY() + s.getHeight() * 0.75f + currentRadius * BOX2D_TO_PIXEL * 0.8f;
+		healthBar.render(batch, health, new Vector2(healthBarX, healthBarY));
 	}
 
 	@Override
