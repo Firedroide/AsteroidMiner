@@ -5,6 +5,7 @@ import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,16 +14,30 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 public class WorldBorder extends Entity {
+
+	private static final WorldBorder[] borders = new WorldBorder[BorderSide.values().length];
+	private static final float MOD_WIDTH = Textures.BORDER.getRegion().getRegionWidth();
+	private static final float MOD_HEIGHT = Textures.BORDER.getRegion().getRegionHeight();
 
 	private final BorderSide borderSide;
 	private final Rectangle boundingBox;
 
 	public static void addBorders(World world) {
-		for (BorderSide side : BorderSide.values()) {
-			new WorldBorder(world, side);
+		for (int i = 0; i < BorderSide.values().length; ++i) {
+			borders[i] = new WorldBorder(world, BorderSide.values()[i]);
+		}
+	}
+
+	public static void renderAllBorders(SpriteBatch batch, Rectangle visibleRectangle) {
+		final Rectangle pixelRect = new Rectangle(visibleRectangle);
+		pixelRect.setPosition(pixelRect.x * BOX2D_TO_PIXEL, pixelRect.y * BOX2D_TO_PIXEL);
+		pixelRect.setSize(pixelRect.width * BOX2D_TO_PIXEL, pixelRect.height * BOX2D_TO_PIXEL);
+
+		for (WorldBorder border : borders) {
+			if (border == null) continue;
+			border.render(batch, pixelRect);
 		}
 	}
 
@@ -51,17 +66,36 @@ public class WorldBorder extends Entity {
 		boundingBox = new Rectangle(pos.x, pos.y, size.x, size.y);
 	}
 
+	/**
+	 * Does not actually render the world border.<br>
+	 * Call <code>WorldBorder.renderAllBorders</code> to render the borders.
+	 */
 	@Override
-	public void render(SpriteBatch batch) {
-		TiledDrawable border = Textures.BORDER;
-		TiledDrawable line = Textures.BORDER_LINE;
-		Vector2 borderLoc = body.getPosition().cpy().scl(BOX2D_TO_PIXEL);
-		Vector2 borderSize = borderSide.getObjectSize().scl(BOX2D_TO_PIXEL);
-		Vector2 lineLoc = borderSide.getLinePosition().scl(BOX2D_TO_PIXEL);
-		Vector2 lineSize = borderSide.getLineSize().scl(BOX2D_TO_PIXEL);
+	public void render(SpriteBatch batch) {}
 
-		border.draw(batch, borderLoc.x, borderLoc.y, borderSize.x, borderSize.y);
-		line.draw(batch, lineLoc.x, lineLoc.y, lineSize.x, lineSize.y);
+	private void render(SpriteBatch batch, Rectangle pixelRect) {
+		final Vector2 lineLoc = borderSide.getLinePosition().scl(BOX2D_TO_PIXEL);
+		final Vector2 lineSize = borderSide.getLineSize().scl(BOX2D_TO_PIXEL);
+		final Rectangle lineRect = new Rectangle(lineLoc.x, lineLoc.y, lineSize.x, lineSize.y);
+		Rectangle lineIntersect = new Rectangle();
+		if (!Intersector.intersectRectangles(lineRect, pixelRect, lineIntersect)) {
+			return;
+		}
+
+		final Vector2 pixelMod = new Vector2(pixelRect.x % MOD_WIDTH, pixelRect.y % MOD_HEIGHT);
+		if (pixelMod.x < 0) pixelMod.x += MOD_WIDTH;
+		if (pixelMod.y < 0) pixelMod.y += MOD_HEIGHT;
+		final Rectangle modPixelRect = new Rectangle(pixelRect.x - pixelMod.x, pixelRect.y - pixelMod.y,
+				pixelRect.width + pixelMod.x, pixelRect.height + pixelMod.y);
+
+		final Vector2 borderLoc = body.getPosition().cpy().scl(BOX2D_TO_PIXEL);
+		final Vector2 borderSize = borderSide.getObjectSize().scl(BOX2D_TO_PIXEL);
+		final Rectangle borderRect = new Rectangle(borderLoc.x, borderLoc.y, borderSize.x, borderSize.y);
+		final Rectangle borderIntersect = new Rectangle();
+		Intersector.intersectRectangles(borderRect, modPixelRect, borderIntersect);
+
+		Textures.BORDER.draw(batch, borderIntersect.x, borderIntersect.y, borderIntersect.width, borderIntersect.height);
+		Textures.BORDER_LINE.draw(batch, lineIntersect.x, lineIntersect.y, lineIntersect.width, lineIntersect.height);
 	}
 
 	@Override

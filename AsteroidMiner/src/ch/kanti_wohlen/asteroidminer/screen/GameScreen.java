@@ -84,7 +84,6 @@ public class GameScreen {
 		counter += 1;
 		counter %= 60;
 		if (counter == 0) {
-			Gdx.app.log("World", (world.getBodyCount() - 2) + " LAZORS!");
 			if (localPlayer != null) {
 				Vector2 pos = localPlayer.getSpaceShip().getPhysicsBody().getPosition();
 				Gdx.app.log("SpaceShip", "Location: " + pos.toString());
@@ -108,7 +107,6 @@ public class GameScreen {
 		Array<Body> bodies = new Array<Body>(world.getBodyCount());
 		world.getBodies(bodies);
 		ArrayIterator<Body> i = new ArrayIterator<Body>(bodies, true);
-		ArrayList<Entity> renderLater = new ArrayList<Entity>();
 		final float width = Gdx.graphics.getWidth() * Entity.PIXEL_TO_BOX2D;
 		final float height = Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D;
 		final Vector3 pos = camera.position.cpy().scl(Entity.PIXEL_TO_BOX2D);
@@ -128,18 +126,13 @@ public class GameScreen {
 				world.destroyBody(body);
 				body.setUserData(null);
 			} else {
-				if (!visibleRect.overlaps(e.getBoundingBox())) continue;
-				if (e.getType() == EntityType.WORLD_BORDER) {
-					renderLater.add(e);
-				} else {
+				if (visibleRect.overlaps(e.getBoundingBox())) {
 					e.render(batch);
 				}
 			}
 		}
+		WorldBorder.renderAllBorders(batch, visibleRect);
 
-		for (Entity e : renderLater) {
-			e.render(batch);
-		}
 		batch.end();
 	}
 
