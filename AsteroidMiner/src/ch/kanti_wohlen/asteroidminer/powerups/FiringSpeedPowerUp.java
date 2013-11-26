@@ -3,6 +3,8 @@ package ch.kanti_wohlen.asteroidminer.powerups;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
 import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -23,6 +25,7 @@ public class FiringSpeedPowerUp extends PowerUp {
 	public void onPickUp(Player player) {
 		player.getSpaceShip().setFiringDelay(SpaceShip.DEFAULT_FIRING_DELAY - FIRING_DELAY_DECREASE);
 		TaskScheduler.INSTANCE.runTaskLater(new PowerUpRemover(player), POWER_UP_DURATION);
+		SoundPlayer.playSound(SoundEffect.POWER_UP_PICK_UP, 0.4f);
 	}
 
 	@Override

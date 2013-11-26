@@ -2,6 +2,8 @@ package ch.kanti_wohlen.asteroidminer.powerups;
 
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
 import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -18,6 +20,7 @@ public class ShieldPowerUp extends PowerUp {
 	@Override
 	public void onPickUp(Player player) {
 		player.getSpaceShip().setShield(SpaceShip.MAX_SHIELD);
+		SoundPlayer.playSound(SoundEffect.POWER_UP_PICK_UP, 0.4f);
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package ch.kanti_wohlen.asteroidminer.powerups;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
 import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -23,6 +25,7 @@ public class SpeedPowerUp extends PowerUp {
 	public void onPickUp(Player player) {
 		player.getSpaceShip().setSpeed(SpaceShip.DEFAULT_SPEED + SPEED_INCREASE);
 		TaskScheduler.INSTANCE.runTaskLater(new PowerUpRemover(player), POWER_UP_DURATION);
+		SoundPlayer.playSound(SoundEffect.POWER_UP_PICK_UP, 0.4f);
 	}
 
 	@Override

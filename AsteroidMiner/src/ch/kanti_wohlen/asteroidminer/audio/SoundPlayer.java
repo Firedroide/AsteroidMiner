@@ -36,7 +36,8 @@ public class SoundPlayer {
 	}
 
 	public enum SoundEffect {
-		LASER_SHOOT("LaserShoot.ogg");
+		LASER_SHOOT("LaserShoot.ogg"),
+		POWER_UP_PICK_UP("PowerUpPickUp.ogg");
 
 		private final String name;
 
