@@ -162,8 +162,8 @@ public class StoneAsteroid extends Entity implements Damageable {
 			final float rot1 = 75f + 30f * MathUtils.random();
 			final float rot2 = 255f + 30f * MathUtils.random();
 
-			Vector2 loc1 = position.cpy().add(velocity.cpy().nor().rotate(rot1));
-			Vector2 loc2 = position.cpy().add(velocity.cpy().nor().rotate(rot2));
+			Vector2 loc1 = position.cpy().add(-MathUtils.sin(rot1) * r1 * 2f, MathUtils.cos(rot1) * r1 * 2f);
+			Vector2 loc2 = position.cpy().add(-MathUtils.sin(rot2) * r2 * 2f, MathUtils.cos(rot2) * r2 * 2f);
 
 			StoneAsteroid a1 = new StoneAsteroid(w, loc1, r1, velocity);
 			StoneAsteroid a2 = new StoneAsteroid(w, loc2, r2, velocity);
