@@ -3,11 +3,12 @@ package ch.kanti_wohlen.asteroidminer.screen;
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -35,9 +36,7 @@ public class MenuScreen extends PauseScreen {
 		table.center();
 		stage.addActor(table);
 
-		Label title = new Label("AsteroidMiner", skin);
-		title.setFontScale(2f);
-		title.setAlignment(1);
+		Image title = new Image(new Texture(Gdx.files.internal("graphics/logo.png")));
 		table.add(title).width(400f).padBottom(50f).row();
 
 		TextButton singlePlayer = new TextButton("Single Player", skin);
