@@ -31,9 +31,7 @@ public class WorldBorder extends Entity {
 	}
 
 	public static void renderAllBorders(SpriteBatch batch, Rectangle visibleRectangle) {
-		final Rectangle pixelRect = new Rectangle(visibleRectangle);
-		pixelRect.setPosition(pixelRect.x * BOX2D_TO_PIXEL, pixelRect.y * BOX2D_TO_PIXEL);
-		pixelRect.setSize(pixelRect.width * BOX2D_TO_PIXEL, pixelRect.height * BOX2D_TO_PIXEL);
+		final Rectangle pixelRect = scaleRectangle(visibleRectangle, BOX2D_TO_PIXEL);
 
 		for (WorldBorder border : borders) {
 			if (border == null) continue;
@@ -74,10 +72,8 @@ public class WorldBorder extends Entity {
 	public void render(SpriteBatch batch) {}
 
 	private void render(SpriteBatch batch, Rectangle pixelRect) {
-		final Vector2 lineLoc = borderSide.getLinePosition().scl(BOX2D_TO_PIXEL);
-		final Vector2 lineSize = borderSide.getLineSize().scl(BOX2D_TO_PIXEL);
-		final Rectangle lineRect = new Rectangle(lineLoc.x, lineLoc.y, lineSize.x, lineSize.y);
-		Rectangle lineIntersect = new Rectangle();
+		final Rectangle lineRect = scaleRectangle(borderSide.getLineRectangle(), BOX2D_TO_PIXEL);
+		final Rectangle lineIntersect = new Rectangle();
 		if (!Intersector.intersectRectangles(lineRect, pixelRect, lineIntersect)) {
 			return;
 		}
@@ -88,9 +84,7 @@ public class WorldBorder extends Entity {
 		final Rectangle modPixelRect = new Rectangle(pixelRect.x - pixelMod.x, pixelRect.y - pixelMod.y,
 				pixelRect.width + pixelMod.x, pixelRect.height + pixelMod.y);
 
-		final Vector2 borderLoc = body.getPosition().cpy().scl(BOX2D_TO_PIXEL);
-		final Vector2 borderSize = borderSide.getObjectSize().scl(BOX2D_TO_PIXEL);
-		final Rectangle borderRect = new Rectangle(borderLoc.x, borderLoc.y, borderSize.x, borderSize.y);
+		final Rectangle borderRect = scaleRectangle(borderSide.getObjectRectangle(), BOX2D_TO_PIXEL);
 		final Rectangle borderIntersect = new Rectangle();
 		Intersector.intersectRectangles(borderRect, modPixelRect, borderIntersect);
 
@@ -132,6 +126,10 @@ public class WorldBorder extends Entity {
 		return fixture;
 	}
 
+	private static Rectangle scaleRectangle(Rectangle rect, float scale) {
+		return new Rectangle(rect.x * scale, rect.y * scale, rect.width * scale, rect.height * scale);
+	}
+
 	public enum BorderSide {
 		TOP(-GameScreen.WORLD_SIZE, GameScreen.WORLD_SIZE),
 		BOTTOM(-GameScreen.WORLD_SIZE, -GameScreen.WORLD_SIZE),
@@ -141,8 +139,8 @@ public class WorldBorder extends Entity {
 		private static final float BORDER_DIAMETER = 48f;
 		private static final float LINE_DIAMETER = 0.4f;
 
-		private final float x;
-		private final float y;
+		public final float x;
+		public final float y;
 
 		private BorderSide(float x, float y) {
 			this.x = x;
@@ -171,6 +169,10 @@ public class WorldBorder extends Entity {
 			}
 		}
 
+		public Rectangle getObjectRectangle() {
+			return createRect(getObjectPosition(), getObjectSize());
+		}
+
 		public Vector2 getLinePosition() {
 			float ox = x > 0 ? x : x - LINE_DIAMETER;
 			float oy = y > 0 ? y : y - LINE_DIAMETER;
@@ -191,6 +193,14 @@ public class WorldBorder extends Entity {
 			default:
 				return null;
 			}
+		}
+
+		public Rectangle getLineRectangle() {
+			return createRect(getLinePosition(), getLineSize());
+		}
+
+		private static Rectangle createRect(Vector2 pos, Vector2 size) {
+			return new Rectangle(pos.x, pos.y, size.x, size.y);
 		}
 	}
 }
