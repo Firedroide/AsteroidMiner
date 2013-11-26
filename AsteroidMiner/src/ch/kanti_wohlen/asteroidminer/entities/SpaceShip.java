@@ -6,6 +6,7 @@ import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
 import ch.kanti_wohlen.asteroidminer.entities.bars.HealthBar;
+import ch.kanti_wohlen.asteroidminer.entities.bars.ShieldBar;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,8 +26,9 @@ public class SpaceShip extends Entity implements Damageable {
 	public static final double DEFAULT_FIRING_DELAY = 0.3f;
 	public static final float DEFAULT_SPEED = 1f;
 
-	private final HealthBar healthBar;
 	private final Player player;
+	private final HealthBar healthBar;
+	private final ShieldBar shieldBar;
 	private final Rectangle boundingBox;
 
 	private int health;
@@ -40,12 +42,14 @@ public class SpaceShip extends Entity implements Damageable {
 		super(world, createBodyDef(), createFixture());
 		player = owningPlayer;
 		healthBar = new HealthBar(MAX_HEALTH);
+		shieldBar = new ShieldBar(MAX_SHIELD);
+
 		health = MAX_HEALTH;
-		canShoot = true;
 		shield = 0;
 		firingDelay = DEFAULT_FIRING_DELAY;
 		speed = DEFAULT_SPEED;
 		laserDamage = Laser.DEFAULT_DAMAGE;
+		canShoot = true;
 
 		final float width = Textures.SPACESHIP.getWidth() * PIXEL_TO_BOX2D;
 		final float height = Textures.SPACESHIP.getHeight() * PIXEL_TO_BOX2D;
@@ -58,7 +62,13 @@ public class SpaceShip extends Entity implements Damageable {
 		positionSprite(s);
 		s.draw(batch);
 
-		healthBar.render(batch, health, new Vector2(s.getX() - s.getWidth() * 0.05f, s.getY() + s.getHeight() * 1.15f));
+		final Vector2 barLoc = new Vector2(s.getX() - s.getWidth() * 0.05f, s.getY() + s.getHeight() * 1.15f);
+		if (shield > 0) barLoc.y += Textures.HEALTH_HIGH.getRegionHeight() / 2f;
+
+		healthBar.render(batch, health, barLoc);
+		if (shield > 0) {
+			shieldBar.render(batch, shield, barLoc.sub(0f, Textures.HEALTH_HIGH.getRegionHeight()), healthBar.getAlpha());
+		}
 	}
 
 	@Override
@@ -102,8 +112,9 @@ public class SpaceShip extends Entity implements Damageable {
 	}
 
 	public void setShield(int newShield) {
-		if (shield != MAX_SHIELD) {
+		if (shield != newShield) {
 			shield = MathUtils.clamp(newShield, 0, MAX_SHIELD);
+			healthBar.resetAlpha();
 		}
 	}
 

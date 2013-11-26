@@ -25,9 +25,12 @@ public class AbstractBar {
 	}
 
 	public void render(SpriteBatch batch, float value, Vector2 location) {
-		if (alpha <= 0) return;
-
 		alpha = Math.max(0f, alpha - Gdx.graphics.getDeltaTime());
+		render(batch, value, location, alpha);
+	}
+
+	public void render(SpriteBatch batch, float value, Vector2 location, float alpha) {
+		if (alpha <= 0) return;
 
 		final int xm = Math.round((float) value / maxVal * spriteHigh.getRegionWidth());
 		final float xmScl = xm * sizeModifier;
@@ -49,6 +52,14 @@ public class AbstractBar {
 		spriteLow.draw(batch, Math.min(alpha, 1f));
 		spriteLow.setRegionX(xLow);
 		spriteLow.setRegionWidth(wLow);
+	}
+
+	public float getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(float newAlpha) {
+		alpha = newAlpha;
 	}
 
 	public void resetAlpha() {
