@@ -37,19 +37,21 @@ public class IdleSpawner extends AsteroidSpawner {
 		final float height = Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D;
 		final float angle = MathUtils.random(MathUtils.PI2);
 		final float speed = MathUtils.random(3f, 10f);
+		final float rotation = MathUtils.random(-0.5f, 0.5f);
 
 		final BorderSide side = chooseSide(angle);
 		final Vector2 spawningLocation = getSpawningPosition(side, width, height);
 		final Vector2 movementVector = new Vector2(speed * -MathUtils.sin(angle), speed * MathUtils.cos(angle));
 
-		spawnRandomAsteroid(spawningLocation, movementVector);
+		spawnRandomAsteroid(spawningLocation, movementVector, rotation);
 	}
 
 	// TODO: Random asteroid
-	private void spawnRandomAsteroid(Vector2 location, Vector2 momentum) {
+	private void spawnRandomAsteroid(Vector2 location, Vector2 momentum, float rotation) {
 		final float radius = MathUtils.random(1f, 4f);
 		if (!AsteroidAABB.checkAsteroidClipping(world, location, radius)) {
-			new IceAsteroid(world, location, radius, momentum);
+			IceAsteroid iceAsteroid = new IceAsteroid(world, location, radius, momentum);
+			iceAsteroid.getPhysicsBody().setAngularVelocity(rotation);
 		}
 	}
 }
