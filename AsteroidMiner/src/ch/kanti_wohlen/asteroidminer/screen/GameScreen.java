@@ -8,9 +8,10 @@ import ch.kanti_wohlen.asteroidminer.CollisionListener;
 import ch.kanti_wohlen.asteroidminer.LocalPlayer;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.Textures;
-import ch.kanti_wohlen.asteroidminer.entities.*;
-import ch.kanti_wohlen.asteroidminer.entities.asteroids.*;
-import ch.kanti_wohlen.asteroidminer.powerups.*;
+import ch.kanti_wohlen.asteroidminer.entities.Entity;
+import ch.kanti_wohlen.asteroidminer.entities.WorldBorder;
+import ch.kanti_wohlen.asteroidminer.spawner.AsteroidSpawner;
+import ch.kanti_wohlen.asteroidminer.spawner.IdleSpawner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,6 +39,7 @@ public class GameScreen {
 	private final List<Player> players;
 
 	private LocalPlayer localPlayer;
+	private AsteroidSpawner asteroidSpawner;
 	private boolean running;
 
 	// Temp
@@ -57,12 +59,7 @@ public class GameScreen {
 		batch = main.getSpriteBatch();
 
 		WorldBorder.addBorders(world);
-
-		new IceAsteroid(world, new Vector2(20, 20), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, -2));
-		new StoneAsteroid(world, new Vector2(50, 30), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(0, -2));
-		new StoneAsteroid(world, new Vector2(40, 60), Textures.ASTEROID.getHeight() * 0.05f, new Vector2(-2, 0));
-
-		new HealthPowerUp(world, new Vector2(10, 40));
+		setAsteroidSpawner(new IdleSpawner(world));
 	}
 
 	public void startGame() {
@@ -95,7 +92,10 @@ public class GameScreen {
 			p.doInput();
 		}
 
-		// Do physics
+		// Spawn asteroids
+		asteroidSpawner.tick();
+
+		// Do physics, therefore initializing newly spawned entities
 		world.step(timeStep, velocityIterations, positionIterations);
 		applyGravity();
 	}
@@ -210,6 +210,12 @@ public class GameScreen {
 				target.applyForceToCenter(dir.scl(force).scl(target.getGravityScale()), true);
 			}
 		}
+	}
+
+	private void setAsteroidSpawner(AsteroidSpawner newAsteroidSpawner) {
+		if (asteroidSpawner != null) asteroidSpawner.stop();
+		asteroidSpawner = newAsteroidSpawner;
+		asteroidSpawner.start();
 	}
 
 	public Player[] getPlayers() {
