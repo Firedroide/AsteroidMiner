@@ -121,6 +121,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(position);
 		bodyDef.angle = MathUtils.random(2 * MathUtils.PI);
+		bodyDef.angularDamping = 0.15f;
 		if (velocity != null) {
 			bodyDef.linearVelocity.set(velocity);
 		}
