@@ -27,7 +27,7 @@ public class IdleSpawner extends AsteroidSpawner {
 
 	@Override
 	public void tick() {
-		if (MathUtils.random() > 0.05f) return;
+		if (MathUtils.random() > 0.025f) return;
 		System.out.println("Entity count: " + world.getBodyCount());
 		spawn();
 	}
@@ -46,12 +46,17 @@ public class IdleSpawner extends AsteroidSpawner {
 		spawnRandomAsteroid(spawningLocation, movementVector, rotation);
 	}
 
-	// TODO: Random asteroid
 	private void spawnRandomAsteroid(Vector2 location, Vector2 momentum, float rotation) {
 		final float radius = MathUtils.random(1f, 4f);
+		final float type = MathUtils.random(8f);
 		if (!AsteroidAABB.checkAsteroidClipping(world, location, radius)) {
-			StoneAsteroid stoneAsteroid = new StoneAsteroid(world, location, radius, momentum);
-			stoneAsteroid.getPhysicsBody().setAngularVelocity(rotation);
+			if (type < 6f) {
+				StoneAsteroid stoneAsteroid = new StoneAsteroid(world, location, radius, momentum);
+				stoneAsteroid.getPhysicsBody().setAngularVelocity(rotation);
+			} else {
+				IceAsteroid iceAsteroid = new IceAsteroid(world, location, radius, momentum);
+				iceAsteroid.getPhysicsBody().setAngularVelocity(rotation);
+			}
 		}
 	}
 }
