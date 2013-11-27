@@ -8,8 +8,8 @@ public class LocalPlayer implements Player {
 
 	private final LocalInput input;
 	private final SpaceShip ship;
-	private long score;
 	private final int id;
+	private int score;
 
 	public LocalPlayer(AsteroidMiner main, World w) {
 		ship = new SpaceShip(w, this);
@@ -26,20 +26,20 @@ public class LocalPlayer implements Player {
 		return id;
 	}
 
-	public long getScore() {
+	public int getScore() {
 		return score;
 	}
 
-	public void setScore(long newScore) {
+	public void setScore(int newScore) {
 		if (newScore < 0) return;
 		score = newScore;
 	}
 
-	public void addScore(long difference) {
+	public void addScore(int difference) {
 		score += difference;
 	}
 
-	public void subtractScore(long difference) {
+	public void subtractScore(int difference) {
 		score -= difference;
 	}
 

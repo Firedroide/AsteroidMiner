@@ -10,7 +10,7 @@ public interface Player extends Disposable {
 
 	public int getPlayerNumber();
 
-	public long getScore();
+	public int getScore();
 
 	public void doInput();
 }
