@@ -122,9 +122,9 @@ public class SpaceShip extends Entity implements Damageable {
 		return firingDelay;
 	}
 
-	public void setFiringDelay(float delay) {
-		if (firingDelay == 0.3f) {
-			firingDelay = delay;
+	public void setFiringDelay(float newFiringDelay) {
+		if (firingDelay != newFiringDelay) {
+			firingDelay = newFiringDelay;
 		}
 	}
 
