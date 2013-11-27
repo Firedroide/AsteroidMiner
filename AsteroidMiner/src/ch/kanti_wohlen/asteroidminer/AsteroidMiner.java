@@ -13,11 +13,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AsteroidMiner extends Game {
 
+	private final GameLauncher launcher;
+
 	private GameScreen game;
 	private FPSLogger fpsLogger;
 	private SpriteBatch batch;
 	private TaskScheduler scheduler;
 	private Screens screens;
+
+	/**
+	 * Constructs the main game class.
+	 * 
+	 * @param launcher
+	 *            the launcher native to each platform. Used to perform Facebook publishing tasks.
+	 */
+	public AsteroidMiner(GameLauncher gameLauncher) {
+		launcher = gameLauncher;
+	}
 
 	@Override
 	public void create() {
