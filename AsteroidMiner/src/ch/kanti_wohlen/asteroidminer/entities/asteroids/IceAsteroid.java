@@ -21,12 +21,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class IceAsteroid extends Entity implements Damageable {
 
-	public static final int MAX_HEALTH = 75;
+	public static final int HEALTH_PER_SIZE = 15;
 	public static final float MIN_RADIUS = 0.5f;
 	private static final float POWER_UP_SPAWN_CHANCE = 0.05f;
 
 	private final HealthBar healthBar;
 	private final float firstRadius;
+	private final int maxHealth;
 
 	private float currentRadius;
 	private float renderScale;
@@ -38,11 +39,12 @@ public class IceAsteroid extends Entity implements Damageable {
 
 	public IceAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
 		super(world, createBodyDef(location, velocity), createCircle(radius));
-		healthBar = new HealthBar(MAX_HEALTH);
+		maxHealth = (int) (radius * HEALTH_PER_SIZE);
+		health = maxHealth;
+		healthBar = new HealthBar(maxHealth);
 		firstRadius = radius;
 		currentRadius = radius;
 		renderScale = (radius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
-		health = MAX_HEALTH;
 	}
 
 	@Override
@@ -81,7 +83,7 @@ public class IceAsteroid extends Entity implements Damageable {
 
 	public void setHealth(int newHealth) {
 		if (newHealth != health) {
-			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
+			health = MathUtils.clamp(newHealth, 0, maxHealth);
 			healthBar.resetAlpha();
 
 			if (health == 0) {
@@ -91,7 +93,7 @@ public class IceAsteroid extends Entity implements Damageable {
 				PowerUpLauncher pul = new PowerUpLauncher(world, loc);
 				TaskScheduler.INSTANCE.runTask(pul);
 			} else {
-				currentRadius = MIN_RADIUS + ((float) health / MAX_HEALTH) * (firstRadius - MIN_RADIUS);
+				currentRadius = MIN_RADIUS + ((float) health / maxHealth) * (firstRadius - MIN_RADIUS);
 				renderScale = (currentRadius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
 				fixture.getShape().setRadius(currentRadius);
 				body.resetMassData();
