@@ -169,7 +169,7 @@ public class SpaceShip extends Entity implements Damageable {
 					canShoot = true;
 				}
 			}, firingDelay);
-			SoundPlayer.playSound(SoundEffect.LASER_SHOOT, 0.25f);
+			SoundPlayer.playSound(SoundEffect.LASER_SHOOT, 0.25f, MathUtils.random(0.975f, 1.025f), 0f);
 		}
 	}
 
