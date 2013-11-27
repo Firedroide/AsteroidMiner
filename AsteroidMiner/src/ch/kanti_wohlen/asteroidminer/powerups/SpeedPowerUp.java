@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class SpeedPowerUp extends PowerUp {
 
 	private static final float SPEED_INCREASE = 0.5f;
-	private static final double POWER_UP_DURATION = 10.0;
+	private static final float POWER_UP_DURATION = 10f;
 
 	public SpeedPowerUp(World world, Vector2 position) {
 		super(world, position);

@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class WeaponFiringForcePowerUp extends PowerUp {
 
 	private static final int DAMAGE_INCREASE = 5;
-	private static final double POWER_UP_DURATION = 10.0;
+	private static final float POWER_UP_DURATION = 10f;
 
 	public WeaponFiringForcePowerUp(World world, Vector2 position) {
 		super(world, position);

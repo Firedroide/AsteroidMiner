@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class FiringSpeedPowerUp extends PowerUp {
 
 	private static final float FIRING_DELAY_DECREASE = 0.1f;
-	private static final double POWER_UP_DURATION = 15.0;
+	private static final float POWER_UP_DURATION = 15f;
 
 	public FiringSpeedPowerUp(World world, Vector2 position) {
 		super(world, position);

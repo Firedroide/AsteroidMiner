@@ -12,11 +12,18 @@ public class TaskScheduler {
 	 * Is never <code>null</code>.
 	 */
 	public static final TaskScheduler INSTANCE = new TaskScheduler();
+	private static final float TICKS_PER_SECOND = 60f;
 
-	private Map<Long, Runnable[]> tasks;
+	/*
+	 * At 60 ticks per seconds, this will be able to count up for about 414.2 days
+	 * At 4000 ticks per second, this would still be able to count up for about 6.21 days
+	 */
+	private int currentTick;
+	private final Map<Integer, Runnable[]> tasks;
 
 	private TaskScheduler() {
-		tasks = new TreeMap<Long, Runnable[]>();
+		currentTick = 0;
+		tasks = new TreeMap<Integer, Runnable[]>();
 	}
 
 	public void dispose() {
@@ -32,7 +39,7 @@ public class TaskScheduler {
 	 */
 	public void runTask(Runnable r) {
 		if (r == null) return;
-		addTask(0l, r);
+		addTask(0, r);
 	}
 
 	/**
@@ -43,13 +50,13 @@ public class TaskScheduler {
 	 * @param delay
 	 *            the time in seconds until the method should be called
 	 */
-	public void runTaskLater(Runnable r, double delay) {
+	public void runTaskLater(Runnable r, float delay) {
 		if (r == null) return;
-		long executionTime = System.currentTimeMillis() + (long) (1000 * Math.max(0d, delay));
+		int executionTime = currentTick + Math.round(TICKS_PER_SECOND * delay);
 		addTask(executionTime, r);
 	}
 
-	private void addTask(long when, Runnable what) {
+	private void addTask(int when, Runnable what) {
 		if (tasks.containsKey(when)) {
 			Runnable[] oldArr = tasks.get(when);
 			Runnable[] newArr = new Runnable[oldArr.length + 1];
@@ -66,12 +73,13 @@ public class TaskScheduler {
 	 * Should only ever be called once in GameScreen.
 	 */
 	public void onGameTick() {
-		Iterator<Entry<Long, Runnable[]>> i = tasks.entrySet().iterator();
+		++currentTick;
+		Iterator<Entry<Integer, Runnable[]>> i = tasks.entrySet().iterator();
 
 		while (i.hasNext()) {
-			Entry<Long, Runnable[]> entry = i.next();
+			Entry<Integer, Runnable[]> entry = i.next();
 
-			if (entry.getKey() <= System.currentTimeMillis()) {
+			if (entry.getKey() <= currentTick) {
 				for (Runnable task : entry.getValue()) {
 					task.run();
 				}

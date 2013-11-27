@@ -50,8 +50,8 @@ public class IdleSpawner extends AsteroidSpawner {
 	private void spawnRandomAsteroid(Vector2 location, Vector2 momentum, float rotation) {
 		final float radius = MathUtils.random(1f, 4f);
 		if (!AsteroidAABB.checkAsteroidClipping(world, location, radius)) {
-			IceAsteroid iceAsteroid = new IceAsteroid(world, location, radius, momentum);
-			iceAsteroid.getPhysicsBody().setAngularVelocity(rotation);
+			StoneAsteroid stoneAsteroid = new StoneAsteroid(world, location, radius, momentum);
+			stoneAsteroid.getPhysicsBody().setAngularVelocity(rotation);
 		}
 	}
 }

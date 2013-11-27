@@ -67,11 +67,12 @@ public class AsteroidMiner extends Game {
 		if (getScreen() != screens.PAUSE_SCREEN) {
 			game.tick(Gdx.graphics.getDeltaTime());
 
+			// Execute scheduled tasks
+			scheduler.onGameTick();
+
 			// Log FPS only when the game is being simulated
 			fpsLogger.log();
 		}
-
-		scheduler.onGameTick();
 	}
 
 	@Override

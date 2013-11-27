@@ -23,7 +23,7 @@ public class SpaceShip extends Entity implements Damageable {
 
 	public static final int MAX_HEALTH = 100;
 	public static final int MAX_SHIELD = 100;
-	public static final double DEFAULT_FIRING_DELAY = 0.3f;
+	public static final float DEFAULT_FIRING_DELAY = 0.3f;
 	public static final float DEFAULT_SPEED = 1f;
 
 	private final Player player;
@@ -34,7 +34,7 @@ public class SpaceShip extends Entity implements Damageable {
 	private int health;
 	private int shield;
 	private int laserDamage;
-	private double firingDelay;
+	private float firingDelay;
 	private float speed;
 	private boolean canShoot;
 
@@ -118,11 +118,11 @@ public class SpaceShip extends Entity implements Damageable {
 		}
 	}
 
-	public double getFiringDelay() {
+	public float getFiringDelay() {
 		return firingDelay;
 	}
 
-	public void setFiringDelay(double delay) {
+	public void setFiringDelay(float delay) {
 		if (firingDelay == 0.3f) {
 			firingDelay = delay;
 		}
