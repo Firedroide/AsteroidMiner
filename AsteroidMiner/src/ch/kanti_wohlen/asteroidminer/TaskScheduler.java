@@ -56,6 +56,20 @@ public class TaskScheduler {
 		addTask(executionTime, r);
 	}
 
+	/**
+	 * Runs a task after a given delay in game ticks.
+	 * 
+	 * @param r
+	 *            the {@link Runnable} you want to run. Won't add to queue if <code>null</code>
+	 * @param delay
+	 *            the time in game ticks until the method should be called
+	 */
+	public void runTaskLater(Runnable r, int tickDelay) {
+		if (r == null) return;
+		int executionTime = currentTick + tickDelay;
+		addTask(executionTime, r);
+	}
+
 	private void addTask(int when, Runnable what) {
 		if (tasks.containsKey(when)) {
 			Runnable[] oldArr = tasks.get(when);
