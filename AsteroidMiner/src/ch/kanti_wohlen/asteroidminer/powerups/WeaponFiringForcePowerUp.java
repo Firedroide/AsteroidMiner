@@ -37,7 +37,7 @@ public class WeaponFiringForcePowerUp extends PowerUp {
 	public void render(SpriteBatch batch) {
 		Sprite s = Textures.FIRINGFORCEPOWERUPBOX;
 		positionSprite(s);
-		s.draw(batch);
+		s.draw(batch, alpha);
 	}
 
 	private class PowerUpRemover implements Runnable {

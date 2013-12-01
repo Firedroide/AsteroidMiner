@@ -32,6 +32,6 @@ public class ShieldPowerUp extends PowerUp {
 	public void render(SpriteBatch batch) {
 		Sprite s = Textures.SHILDPOWERUPBOX;
 		positionSprite(s);
-		s.draw(batch);
+		s.draw(batch, alpha);
 	}
 }

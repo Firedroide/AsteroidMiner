@@ -37,7 +37,7 @@ public class SpeedPowerUp extends PowerUp {
 	public void render(SpriteBatch batch) {
 		Sprite s = Textures.SPEEDPOWERUPBOX;
 		positionSprite(s);
-		s.draw(batch);
+		s.draw(batch, alpha);
 	}
 
 	private class PowerUpRemover implements Runnable {

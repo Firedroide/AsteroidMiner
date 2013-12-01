@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
@@ -16,6 +17,7 @@ import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 public abstract class PowerUp extends Entity {
 
 	protected static final float PICKUP_RADIUS = 0.5f;
+	protected float alpha;
 
 	private final Rectangle boundingBox;
 
@@ -24,6 +26,9 @@ public abstract class PowerUp extends Entity {
 		final float width = Textures.POWERUPBOXMETAL.getWidth() * PIXEL_TO_BOX2D;
 		final float height = Textures.POWERUPBOXMETAL.getHeight() * PIXEL_TO_BOX2D;
 		boundingBox = new Rectangle(0f, 0f, width, height);
+		alpha = 1f;
+
+		new PowerUpRemover(this);
 	}
 
 	@Override
@@ -60,4 +65,26 @@ public abstract class PowerUp extends Entity {
 	public abstract void onPickUp(Player player);
 
 	public abstract PowerUpType getPowerUpType();
+
+	private class PowerUpRemover implements Runnable {
+
+		private static final float FADE_OUT_START = 15f;
+		private static final float FADE_OUT_TIME = 5f;
+
+		private final PowerUp powerUp;
+		private float currentTime;
+
+		public PowerUpRemover(PowerUp thePowerUp) {
+			powerUp = thePowerUp;
+			TaskScheduler.INSTANCE.runTaskRepeated(this, FADE_OUT_START, 0, FADE_OUT_TIME);
+		}
+
+		public void run() {
+			currentTime += 1 * TaskScheduler.TICK_TIME;
+			powerUp.alpha = 1f - currentTime / FADE_OUT_TIME;
+			if (FADE_OUT_TIME - currentTime < TaskScheduler.TICK_TIME) {
+				powerUp.remove();
+			}
+		}
+	}
 }

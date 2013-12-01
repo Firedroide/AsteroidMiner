@@ -33,6 +33,6 @@ public class HealthPowerUp extends PowerUp {
 	public void render(SpriteBatch batch) {
 		Sprite s = Textures.LIFEPOWERUPBOX;
 		positionSprite(s);
-		s.draw(batch);
+		s.draw(batch, alpha);
 	}
 }

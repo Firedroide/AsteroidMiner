@@ -45,6 +45,6 @@ public class BombPowerUp extends PowerUp {
 	public void render(SpriteBatch batch) {
 		Sprite s = Textures.BOMBPOWERUPBOX;
 		positionSprite(s);
-		s.draw(batch);
+		s.draw(batch, alpha);
 	}
 }
