@@ -1,9 +1,7 @@
 package ch.kanti_wohlen.asteroidminer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 
 public class TaskScheduler {
 
@@ -12,18 +10,21 @@ public class TaskScheduler {
 	 * Is never <code>null</code>.
 	 */
 	public static final TaskScheduler INSTANCE = new TaskScheduler();
-	private static final float TICKS_PER_SECOND = 60f;
+	public static final float TICKS_PER_SECOND = 60f;
+	public static final float TICK_TIME = 1f / TICKS_PER_SECOND;
 
 	/*
 	 * At 60 ticks per seconds, this will be able to count up for about 414.2 days
 	 * At 4000 ticks per second, this would still be able to count up for about 6.21 days
 	 */
 	private int currentTick;
-	private final Map<Integer, Runnable[]> tasks;
+	private final ArrayList<Task> tasks;
+	private final ArrayList<Task> taskBuffer;
 
 	private TaskScheduler() {
 		currentTick = 0;
-		tasks = new TreeMap<Integer, Runnable[]>();
+		tasks = new ArrayList<Task>();
+		taskBuffer = new ArrayList<Task>();
 	}
 
 	public void dispose() {
@@ -35,51 +36,170 @@ public class TaskScheduler {
 	 * This way the Runnable can be executed safely.
 	 * 
 	 * @param r
-	 *            the {@link Runnable} you want to run. Won't add to queue if <code>null</code>
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
+	 * @return the created and scheduled {@link Task}
 	 */
-	public void runTask(Runnable r) {
-		if (r == null) return;
-		addTask(0, r);
+	public Task runTask(Runnable r) {
+		return runTaskRepeated(r, 0, 0, 0);
 	}
 
 	/**
 	 * Runs a task after a delay in seconds.
 	 * 
 	 * @param r
-	 *            the {@link Runnable} you want to run. Won't add to queue if <code>null</code>
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
 	 * @param delay
-	 *            the time in seconds until the method should be called
+	 *            the time in seconds until the <code>Runnable</code> should be called
+	 * @return the created and scheduled {@link Task}
 	 */
-	public void runTaskLater(Runnable r, float delay) {
-		if (r == null) return;
-		int executionTime = currentTick + Math.round(TICKS_PER_SECOND * delay);
-		addTask(executionTime, r);
+	public Task runTaskLater(Runnable r, float delay) {
+		return runTaskRepeated(r, delay, 0f, 0f);
 	}
 
 	/**
 	 * Runs a task after a given delay in game ticks.
 	 * 
 	 * @param r
-	 *            the {@link Runnable} you want to run. Won't add to queue if <code>null</code>
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
 	 * @param delay
-	 *            the time in game ticks until the method should be called
+	 *            the time in game ticks until the <code>Runnable</code> should be called
+	 * @return the created and scheduled {@link Task}
 	 */
-	public void runTaskLater(Runnable r, int tickDelay) {
-		if (r == null) return;
-		int executionTime = currentTick + tickDelay;
-		addTask(executionTime, r);
+	public Task runTaskLater(Runnable r, int tickDelay) {
+		return runTaskRepeated(r, tickDelay, 0, 0);
 	}
 
-	private void addTask(int when, Runnable what) {
-		if (tasks.containsKey(when)) {
-			Runnable[] oldArr = tasks.get(when);
-			Runnable[] newArr = new Runnable[oldArr.length + 1];
-			System.arraycopy(oldArr, 0, newArr, 0, oldArr.length);
-			newArr[oldArr.length] = what;
-			tasks.put(when, newArr);
+	/**
+	 * Runs a task after a given delay and keeps executing it with a given amount of time between executions.
+	 * 
+	 * @param r
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
+	 * @param delay
+	 *            the time in seconds until the <code>Runnable</code> should be first called
+	 * @param period
+	 *            the time in seconds between the executions
+	 * @return the created and scheduled {@link Task}
+	 */
+	public Task runTaskTimer(Runnable r, float delay, float period) {
+		return runTaskRepeated(r, delay, period, 0f);
+	}
+
+	/**
+	 * Runs a task after a given tick delay and keeps executing it with a given amount of ticks between executions.
+	 * 
+	 * @param r
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
+	 * @param delay
+	 *            the time in game ticks until the <code>Runnable</code> should be first called
+	 * @param period
+	 *            the time in game ticks between the executions
+	 * @return the created and scheduled {@link Task}
+	 */
+	public Task runTaskTimer(Runnable r, int tickDelay, int tickPeriod) {
+		return runTaskRepeated(r, tickDelay, tickPeriod, 0);
+	}
+
+	/**
+	 * Runs a task after a given tick delay and keeps executing it with a given amount of time between executions
+	 * for a given amount of time.
+	 * 
+	 * @param r
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
+	 * @param delay
+	 *            the time in seconds until the <code>Runnable</code> should be first called
+	 * @param period
+	 *            the time in seconds between the executions
+	 * @param timespan
+	 *            the time span in seconds during which the task should be executed
+	 * @return the created and scheduled {@link Task}
+	 */
+	public Task runTaskRepeated(Runnable r, float delay, float period, float timespan) {
+		Task t = new Task(r);
+		t.executionTime = currentTick + Math.max(0, Math.round(TICKS_PER_SECOND * delay));
+		t.period = Math.max(timespan <= 0f ? 0 : 1, Math.round(TICKS_PER_SECOND * period));
+		if (timespan <= 0f) {
+			t.lastExecutionTime = Integer.MAX_VALUE;
 		} else {
-			tasks.put(when, new Runnable[] {what});
+			t.lastExecutionTime = t.executionTime + Math.max(0, Math.round(TICKS_PER_SECOND * timespan));
 		}
+		taskBuffer.add(t);
+		return t;
+	}
+
+	/**
+	 * Runs a task after a given tick delay and keeps executing it with a given amount of ticks between executions
+	 * for a given amount of ticks.
+	 * 
+	 * @param r
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
+	 * @param delay
+	 *            the time in game ticks until the <code>Runnable</code> should be first called
+	 * @param period
+	 *            the time in game ticks between the executions
+	 * @param timespan
+	 *            the time span in game ticks during which the task should be executed
+	 * @return the created and scheduled {@link Task}
+	 */
+	public Task runTaskRepeated(Runnable r, int tickDelay, int tickPeriod, int tickTimespan) {
+		Task t = new Task(r);
+		t.executionTime = currentTick + Math.max(0, tickDelay);
+		t.period = Math.max(tickTimespan <= 0 ? 0 : 1, tickPeriod);
+		if (tickTimespan <= 0) {
+			t.lastExecutionTime = Integer.MAX_VALUE;
+		} else {
+			t.lastExecutionTime = t.executionTime + Math.max(0, tickTimespan);
+		}
+		taskBuffer.add(t);
+		return t;
+	}
+
+	/**
+	 * Runs a task after a given tick delay and keeps executing it with a given amount of time between executions
+	 * for a given amount of time.
+	 * 
+	 * @param r
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
+	 * @param delay
+	 *            the time in seconds until the <code>Runnable</code> should be first called
+	 * @param period
+	 *            the time in seconds between the executions
+	 * @param executions
+	 *            the amount of times the task should be executed.<br>
+	 *            Will return <code>null</code> if smaller or equal to zero
+	 * @return the created and scheduled {@link Task} or null
+	 */
+	public Task runTaskMultipleTimes(Runnable r, float delay, float period, int executions) {
+		if (executions <= 0) return null;
+		Task t = new Task(r);
+		t.executionTime = currentTick + Math.max(0, Math.round(TICKS_PER_SECOND * delay));
+		t.period = Math.max(1, Math.round(TICKS_PER_SECOND * period));
+		t.lastExecutionTime = t.executionTime + executions * t.period;
+		taskBuffer.add(t);
+		return t;
+	}
+
+	/**
+	 * Runs a task multiple times after a given amount of time with a given amount of time between executions.
+	 * 
+	 * @param r
+	 *            the {@link Runnable} you want to run. May not be <code>null</code>
+	 * @param delay
+	 *            the time in game ticks until the <code>Runnable</code> should be first called
+	 * @param period
+	 *            the time in game ticks between the executions
+	 * @param executions
+	 *            the amount of times the task should be executed.<br>
+	 *            Will return <code>null</code> if smaller or equal to zero
+	 * @return the created and scheduled {@link Task} or null
+	 */
+	public Task runTaskMultipleTimes(Runnable r, int tickDelay, int tickPeriod, int executions) {
+		if (executions <= 0) return null;
+		Task t = new Task(r);
+		t.executionTime = currentTick + Math.max(0, tickDelay);
+		t.period = Math.max(1, tickPeriod);
+		t.lastExecutionTime = t.executionTime + executions * t.period;
+		taskBuffer.add(t);
+		return t;
 	}
 
 	/**
@@ -87,20 +207,58 @@ public class TaskScheduler {
 	 * Should only ever be called once in GameScreen.
 	 */
 	public void onGameTick() {
-		++currentTick;
-		Iterator<Entry<Integer, Runnable[]>> i = tasks.entrySet().iterator();
+		Iterator<Task> i = tasks.iterator();
 
 		while (i.hasNext()) {
-			Entry<Integer, Runnable[]> entry = i.next();
+			Task task = i.next();
 
-			if (entry.getKey() <= currentTick) {
-				for (Runnable task : entry.getValue()) {
-					task.run();
-				}
+			if (task.cancelled) {
 				i.remove();
-			} else {
-				break;
+				continue;
+			} else if (task.executionTime > currentTick) {
+				continue;
 			}
+
+			task.runnable.run();
+
+			if (task.period > 0) {
+				task.executionTime += task.period;
+				if (task.executionTime > task.lastExecutionTime) {
+					i.remove();
+				}
+			} else {
+				i.remove();
+			}
+		}
+
+		tasks.addAll(taskBuffer);
+		taskBuffer.clear();
+		++currentTick;
+	}
+
+	public final class Task {
+
+		private final Runnable runnable;
+		private int executionTime;
+		private int period;
+		private int lastExecutionTime;
+		private boolean cancelled;
+
+		private Task(Runnable theRunnable) {
+			if (theRunnable == null) throw new NullPointerException("The runnable may never be null!");
+			runnable = theRunnable;
+		}
+
+		public void cancel() {
+			cancelled = true;
+		}
+
+		public Runnable getRunnable() {
+			return runnable;
+		}
+
+		public int getNextExecutionTick() {
+			return executionTime;
 		}
 	}
 }
