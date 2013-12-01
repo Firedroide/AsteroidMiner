@@ -73,7 +73,7 @@ public class SpaceShip extends Entity implements Damageable {
 
 	@Override
 	public boolean isRemoved() {
-		return false;
+		return isRemovedByUser();
 	}
 
 	@Override

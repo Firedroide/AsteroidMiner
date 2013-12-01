@@ -71,6 +71,11 @@ public class WorldBorder extends Entity {
 	@Override
 	public void render(SpriteBatch batch) {}
 
+	@Override
+	public boolean isRemoved() {
+		return isRemovedByUser();
+	}
+
 	private void render(SpriteBatch batch, Rectangle pixelRect) {
 		final Rectangle lineRect = scaleRectangle(borderSide.getLineRectangle(), BOX2D_TO_PIXEL);
 		final Rectangle lineIntersect = new Rectangle();

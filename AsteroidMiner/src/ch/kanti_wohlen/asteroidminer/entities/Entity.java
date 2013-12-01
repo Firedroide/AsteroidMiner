@@ -45,6 +45,10 @@ public abstract class Entity {
 		return removed || WorldBorder.isOutside(this);
 	}
 
+	protected boolean isRemovedByUser() {
+		return removed;
+	}
+
 	protected void positionSprite(Sprite sprite) {
 		Vector2 loc = new Vector2(body.getPosition());
 		loc.scl(Entity.BOX2D_TO_PIXEL);
