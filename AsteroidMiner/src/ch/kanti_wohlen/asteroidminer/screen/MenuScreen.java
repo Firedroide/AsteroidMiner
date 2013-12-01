@@ -13,18 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-public class MenuScreen extends PauseScreen {
+public class MenuScreen extends OverlayScreen {
 
-	private final AsteroidMiner game;
 	private final Stage stage;
 	private final Table table;
 
 	public MenuScreen(AsteroidMiner asteroidMiner) {
 		super(asteroidMiner);
-
-		game = asteroidMiner;
-		width = 960;
-		height = 640;
 
 		Skin skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
@@ -37,7 +32,7 @@ public class MenuScreen extends PauseScreen {
 		stage.addActor(table);
 
 		Image title = new Image(new Texture(Gdx.files.internal("graphics/logo.png")));
-		table.add(title).width(400f).padBottom(50f).row();
+		table.add(title).padBottom(50f).row();
 
 		TextButton singlePlayer = new TextButton("Single Player", skin);
 		singlePlayer.addListener(new InputListener() {
@@ -74,9 +69,7 @@ public class MenuScreen extends PauseScreen {
 	}
 
 	@Override
-	public void hide() {
-		super.hide();
-	}
+	public void hide() {}
 
 	@Override
 	public void dispose() {
@@ -86,16 +79,13 @@ public class MenuScreen extends PauseScreen {
 
 	@Override
 	public void show() {
+		super.show();
 		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
-	public void pause() {
-		super.pause();
-	}
+	public void pause() {}
 
 	@Override
-	public void resume() {
-		super.resume();
-	}
+	public void resume() {}
 }
