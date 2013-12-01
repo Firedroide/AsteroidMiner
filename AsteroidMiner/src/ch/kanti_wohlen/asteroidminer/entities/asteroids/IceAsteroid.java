@@ -49,7 +49,7 @@ public class IceAsteroid extends Entity implements Damageable {
 
 	@Override
 	public void render(SpriteBatch batch) {
-		Sprite s = Textures.ASTEROID;
+		Sprite s = Textures.ICEASTREOID;
 		positionSprite(s);
 		s.setScale(renderScale);
 		s.draw(batch);
@@ -130,7 +130,7 @@ public class IceAsteroid extends Entity implements Damageable {
 	private static FixtureDef createCircle(float radius) {
 		final FixtureDef fixture = new FixtureDef();
 		fixture.density = 100f;
-		fixture.restitution = 0.9f;
+		fixture.restitution = 1.05f;
 		final CircleShape cs = new CircleShape();
 		cs.setRadius(radius);
 		fixture.shape = cs;
