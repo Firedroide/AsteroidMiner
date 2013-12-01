@@ -21,7 +21,7 @@ public class MusicPlayer {
 	public static void load() {
 		currentIndex = -1;
 		musicFiles = new LinkedList<FileHandle>();
-		addMusic("Atmospheren Sound 1.ogg");
+		//addMusic("Atmospheren Sound 1.ogg");
 		addMusic("Atmospheren Sound 2.ogg");
 	}
 
@@ -29,6 +29,8 @@ public class MusicPlayer {
 		if (musicFiles.size() == 0) return;
 
 		if (currentMusic != null) {
+			currentMusic.setOnCompletionListener(null);
+			currentMusic.stop();
 			currentMusic.dispose();
 		}
 		currentIndex = (currentIndex + 1) % musicFiles.size();
@@ -48,13 +50,12 @@ public class MusicPlayer {
 		if (currentMusic == null) return;
 		currentMusic.setOnCompletionListener(null);
 		currentMusic.stop();
+		currentMusic.dispose();
 	}
 
 	public static void dispose() {
 		stop();
-		if (currentMusic != null) {
-			currentMusic.dispose();
-		}
+		musicFiles.clear();
 	}
 
 	private static void addMusic(String fileName) {
