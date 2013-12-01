@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
+import ch.kanti_wohlen.asteroidminer.TaskScheduler.Task;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
@@ -72,14 +73,19 @@ public abstract class PowerUp extends Entity {
 		private static final float FADE_OUT_TIME = 5f;
 
 		private final PowerUp powerUp;
+		private final Task task;
 		private float currentTime;
 
 		public PowerUpRemover(PowerUp thePowerUp) {
 			powerUp = thePowerUp;
-			TaskScheduler.INSTANCE.runTaskRepeated(this, FADE_OUT_START, 0, FADE_OUT_TIME);
+			task = TaskScheduler.INSTANCE.runTaskRepeated(this, FADE_OUT_START, 0, FADE_OUT_TIME);
 		}
 
 		public void run() {
+			if (powerUp == null || powerUp.isRemoved()) {
+				task.cancel();
+				return;
+			}
 			currentTime += 1 * TaskScheduler.TICK_TIME;
 			powerUp.alpha = 1f - currentTime / FADE_OUT_TIME;
 			if (FADE_OUT_TIME - currentTime < TaskScheduler.TICK_TIME) {
