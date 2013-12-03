@@ -21,7 +21,7 @@ public class AbstractBar {
 		spriteLow = lowBarSprite;
 		maxVal = maximumValue;
 		alpha = 0f;
-		sizeModifier = 0.6f + maximumValue / 200f;
+		sizeModifier = 0.6f + maximumValue / 400f;
 	}
 
 	public void render(SpriteBatch batch, float value, Vector2 location) {
