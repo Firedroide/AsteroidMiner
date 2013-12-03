@@ -28,13 +28,12 @@ public class IdleSpawner extends AsteroidSpawner {
 	@Override
 	public void tick() {
 		if (MathUtils.random() > 0.025f) return;
-		System.out.println("Entity count: " + world.getBodyCount());
 		spawn();
 	}
 
 	private void spawn() {
-		final float width = Gdx.graphics.getWidth() * Entity.PIXEL_TO_BOX2D;
-		final float height = Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D;
+		final float width = Gdx.graphics.getWidth() * Entity.PIXEL_TO_BOX2D * 0.6f;
+		final float height = Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D * 0.6f;
 		final float angle = MathUtils.random(MathUtils.PI2);
 		final float speed = MathUtils.random(3f, 10f);
 		final float rotation = MathUtils.random(-0.5f, 0.5f);
