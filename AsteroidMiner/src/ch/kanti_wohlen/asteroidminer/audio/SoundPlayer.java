@@ -31,15 +31,30 @@ public class SoundPlayer {
 	}
 
 	public static void playSound(SoundEffect soundEffect, float volume, float pitch, float pan) {
+		playSound(soundEffect, volume, pitch, pan, false);
+	}
+
+	public static void playSound(SoundEffect soundEffect, float volume, float pitch, float pan, boolean looping) {
 		Sound sound = sounds.get(soundEffect);
-		sound.play(volume, pitch, pan);
+		final long id = sound.play(volume, pitch, pan);
+		sound.setLooping(id, looping);
+		soundEffect.setSound(sound, id);
+	}
+
+	public static void stopSound(SoundEffect soundEffect) {
+		if (soundEffect.currentSound != null) {
+			soundEffect.currentSound.stop();
+		}
 	}
 
 	public enum SoundEffect {
 		LASER_SHOOT("LaserShoot.ogg"),
-		POWER_UP_PICK_UP("PowerUpPickUp.ogg");
+		POWER_UP_PICK_UP("PowerUpPickUp.ogg"),
+		THRUSTER("Thrusters.ogg");
 
 		private final String name;
+		private long currentID;
+		private Sound currentSound;
 
 		private SoundEffect(String fileName) {
 			name = fileName;
@@ -49,6 +64,17 @@ public class SoundPlayer {
 			FileHandle fh = Gdx.files.internal("sounds/" + name);
 			Sound sound = Gdx.audio.newSound(fh);
 			sounds.put(this, sound);
+		}
+
+		private void setSound(Sound sound, long id) {
+			currentSound = sound;
+			currentID = id;
+		}
+
+		public void setVolume(float volume) {
+			if (currentSound != null) {
+				currentSound.setVolume(currentID, volume);
+			}
 		}
 	}
 }
