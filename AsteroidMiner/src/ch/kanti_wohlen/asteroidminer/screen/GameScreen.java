@@ -188,9 +188,9 @@ public class GameScreen {
 		final float xDir = movement.x < 0 ? -1 : 1;
 		final float yDir = movement.y < 0 ? -1 : 1;
 		movement.set(Math.abs(movement.x), Math.abs(movement.y));
-		movement.sub(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.15f);
+		movement.sub(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.075f);
 		movement.set(Math.max(movement.x, 0f), Math.max(movement.y, 0f));
-		movement.scl(xDir, yDir).scl(0.1f); // TODO: Use Box2DToPixel
+		movement.scl(xDir, yDir).scl(Entity.PIXEL_TO_BOX2D);
 
 		// Apply movement to foreground camera
 		camera.position.add(movement.x, movement.y, 0f);
