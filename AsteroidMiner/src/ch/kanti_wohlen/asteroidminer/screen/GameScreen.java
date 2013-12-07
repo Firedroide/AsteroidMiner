@@ -8,6 +8,7 @@ import ch.kanti_wohlen.asteroidminer.CollisionListener;
 import ch.kanti_wohlen.asteroidminer.LocalPlayer;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.Textures;
+import ch.kanti_wohlen.asteroidminer.animations.Animations;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.WorldBorder;
 import ch.kanti_wohlen.asteroidminer.spawner.AsteroidSpawner;
@@ -84,6 +85,7 @@ public class GameScreen {
 			if (localPlayer != null) {
 				Vector2 pos = localPlayer.getSpaceShip().getPhysicsBody().getPosition();
 				Gdx.app.log("SpaceShip", "Location: " + pos.toString());
+				Gdx.app.log("Entity count", String.valueOf(world.getBodyCount()));
 			}
 		}
 
@@ -91,6 +93,9 @@ public class GameScreen {
 		for (Player p : players) {
 			p.doInput();
 		}
+
+		// Tick animations
+		Animations.tickAll(delta);
 
 		// Spawn asteroids
 		asteroidSpawner.tick();
@@ -115,13 +120,17 @@ public class GameScreen {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+
+		// Render animations under entities
+		Animations.renderAll(batch);
+
+		// Render entities
 		while (i.hasNext()) {
 			Body body = i.next();
 			if (body == null) continue;
 			Entity e = (Entity) body.getUserData();
 
 			if (e.isRemoved()) {
-				Gdx.app.log("DEBUG", "Removed body " + body.getUserData().toString());
 				i.remove();
 				world.destroyBody(body);
 				body.setUserData(null);
@@ -131,6 +140,8 @@ public class GameScreen {
 				}
 			}
 		}
+
+		// Render world borders over all other objects
 		WorldBorder.renderAllBorders(batch, visibleRect);
 
 		batch.end();
