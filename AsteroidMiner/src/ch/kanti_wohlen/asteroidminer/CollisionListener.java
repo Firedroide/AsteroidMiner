@@ -73,7 +73,7 @@ public class CollisionListener implements ContactListener {
 		final float y = MathUtils.cos(laser.getPhysicsBody().getAngle());
 
 		final float mass = asteroid.getPhysicsBody().getMass();
-		final Vector2 force = new Vector2(x * 4f * mass, y * 4f * mass);
+		final Vector2 force = new Vector2(x * 20f * mass, y * 20f * mass);
 		TaskScheduler.INSTANCE.runTask(new ForceApplier(asteroid, force));
 
 		if (asteroid instanceof Damageable) {
