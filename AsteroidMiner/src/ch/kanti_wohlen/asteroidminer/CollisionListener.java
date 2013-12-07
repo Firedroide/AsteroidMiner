@@ -7,7 +7,6 @@ import ch.kanti_wohlen.asteroidminer.entities.Laser;
 import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 import ch.kanti_wohlen.asteroidminer.powerups.PowerUp;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -23,7 +22,7 @@ public class CollisionListener implements ContactListener {
 	@Override
 	public void beginContact(Contact contact) {
 		if (contact.getFixtureA() == null || contact.getFixtureB() == null) return;
-		Gdx.app.log("DEBUG", "Begin contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
+		//Gdx.app.log("DEBUG", "Begin contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
 
 		Entity e1 = (Entity) contact.getFixtureA().getBody().getUserData();
 		Entity e2 = (Entity) contact.getFixtureB().getBody().getUserData();
@@ -93,14 +92,14 @@ public class CollisionListener implements ContactListener {
 
 		e1.damage(dmg);
 		e2.damage(dmg);
-		Gdx.app.log("Collision", "Deformation energy: " + String.valueOf(eDeformation)
-				+ ", Resulting damage: " + String.valueOf(dmg));
+		//Gdx.app.log("Collision", "Deformation energy: " + String.valueOf(eDeformation)
+		//		+ ", Resulting damage: " + String.valueOf(dmg));
 	}
 
 	@Override
 	public void endContact(Contact contact) {
 		if (contact.getFixtureA() == null || contact.getFixtureB() == null) return;
-		Gdx.app.log("DEBUG", "End contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
+		//Gdx.app.log("DEBUG", "End contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
 
 	}
 
