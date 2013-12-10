@@ -20,7 +20,7 @@ import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 import ch.kanti_wohlen.asteroidminer.entities.bars.HealthBar;
 import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
-public class ExplosivAsteroid extends Entity implements Damageable {
+public class ExplosiveAsteroid extends Entity implements Damageable {
 
 	public static final int MAX_HEALTH = 10;
 	public static final float MIN_RADIUS = 0.5f;
@@ -32,11 +32,11 @@ public class ExplosivAsteroid extends Entity implements Damageable {
 	private float renderScale;
 	private int health;
 
-	public ExplosivAsteroid(World world, Vector2 location, float radius) {
+	public ExplosiveAsteroid(World world, Vector2 location, float radius) {
 		this(world, location, radius, null);
 	}
 
-	public ExplosivAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
+	public ExplosiveAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
 		super(world, createBodyDef(location, velocity), createCircle(radius));
 		healthBar = new HealthBar(MAX_HEALTH);
 		this.radius = radius;
