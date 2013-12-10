@@ -1,6 +1,5 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,8 +31,8 @@ public abstract class OverlayScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		// Draw overlay
-		overlay.setPosition(Gdx.graphics.getWidth() * -0.5f, Gdx.graphics.getHeight() * -0.5f);
-		overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		overlay.setPosition(-1f, -1f);
+		overlay.setSize(2f, 2f);
 		batch.setProjectionMatrix(IDENTITY_MATRIX);
 		batch.begin();
 		overlay.draw(batch);
