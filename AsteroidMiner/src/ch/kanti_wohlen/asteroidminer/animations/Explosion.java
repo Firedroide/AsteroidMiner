@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
@@ -22,24 +23,27 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Explosion implements Animation {
 
 	private static final ShapeRenderer renderer = new ShapeRenderer();
+	private static final float EXPLOSION_SCORE_MULTIPLIER = 0.2f;
 
 	private final World world;
 	private final Vector2 center;
 	private final float r;
 	private final int maxDmg;
 	private final boolean dmgPlayer;
+	private final Player player;
 	private final LinkedList<AbstractMap.SimpleImmutableEntry<Entity, Float>> entities;
 
 	private int currentRadius;
 	private boolean removed;
 
-	public Explosion(World theWorld, Vector2 explosionCenter, float radius, int maxDamage, boolean hurtPlayer) {
+	public Explosion(World theWorld, Vector2 explosionCenter, float radius, int maxDamage, boolean hurtPlayer, Player owner) {
 		world = theWorld;
 		center = explosionCenter;
 		r = radius;
 		maxDmg = maxDamage;
 		dmgPlayer = hurtPlayer;
 		currentRadius = 1;
+		player = owner;
 
 		entities = new LinkedList<AbstractMap.SimpleImmutableEntry<Entity, Float>>();
 		final Vector2 upperLeft = explosionCenter.cpy().sub(r, r);
@@ -97,7 +101,7 @@ public class Explosion implements Animation {
 		for (Map.Entry<Entity, Float> entry = entities.getFirst(); entry.getValue() < radiusMax; entry = entities.getFirst()) {
 			final int damage = (int) (maxDmg * Math.min(1f, 1.25f * (r - currentRadius) / r));
 			final Damageable damageable = (Damageable) entry.getKey();
-			damageable.damage(damage);
+			damageable.damage(damage, player, EXPLOSION_SCORE_MULTIPLIER);
 			entities.removeFirst();
 			if (entities.isEmpty()) break;
 		}

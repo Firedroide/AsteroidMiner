@@ -144,7 +144,7 @@ public class SpaceShip extends Entity implements Damageable {
 		laserDamage = newDamage;
 	}
 
-	public void damage(int damageAmount) {
+	public void damage(int damageAmount, Player player, float scoreMultiplier) {
 		if (shield >= damageAmount) {
 			setShield(shield - damageAmount);
 		} else {
@@ -195,5 +195,4 @@ public class SpaceShip extends Entity implements Damageable {
 		fixture.filter.categoryBits = 2;
 		return fixture;
 	}
-
 }

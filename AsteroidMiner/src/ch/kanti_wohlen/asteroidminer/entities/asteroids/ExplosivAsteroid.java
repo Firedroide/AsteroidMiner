@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
+import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
@@ -23,6 +25,7 @@ public class ExplosivAsteroid extends Entity implements Damageable {
 	public static final int MAX_HEALTH = 10;
 	public static final float MIN_RADIUS = 0.5f;
 	private static final float POWER_UP_SPAWN_CHANCE = 0.1f;
+	private static final int KILL_SCORE = 100;
 
 	private final HealthBar healthBar;
 	private float radius;
@@ -95,8 +98,11 @@ public class ExplosivAsteroid extends Entity implements Damageable {
 	}
 
 	@Override
-	public void damage(int damageAmount) {
+	public void damage(int damageAmount, Player player, float scoreMultiplier) {
 		setHealth(health - damageAmount);
+		if (health == 0 && player != null) {
+			player.addScore((int) (KILL_SCORE * scoreMultiplier));
+		}
 	}
 
 	@Override

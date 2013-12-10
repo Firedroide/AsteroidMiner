@@ -18,27 +18,33 @@ public class LocalPlayer implements Player {
 		input = new LocalInput(main);
 	}
 
+	@Override
 	public SpaceShip getSpaceShip() {
 		return ship;
 	}
 
+	@Override
 	public int getPlayerNumber() {
 		return id;
 	}
 
+	@Override
 	public int getScore() {
 		return score;
 	}
 
+	@Override
 	public void setScore(int newScore) {
 		if (newScore < 0) return;
 		score = newScore;
 	}
 
+	@Override
 	public void addScore(int difference) {
 		score += difference;
 	}
 
+	@Override
 	public void subtractScore(int difference) {
 		score -= difference;
 	}

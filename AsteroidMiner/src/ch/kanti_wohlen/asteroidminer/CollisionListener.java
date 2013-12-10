@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 public class CollisionListener implements ContactListener {
 
 	private static final float JOULES_PER_HEALTH = 2000f;
+	private static final float COLLSION_SCORE_MULTIPLIER = 0.5f;
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -43,7 +44,7 @@ public class CollisionListener implements ContactListener {
 			SpaceShip ship = (SpaceShip) e1;
 			switch (e2.getType()) {
 			case ASTEROID:
-				collisionDamage(ship, (Damageable) e2);
+				collisionDamage(ship, (Damageable) e2, ship.getPlayer());
 				break;
 			case POWER_UP:
 				PowerUp powerUp = (PowerUp) e2;
@@ -57,7 +58,7 @@ public class CollisionListener implements ContactListener {
 		case ASTEROID:
 			switch (e2.getType()) {
 			case ASTEROID:
-				collisionDamage((Damageable) e1, (Damageable) e2);
+				collisionDamage((Damageable) e1, (Damageable) e2, null);
 				break;
 			default:
 				break;
@@ -77,12 +78,12 @@ public class CollisionListener implements ContactListener {
 		TaskScheduler.INSTANCE.runTask(new ForceApplier(asteroid, force));
 
 		if (asteroid instanceof Damageable) {
-			((Damageable) asteroid).damage(laser.getDamage());
+			((Damageable) asteroid).damage(laser.getDamage(), laser.getShooter().getPlayer(), 1f);
 		}
 		laser.remove();
 	}
 
-	private void collisionDamage(Damageable e1, Damageable e2) {
+	private void collisionDamage(Damageable e1, Damageable e2, Player player) {
 		final float v = e1.getPhysicsBody().getLinearVelocity().sub(e2.getPhysicsBody().getLinearVelocity()).len2();
 		final float m1 = e1.getPhysicsBody().getMass();
 		final float m2 = e2.getPhysicsBody().getMass();
@@ -90,8 +91,8 @@ public class CollisionListener implements ContactListener {
 		final float eDeformation = (m1 * m2 * v) / (2 * (m1 + m2));
 		final int dmg = (int) (eDeformation / JOULES_PER_HEALTH);
 
-		e1.damage(dmg);
-		e2.damage(dmg);
+		e1.damage(dmg, player, COLLSION_SCORE_MULTIPLIER);
+		e2.damage(dmg, player, COLLSION_SCORE_MULTIPLIER);
 		//Gdx.app.log("Collision", "Deformation energy: " + String.valueOf(eDeformation)
 		//		+ ", Resulting damage: " + String.valueOf(dmg));
 	}

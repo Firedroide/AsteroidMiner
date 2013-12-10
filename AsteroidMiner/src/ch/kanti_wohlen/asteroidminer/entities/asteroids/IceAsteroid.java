@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.entities.asteroids;
 
+import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
@@ -24,6 +25,7 @@ public class IceAsteroid extends Entity implements Damageable {
 	public static final int HEALTH_PER_SIZE = 15;
 	public static final float MIN_RADIUS = 0.5f;
 	private static final float POWER_UP_SPAWN_CHANCE = 0.1f;
+	private static final int KILL_SCORE = 300;
 
 	private final HealthBar healthBar;
 	private final float firstRadius;
@@ -105,8 +107,12 @@ public class IceAsteroid extends Entity implements Damageable {
 		setHealth(health + healingAmoung);
 	}
 
-	public void damage(int damageAmount) {
+	@Override
+	public void damage(int damageAmount, Player player, float scoreMultiplier) {
 		setHealth(health - damageAmount);
+		if (health == 0 && player != null) {
+			player.addScore((int) (KILL_SCORE * scoreMultiplier));
+		}
 	}
 
 	public void kill() {

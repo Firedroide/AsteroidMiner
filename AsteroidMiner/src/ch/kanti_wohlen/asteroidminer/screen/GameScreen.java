@@ -15,8 +15,11 @@ import ch.kanti_wohlen.asteroidminer.spawner.AsteroidSpawner;
 import ch.kanti_wohlen.asteroidminer.spawner.IdleSpawner;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -34,6 +37,7 @@ public class GameScreen {
 	private static final int positionIterations = 3;
 
 	private final AsteroidMiner main;
+	private final BitmapFont font;
 	private final OrthographicCamera camera;
 	private final World world;
 	private final SpriteBatch batch;
@@ -48,6 +52,7 @@ public class GameScreen {
 
 	public GameScreen(AsteroidMiner asteroidMiner) {
 		main = asteroidMiner;
+		font = new BitmapFont(Gdx.files.internal("data/default.fnt"));
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false);
@@ -64,6 +69,7 @@ public class GameScreen {
 	}
 
 	public void startGame() {
+//		setAsteroidSpawner(new TimeAttackAsteroidSpawner(world));
 		localPlayer = new LocalPlayer(main, world);
 		players.add(localPlayer);
 		Gdx.input.setInputProcessor(localPlayer.getInput());
@@ -143,8 +149,10 @@ public class GameScreen {
 
 		// Render world borders over all other objects
 		WorldBorder.renderAllBorders(batch, visibleRect);
-
 		batch.end();
+
+		// Render score and remaining time as an overlay
+		renderOverlays();
 	}
 
 	private void renderBackground() {
@@ -177,6 +185,21 @@ public class GameScreen {
 		batch.draw(Textures.BACKGROUND.getTexture(), fx, fy, width, height, 0f, 0f, u2, v2);
 		batch.end();
 		batch.enableBlending();
+	}
+
+	private void renderOverlays() {
+		if (localPlayer == null) return;
+
+		final Matrix4 projection = new Matrix4().setToOrtho2D(0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		final String score = String.valueOf(localPlayer.getScore());
+		final float xDist = font.getBounds(score).width;
+
+		batch.setProjectionMatrix(projection);
+		batch.begin();
+		font.setColor(Color.WHITE);
+
+		font.draw(batch, score, Gdx.graphics.getWidth() - 10 - xDist, Gdx.graphics.getHeight() - 10);
+		batch.end();
 	}
 
 	private void moveCamera() {
