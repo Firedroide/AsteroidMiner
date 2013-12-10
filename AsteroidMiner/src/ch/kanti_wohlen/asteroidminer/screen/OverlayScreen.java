@@ -13,6 +13,8 @@ import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 
 public abstract class OverlayScreen extends AbstractScreen {
 
+	protected static final Matrix4 IDENTITY_MATRIX = new Matrix4();
+
 	protected final AsteroidMiner game;
 	protected final SpriteBatch batch;
 	protected final Sprite overlay;
@@ -32,7 +34,7 @@ public abstract class OverlayScreen extends AbstractScreen {
 		// Draw overlay
 		overlay.setPosition(Gdx.graphics.getWidth() * -0.5f, Gdx.graphics.getHeight() * -0.5f);
 		overlay.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.setProjectionMatrix(new Matrix4());
+		batch.setProjectionMatrix(IDENTITY_MATRIX);
 		batch.begin();
 		overlay.draw(batch);
 		batch.end();
