@@ -36,4 +36,11 @@ public final class Animations {
 			}
 		}
 	}
+
+	public static void disposeAll() {
+		for (Animation a : animations) {
+			a.dispose();
+		}
+		animations.clear();
+	}
 }

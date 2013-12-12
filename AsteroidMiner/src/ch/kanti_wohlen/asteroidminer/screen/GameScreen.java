@@ -264,6 +264,7 @@ public class GameScreen {
 		for (Player player : players) {
 			player.dispose();
 		}
+		Animations.disposeAll();
 		world.dispose();
 	}
 }
