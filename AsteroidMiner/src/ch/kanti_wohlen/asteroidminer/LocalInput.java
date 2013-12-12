@@ -1,5 +1,7 @@
 package ch.kanti_wohlen.asteroidminer;
 
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
 import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
 import com.badlogic.gdx.Gdx;
@@ -10,6 +12,8 @@ import com.badlogic.gdx.math.MathUtils;
 public class LocalInput implements InputProcessor {
 
 	private final AsteroidMiner main;
+	private float thrusterVolume;
+	private boolean thrusterPlaying;
 
 	public LocalInput(AsteroidMiner asteroidMiner) {
 		main = asteroidMiner;
@@ -25,11 +29,21 @@ public class LocalInput implements InputProcessor {
 		factorSpeed *= ship.getPhysicsBody().getMass();
 		factorTurn *= ship.getPhysicsBody().getMass() * ship.getPhysicsBody().getMass();
 
+		thrusterVolume *= 0.95f;
 		if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
 			float x = -MathUtils.sin(ship.getPhysicsBody().getAngle()) * factorSpeed;
 			float y = MathUtils.cos(ship.getPhysicsBody().getAngle()) * factorSpeed;
 			ship.getPhysicsBody().applyForceToCenter(x, y, true);
+			thrusterVolume = Math.min(thrusterVolume + 0.025f, 0.6f);
 		}
+		if (thrusterVolume > 0f && !thrusterPlaying) {
+			SoundPlayer.playSound(SoundEffect.THRUSTER, thrusterVolume, 1f, 0f, true);
+			thrusterPlaying = true;
+		} else if (thrusterVolume < 0.05f && thrusterPlaying) {
+			SoundPlayer.stopSound(SoundEffect.THRUSTER);
+			thrusterPlaying = false;
+		}
+		SoundEffect.THRUSTER.setVolume(thrusterVolume);
 
 		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
 			ship.getPhysicsBody().applyAngularImpulse(factorTurn, true);
@@ -47,8 +61,8 @@ public class LocalInput implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		if (keycode == Keys.ESCAPE) {
 			if (main.getScreen() == null) {
-				main.setScreen(main.getScreens().PAUSE_SCREEN);
-			} else if (main.getScreen() == main.getScreens().PAUSE_SCREEN) {
+				main.setScreen(main.getPauseScreen());
+			} else if (main.getScreen() == main.getPauseScreen()) {
 				main.setScreen(null);
 			}
 		}
