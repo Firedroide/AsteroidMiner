@@ -15,8 +15,8 @@ public class LocalInput implements InputProcessor {
 	private float thrusterVolume;
 	private boolean thrusterPlaying;
 
-	public LocalInput(AsteroidMiner asteroidMiner) {
-		main = asteroidMiner;
+	public LocalInput() {
+		main = AsteroidMiner.INSTANCE;
 	}
 
 	public void onGameRunning(LocalPlayer player) {

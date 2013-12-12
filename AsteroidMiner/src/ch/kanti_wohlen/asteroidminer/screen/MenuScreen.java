@@ -1,7 +1,5 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
-import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,9 +16,7 @@ public class MenuScreen extends OverlayScreen {
 	private final Stage stage;
 	private final Table table;
 
-	public MenuScreen(AsteroidMiner asteroidMiner) {
-		super(asteroidMiner);
-
+	public MenuScreen() {
 		Skin skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
 		skin.load(Gdx.files.internal("data/uiskin.json"));

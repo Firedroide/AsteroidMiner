@@ -11,11 +11,11 @@ public class LocalPlayer implements Player {
 	private final int id;
 	private int score;
 
-	public LocalPlayer(AsteroidMiner main, World w) {
+	public LocalPlayer(World w) {
 		ship = new SpaceShip(w, this);
 		id = 0;
 		score = 0;
-		input = new LocalInput(main);
+		input = new LocalInput();
 	}
 
 	@Override

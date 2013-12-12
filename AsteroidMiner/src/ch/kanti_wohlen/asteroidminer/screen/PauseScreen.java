@@ -8,16 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
-
 public class PauseScreen extends OverlayScreen {
 
 	private final Stage stage;
 	private final Table table;
 
-	public PauseScreen(AsteroidMiner asteroidMiner) {
-		super(asteroidMiner);
-
+	public PauseScreen() {
 		Skin skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
 		skin.load(Gdx.files.internal("data/uiskin.json"));

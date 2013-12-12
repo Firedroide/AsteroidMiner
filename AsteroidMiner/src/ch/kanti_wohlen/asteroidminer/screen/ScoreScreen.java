@@ -9,16 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
-
 public class ScoreScreen extends OverlayScreen {
 
 	private final Stage stage;
 	private Table table;
 
-	public ScoreScreen(AsteroidMiner asteroidMiner) {
-		super(asteroidMiner);
-
+	public ScoreScreen() {
 		stage = new Stage(width, height, true);
 	}
 

@@ -36,7 +36,6 @@ public class GameScreen {
 	private static final int velocityIterations = 8;
 	private static final int positionIterations = 3;
 
-	private final AsteroidMiner main;
 	private final BitmapFont font;
 	private final OrthographicCamera camera;
 	private final World world;
@@ -50,8 +49,7 @@ public class GameScreen {
 	// Temp
 	private int counter = 0;
 
-	public GameScreen(AsteroidMiner asteroidMiner) {
-		main = asteroidMiner;
+	public GameScreen() {
 		font = new BitmapFont(Gdx.files.internal("data/default.fnt"));
 
 		camera = new OrthographicCamera();
@@ -62,7 +60,7 @@ public class GameScreen {
 		world = new World(new Vector2(0, 0), true);
 		CollisionListener cl = new CollisionListener();
 		world.setContactListener(cl);
-		batch = main.getSpriteBatch();
+		batch = AsteroidMiner.INSTANCE.getSpriteBatch();
 
 		WorldBorder.addBorders(world);
 		setAsteroidSpawner(new IdleSpawner(world));
@@ -70,7 +68,7 @@ public class GameScreen {
 
 	public void startGame() {
 //		setAsteroidSpawner(new TimeAttackAsteroidSpawner(world));
-		localPlayer = new LocalPlayer(main, world);
+		localPlayer = new LocalPlayer(world);
 		players.add(localPlayer);
 		Gdx.input.setInputProcessor(localPlayer.getInput());
 

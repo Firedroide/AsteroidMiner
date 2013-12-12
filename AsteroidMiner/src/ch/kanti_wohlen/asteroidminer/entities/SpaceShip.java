@@ -100,6 +100,11 @@ public class SpaceShip extends Entity implements Damageable {
 		if (newHealth != health) {
 			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
 			healthBar.resetAlpha();
+
+			if (health == 0) {
+				// Game over...
+				
+			}
 		}
 	}
 

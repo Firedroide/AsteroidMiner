@@ -5,7 +5,6 @@ import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 import ch.kanti_wohlen.asteroidminer.screen.MenuScreen;
 import ch.kanti_wohlen.asteroidminer.screen.PauseScreen;
-import ch.kanti_wohlen.asteroidminer.screen.ScoreScreen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AsteroidMiner extends Game {
 
+	public static AsteroidMiner INSTANCE;
 	private final GameLauncher launcher;
 
 	private GameScreen gameScreen;
@@ -33,6 +33,7 @@ public class AsteroidMiner extends Game {
 	 */
 	public AsteroidMiner(GameLauncher gameLauncher) {
 		launcher = gameLauncher;
+		INSTANCE = this;
 	}
 
 	@Override
@@ -45,9 +46,9 @@ public class AsteroidMiner extends Game {
 		batch = new SpriteBatch();
 		scheduler = TaskScheduler.INSTANCE;
 
-		gameScreen = new GameScreen(this);
-		menuScreen = new MenuScreen(this);
-		pauseScreen = new PauseScreen(this);
+		gameScreen = new GameScreen();
+		menuScreen = new MenuScreen();
+		pauseScreen = new PauseScreen();
 		setScreen(menuScreen);
 		MusicPlayer.start();
 
