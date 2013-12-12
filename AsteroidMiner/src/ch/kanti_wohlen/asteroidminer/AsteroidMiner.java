@@ -3,7 +3,9 @@ package ch.kanti_wohlen.asteroidminer;
 import ch.kanti_wohlen.asteroidminer.audio.MusicPlayer;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
-import ch.kanti_wohlen.asteroidminer.screen.Screens;
+import ch.kanti_wohlen.asteroidminer.screen.MenuScreen;
+import ch.kanti_wohlen.asteroidminer.screen.PauseScreen;
+import ch.kanti_wohlen.asteroidminer.screen.ScoreScreen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -15,11 +17,13 @@ public class AsteroidMiner extends Game {
 
 	private final GameLauncher launcher;
 
-	private GameScreen game;
+	private GameScreen gameScreen;
+	private MenuScreen menuScreen;
+	private PauseScreen pauseScreen;
+
 	private FPSLogger fpsLogger;
 	private SpriteBatch batch;
 	private TaskScheduler scheduler;
-	private Screens screens;
 
 	/**
 	 * Constructs the main game class.
@@ -41,9 +45,10 @@ public class AsteroidMiner extends Game {
 		batch = new SpriteBatch();
 		scheduler = TaskScheduler.INSTANCE;
 
-		game = new GameScreen(this);
-		screens = new Screens(this);
-		setScreen(screens.MENU_SCREEN);
+		gameScreen = new GameScreen(this);
+		menuScreen = new MenuScreen(this);
+		pauseScreen = new PauseScreen(this);
+		setScreen(menuScreen);
 		MusicPlayer.start();
 
 		Gdx.graphics.setVSync(false);
@@ -53,9 +58,9 @@ public class AsteroidMiner extends Game {
 	public void dispose() {
 		scheduler.dispose();
 
-		game.dispose();
-		screens.MENU_SCREEN.dispose();
-		screens.PAUSE_SCREEN.dispose();
+		gameScreen.dispose();
+		menuScreen.dispose();
+		pauseScreen.dispose();
 		batch.dispose();
 
 		SoundPlayer.dispose();
@@ -70,14 +75,14 @@ public class AsteroidMiner extends Game {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 
 		// Render the game.
-		game.render();
+		gameScreen.render();
 
 		// Render the currently active screen, if any.
 		super.render();
 
 		// If the game is not paused, let the game tick.
-		if (getScreen() != screens.PAUSE_SCREEN) {
-			game.tick(Gdx.graphics.getDeltaTime());
+		if (getScreen() != pauseScreen) {
+			gameScreen.tick(Gdx.graphics.getDeltaTime());
 
 			// Execute scheduled tasks
 			scheduler.onGameTick();
@@ -97,11 +102,15 @@ public class AsteroidMiner extends Game {
 		return batch;
 	}
 
-	public Screens getScreens() {
-		return screens;
+	public GameScreen getGameScreen() {
+		return gameScreen;
 	}
 
-	public GameScreen getGame() {
-		return game;
+	public MenuScreen getMenuScreen() {
+		return menuScreen;
+	}
+
+	public PauseScreen getPauseScreen() {
+		return pauseScreen;
 	}
 }

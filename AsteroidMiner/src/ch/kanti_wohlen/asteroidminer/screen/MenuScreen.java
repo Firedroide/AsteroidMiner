@@ -40,7 +40,7 @@ public class MenuScreen extends OverlayScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				Gdx.app.log("DEBUG:", "Launched single player session.");
-				game.getGame().startGame();
+				game.getGameScreen().startGame();
 				game.setScreen(null);
 				return false;
 			}
@@ -48,7 +48,7 @@ public class MenuScreen extends OverlayScreen {
 		table.add(singlePlayer).row();
 
 		// TODO: Debug...
-		table.debug();
+		//table.debug();
 	}
 
 	@Override
