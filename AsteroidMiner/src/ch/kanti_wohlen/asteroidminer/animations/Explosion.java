@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
@@ -73,7 +74,7 @@ public class Explosion implements Animation {
 		});
 
 		center.scl(Entity.BOX2D_TO_PIXEL); // Scale center for rendering.
-		Animations.addAnimation(this);
+		AsteroidMiner.INSTANCE.getGameScreen().getAnimations().addAnimation(this);
 	}
 
 	@Override

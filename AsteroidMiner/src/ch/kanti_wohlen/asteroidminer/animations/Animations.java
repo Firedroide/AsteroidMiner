@@ -8,21 +8,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public final class Animations {
 
-	private static final List<Animation> animations = new LinkedList<Animation>();
+	private final List<Animation> animations;
 
-	private Animations() {}
+	public Animations() {
+		animations = new LinkedList<Animation>();
+	}
 
-	static void addAnimation(Animation a) {
+	void addAnimation(Animation a) {
 		animations.add(a);
 	}
 
-	public static void renderAll(SpriteBatch batch) {
+	public void renderAll(SpriteBatch batch) {
 		for (Animation a : animations) {
 			a.render(batch);
 		}
 	}
 
-	public static void tickAll(float deltaTime) {
+	public void tickAll(float deltaTime) {
 		for (Animation a : animations) {
 			a.tick(deltaTime);
 		}
@@ -37,7 +39,7 @@ public final class Animations {
 		}
 	}
 
-	public static void disposeAll() {
+	public void disposeAll() {
 		for (Animation a : animations) {
 			a.dispose();
 		}

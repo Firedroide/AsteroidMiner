@@ -39,6 +39,7 @@ public class GameScreen {
 	private final BitmapFont font;
 	private final OrthographicCamera camera;
 	private final World world;
+	private final Animations animations;
 	private final SpriteBatch batch;
 	private final List<Player> players;
 
@@ -57,6 +58,7 @@ public class GameScreen {
 		camera.position.set(0f, 0f, 0f);
 
 		players = new ArrayList<Player>();
+		animations = new Animations();
 		world = new World(new Vector2(0, 0), true);
 		CollisionListener cl = new CollisionListener();
 		world.setContactListener(cl);
@@ -99,7 +101,7 @@ public class GameScreen {
 		}
 
 		// Tick animations
-		Animations.tickAll(delta);
+		animations.tickAll(delta);
 
 		// Spawn asteroids
 		asteroidSpawner.tick();
@@ -126,7 +128,7 @@ public class GameScreen {
 		batch.begin();
 
 		// Render animations under entities
-		Animations.renderAll(batch);
+		animations.renderAll(batch);
 
 		// Render entities
 		while (i.hasNext()) {
@@ -258,11 +260,15 @@ public class GameScreen {
 		return localPlayer;
 	}
 
+	public Animations getAnimations() {
+		return animations;
+	}
+
 	public void dispose() {
 		for (Player player : players) {
 			player.dispose();
 		}
-		Animations.disposeAll();
+		animations.disposeAll();
 		world.dispose();
 	}
 }
