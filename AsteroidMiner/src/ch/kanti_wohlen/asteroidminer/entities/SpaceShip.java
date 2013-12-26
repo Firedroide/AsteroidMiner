@@ -60,7 +60,7 @@ public class SpaceShip extends Entity implements Damageable {
 	public void render(SpriteBatch batch) {
 		Sprite s = Textures.SPACESHIP;
 		positionSprite(s);
-		s.draw(batch);
+		s.draw(batch, alpha);
 
 		final Vector2 barLoc = new Vector2(s.getX() - s.getWidth() * 0.05f, s.getY() + s.getHeight() * 1.15f);
 		if (shield > 0) barLoc.y += Textures.HEALTH_HIGH.getRegionHeight() / 2f;

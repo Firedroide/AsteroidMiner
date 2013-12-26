@@ -40,7 +40,7 @@ public class Laser extends Entity {
 	public void render(SpriteBatch batch) {
 		Sprite s = Textures.LASER;
 		positionSprite(s);
-		s.draw(batch);
+		s.draw(batch, alpha);
 	}
 
 	@Override

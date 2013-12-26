@@ -1,5 +1,8 @@
 package ch.kanti_wohlen.asteroidminer.entities;
 
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
+import ch.kanti_wohlen.asteroidminer.TaskScheduler.Task;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,9 +21,12 @@ public abstract class Entity {
 
 	protected final Body body;
 	protected final Fixture fixture;
+	protected float alpha;
 	private boolean removed;
+	private FadeOutHelper fadeOut;
 
 	public Entity(World world, BodyDef bodyDef, FixtureDef fixtureDef) {
+		alpha = 1f;
 		body = world.createBody(bodyDef);
 		body.setUserData(this);
 		if (fixtureDef != null) {
@@ -49,6 +55,15 @@ public abstract class Entity {
 		return removed;
 	}
 
+	public void fadeOut(float fadeOutTime) {
+		fadeOut(0f, fadeOutTime);
+	}
+
+	public void fadeOut(float startDelay, float fadeOutTime) {
+		if (fadeOut != null) return; // If already fading out, ignore
+		fadeOut = new FadeOutHelper(startDelay, fadeOutTime);
+	}
+
 	protected void positionSprite(Sprite sprite) {
 		Vector2 loc = new Vector2(body.getPosition());
 		loc.scl(Entity.BOX2D_TO_PIXEL);
@@ -62,4 +77,29 @@ public abstract class Entity {
 	public abstract EntityType getType();
 
 	public abstract Rectangle getBoundingBox();
+
+	private class FadeOutHelper implements Runnable {
+
+		private final float time;
+		private final Task task;
+		private float currentTime;
+
+		private FadeOutHelper(float startDelay, float fadeOutTime) {
+			time = fadeOutTime;
+			task = TaskScheduler.INSTANCE.runTaskRepeated(this, startDelay, 0, time);
+		}
+
+		@Override
+		public void run() {
+			if (isRemoved()) {
+				task.cancel();
+				return;
+			}
+			currentTime += 1 * TaskScheduler.TICK_TIME;
+			alpha = 1f - currentTime / time;
+			if (time - currentTime < TaskScheduler.TICK_TIME) {
+				remove();
+			}
+		}
+	}
 }

@@ -52,7 +52,7 @@ public class MetalAsteroid extends Entity implements Damageable {
 		Sprite s = Textures.METALASTEROID;
 		positionSprite(s);
 		s.setScale(renderScale);
-		s.draw(batch);
+		s.draw(batch, alpha);
 
 		final float healthBarX = s.getX() + s.getWidth() * 0.025f;
 		final float healthBarY = s.getY() + s.getHeight() * 0.6f + currentRadius * BOX2D_TO_PIXEL;

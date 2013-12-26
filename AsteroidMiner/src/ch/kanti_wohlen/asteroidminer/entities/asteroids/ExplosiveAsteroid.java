@@ -49,7 +49,7 @@ public class ExplosiveAsteroid extends Entity implements Damageable {
 		Sprite s = Textures.ASTEROID;
 		positionSprite(s);
 		s.setScale(renderScale);
-		s.draw(batch);
+		s.draw(batch, alpha);
 	}
 
 	@Override
