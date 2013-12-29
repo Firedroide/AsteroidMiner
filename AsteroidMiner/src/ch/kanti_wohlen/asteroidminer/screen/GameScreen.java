@@ -70,7 +70,7 @@ public class GameScreen {
 	}
 
 	public void startGame() {
-		setAsteroidSpawner(new TimeAttackAsteroidSpawner(world));
+		setAsteroidSpawner(new TimeAttackAsteroidSpawner(world, 120f));
 		localPlayer = new LocalPlayer(world);
 		players.add(localPlayer);
 
