@@ -1,13 +1,17 @@
 package ch.kanti_wohlen.asteroidminer.spawner;
 
+import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.WorldBorder.BorderSide;
 import ch.kanti_wohlen.asteroidminer.entities.asteroids.*;
+import ch.kanti_wohlen.asteroidminer.screen.MenuScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 public class IdleSpawner extends AsteroidSpawner {
 
@@ -29,6 +33,20 @@ public class IdleSpawner extends AsteroidSpawner {
 	public void tick() {
 		if (MathUtils.random() > 0.025f) return;
 		spawn();
+	}
+
+	@Override
+	public void stop() {
+		Array<Body> bodies = new Array<Body>(world.getBodyCount());
+		world.getBodies(bodies);
+		for (Body body : bodies) {
+			Entity e = (Entity) body.getUserData();
+			if (e instanceof Damageable) {
+				e.fadeOut(MenuScreen.FADING_OUT_TIME);
+			} else {
+				e.remove();
+			}
+		}
 	}
 
 	private void spawn() {

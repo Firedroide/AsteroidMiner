@@ -13,6 +13,7 @@ import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.WorldBorder;
 import ch.kanti_wohlen.asteroidminer.spawner.AsteroidSpawner;
 import ch.kanti_wohlen.asteroidminer.spawner.IdleSpawner;
+import ch.kanti_wohlen.asteroidminer.spawner.TimeAttackAsteroidSpawner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -64,15 +65,14 @@ public class GameScreen {
 		world.setContactListener(cl);
 		batch = AsteroidMiner.INSTANCE.getSpriteBatch();
 
-		WorldBorder.addBorders(world);
 		setAsteroidSpawner(new IdleSpawner(world));
 	}
 
 	public void startGame() {
-//		setAsteroidSpawner(new TimeAttackAsteroidSpawner(world));
+		setAsteroidSpawner(new TimeAttackAsteroidSpawner(world));
 		localPlayer = new LocalPlayer(world);
 		players.add(localPlayer);
-		Gdx.input.setInputProcessor(localPlayer.getInput());
+		Gdx.input.setInputProcessor(localPlayer.getInput()); // TEMP!
 
 		running = true;
 	}
@@ -91,8 +91,8 @@ public class GameScreen {
 			if (localPlayer != null) {
 				Vector2 pos = localPlayer.getSpaceShip().getPhysicsBody().getPosition();
 				Gdx.app.log("SpaceShip", "Location: " + pos.toString());
-				Gdx.app.log("Entity count", String.valueOf(world.getBodyCount()));
 			}
+			Gdx.app.log("Entity count", String.valueOf(world.getBodyCount()));
 		}
 
 		// Process input
