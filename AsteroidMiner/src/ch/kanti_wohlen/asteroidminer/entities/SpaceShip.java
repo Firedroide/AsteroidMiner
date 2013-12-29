@@ -26,6 +26,7 @@ public class SpaceShip extends Entity implements Damageable {
 	public static final int MAX_SHIELD = 250;
 	public static final float DEFAULT_FIRING_DELAY = 0.3f;
 	public static final float DEFAULT_SPEED = 1f;
+	public static final float LINEAR_DAMPING = 2.5f;
 
 	private final Player player;
 	private final HealthBar healthBar;
@@ -198,7 +199,7 @@ public class SpaceShip extends Entity implements Damageable {
 		bd.allowSleep = false;
 		bd.type = BodyType.DynamicBody;
 		bd.angularDamping = 10f;
-		bd.linearDamping = 2.5f;
+		bd.linearDamping = LINEAR_DAMPING;
 		bd.position.set(2f, 2f);
 		bd.gravityScale = 5f;
 

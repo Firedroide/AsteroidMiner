@@ -17,7 +17,7 @@ public class LocalPlayer implements Player {
 	public LocalPlayer(World w) {
 		final float yDist = 0.6f * Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D;
 		final Vector2 loc = new Vector2(0f, -yDist);
-		final Vector2 vel = new Vector2(0f, 2.5f * yDist);
+		final Vector2 vel = new Vector2(0f, SpaceShip.LINEAR_DAMPING * yDist);
 		ship = new SpaceShip(w, this, loc, vel);
 		id = 0;
 		score = 0;
