@@ -1,7 +1,10 @@
 package ch.kanti_wohlen.asteroidminer;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
+import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 
 public class LocalPlayer implements Player {
@@ -12,7 +15,10 @@ public class LocalPlayer implements Player {
 	private int score;
 
 	public LocalPlayer(World w) {
-		ship = new SpaceShip(w, this);
+		final float yDist = 0.6f * Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D;
+		final Vector2 loc = new Vector2(0f, -yDist);
+		final Vector2 vel = new Vector2(0f, 2.5f * yDist);
+		ship = new SpaceShip(w, this, loc, vel);
 		id = 0;
 		score = 0;
 		input = new LocalInput();

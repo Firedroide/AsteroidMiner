@@ -51,6 +51,8 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 						batch.setColor(Color.WHITE); // Some child of the table seems not to reset the batch's color.
 					}
 				});
+
+				Gdx.input.setInputProcessor(null);
 				game.getGameScreen().startGame();
 				return false;
 			}

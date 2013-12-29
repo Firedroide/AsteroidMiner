@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.entities;
 
+import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
@@ -39,7 +40,11 @@ public class SpaceShip extends Entity implements Damageable {
 	private boolean canShoot;
 
 	public SpaceShip(World world, Player owningPlayer) {
-		super(world, createBodyDef(), createFixture());
+		this(world, owningPlayer, null, null);
+	}
+
+	public SpaceShip(World world, Player owningPlayer, Vector2 position, Vector2 velocity) {
+		super(world, createBodyDef(position, velocity), createFixture());
 		player = owningPlayer;
 		healthBar = new HealthBar(MAX_HEALTH);
 		shieldBar = new ShieldBar(MAX_SHIELD);
@@ -102,8 +107,7 @@ public class SpaceShip extends Entity implements Damageable {
 			healthBar.resetAlpha();
 
 			if (health == 0) {
-				// Game over...
-				
+				AsteroidMiner.INSTANCE.getGameScreen().stopGame();
 			}
 		}
 	}
@@ -178,7 +182,7 @@ public class SpaceShip extends Entity implements Damageable {
 		}
 	}
 
-	private static BodyDef createBodyDef() {
+	private static BodyDef createBodyDef(Vector2 position, Vector2 velocity) {
 		BodyDef bd = new BodyDef();
 		bd.allowSleep = false;
 		bd.type = BodyType.DynamicBody;
@@ -186,6 +190,9 @@ public class SpaceShip extends Entity implements Damageable {
 		bd.linearDamping = 2.5f;
 		bd.position.set(2f, 2f);
 		bd.gravityScale = 5f;
+
+		if (position != null) bd.position.set(position);
+		if (velocity != null) bd.linearVelocity.set(velocity);
 
 		return bd;
 	}

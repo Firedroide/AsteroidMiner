@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -43,6 +44,12 @@ public class IdleSpawner extends AsteroidSpawner {
 			Entity e = (Entity) body.getUserData();
 			if (e instanceof Damageable) {
 				e.fadeOut(MenuScreen.FADING_OUT_TIME);
+				for (Fixture f : e.getPhysicsBody().getFixtureList()) {
+					f.setDensity(0f);
+					f.getFilterData().maskBits = 0;
+				}
+				e.getPhysicsBody().resetMassData();
+				e.getPhysicsBody().setGravityScale(0f);
 			} else {
 				e.remove();
 			}

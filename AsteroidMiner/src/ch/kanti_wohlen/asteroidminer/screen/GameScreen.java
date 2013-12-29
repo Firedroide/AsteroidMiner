@@ -7,6 +7,7 @@ import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.CollisionListener;
 import ch.kanti_wohlen.asteroidminer.LocalPlayer;
 import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.animations.Animations;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
@@ -72,9 +73,15 @@ public class GameScreen {
 		setAsteroidSpawner(new TimeAttackAsteroidSpawner(world));
 		localPlayer = new LocalPlayer(world);
 		players.add(localPlayer);
-		Gdx.input.setInputProcessor(localPlayer.getInput()); // TEMP!
 
-		running = true;
+		TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
+
+			@Override
+			public void run() {
+				Gdx.input.setInputProcessor(localPlayer.getInput());
+				running = true;
+			}
+		}, 1f);
 	}
 
 	public void stopGame() {
