@@ -32,6 +32,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 	private final float renderScale;
 	private final int maxHealth;
 
+	private boolean invulnerable;
 	private int health;
 
 	public StoneAsteroid(World world, Vector2 location, float radius) {
@@ -82,6 +83,8 @@ public class StoneAsteroid extends Entity implements Damageable {
 	}
 
 	public void setHealth(int newHealth) {
+		if (invulnerable) return;
+
 		if (newHealth != health) {
 			health = MathUtils.clamp(newHealth, 0, maxHealth);
 			healthBar.resetAlpha();
@@ -175,8 +178,8 @@ public class StoneAsteroid extends Entity implements Damageable {
 			Vector2 loc2 = position.cpy().add(MathUtils.cos(rot0 + rot2) * r2 * 1.1f,
 					MathUtils.sin(rot0 + rot2) * r2 * 1.1f);
 
-			StoneAsteroid a1 = new StoneAsteroid(w, loc1, r1, velocity);
-			StoneAsteroid a2 = new StoneAsteroid(w, loc2, r2, velocity);
+			final StoneAsteroid a1 = new StoneAsteroid(w, loc1, r1, velocity);
+			final StoneAsteroid a2 = new StoneAsteroid(w, loc2, r2, velocity);
 
 			final float mass1 = a1.getPhysicsBody().getMass();
 			final float mass2 = a2.getPhysicsBody().getMass();
@@ -186,6 +189,17 @@ public class StoneAsteroid extends Entity implements Damageable {
 
 			a1.getPhysicsBody().applyForceToCenter(i1, true);
 			a2.getPhysicsBody().applyForceToCenter(i2, true);
+
+			a1.invulnerable = true;
+			a2.invulnerable = true;
+			TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					a1.invulnerable = false;
+					a2.invulnerable = false;
+				}
+			}, 0.2f);
 		}
 	}
 }
