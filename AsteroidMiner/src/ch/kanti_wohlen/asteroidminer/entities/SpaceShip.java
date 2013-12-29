@@ -38,6 +38,7 @@ public class SpaceShip extends Entity implements Damageable {
 	private float firingDelay;
 	private float speed;
 	private boolean canShoot;
+	private boolean invulnerable;
 
 	public SpaceShip(World world, Player owningPlayer) {
 		this(world, owningPlayer, null, null);
@@ -55,6 +56,14 @@ public class SpaceShip extends Entity implements Damageable {
 		speed = DEFAULT_SPEED;
 		laserDamage = Laser.DEFAULT_DAMAGE;
 		canShoot = true;
+		invulnerable = true;
+		TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
+
+			@Override
+			public void run() {
+				invulnerable = false;
+			}
+		}, 2);
 
 		final float width = Textures.SPACESHIP.getWidth() * PIXEL_TO_BOX2D;
 		final float height = Textures.SPACESHIP.getHeight() * PIXEL_TO_BOX2D;
@@ -102,6 +111,8 @@ public class SpaceShip extends Entity implements Damageable {
 	}
 
 	public void setHealth(int newHealth) {
+		if (invulnerable) return;
+
 		if (newHealth != health) {
 			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
 			healthBar.resetAlpha();
@@ -201,8 +212,8 @@ public class SpaceShip extends Entity implements Damageable {
 		final FixtureDef fixture = new FixtureDef();
 		fixture.density = 1f;
 		final PolygonShape ps = new PolygonShape();
-		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D,
-				Textures.SPACESHIP.getHeight() / 2f * PIXEL_TO_BOX2D);
+		ps.setAsBox(Textures.SPACESHIP.getWidth() / 2f * PIXEL_TO_BOX2D, Textures.SPACESHIP.getHeight() / 2f
+				* PIXEL_TO_BOX2D);
 		fixture.shape = ps;
 		fixture.filter.categoryBits = 2;
 		return fixture;
