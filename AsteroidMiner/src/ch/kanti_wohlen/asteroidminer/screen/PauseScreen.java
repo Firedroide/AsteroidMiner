@@ -26,9 +26,6 @@ public class PauseScreen extends OverlayScreen {
 
 		Image pauseText = new Image(new Texture(Gdx.files.internal("graphics/pauseText.png")));
 		table.add(pauseText).row();
-
-		// TODO: Debug...
-		table.debug();
 	}
 
 	@Override
