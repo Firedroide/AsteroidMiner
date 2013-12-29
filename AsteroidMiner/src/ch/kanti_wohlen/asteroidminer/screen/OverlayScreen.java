@@ -12,7 +12,7 @@ import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 
 public abstract class OverlayScreen extends AbstractScreen {
 
-	protected static final Matrix4 IDENTITY_MATRIX = new Matrix4();
+	protected static final Matrix4 UNITY_MATRIX = new Matrix4().setToOrtho2D(0f, 0f, 1f, 1f);
 
 	protected final AsteroidMiner game;
 	protected final SpriteBatch batch;
@@ -31,9 +31,7 @@ public abstract class OverlayScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		// Draw overlay
-		overlay.setPosition(-1f, -1f);
-		overlay.setSize(2f, 2f);
-		batch.setProjectionMatrix(IDENTITY_MATRIX);
+		batch.setProjectionMatrix(UNITY_MATRIX);
 		batch.begin();
 		overlay.draw(batch);
 		batch.end();
