@@ -5,9 +5,12 @@ import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 import ch.kanti_wohlen.asteroidminer.screen.MenuScreen;
 import ch.kanti_wohlen.asteroidminer.screen.PauseScreen;
+import ch.kanti_wohlen.asteroidminer.screen.ScreenSwitchManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +23,7 @@ public class AsteroidMiner extends Game {
 	private GameScreen gameScreen;
 	private MenuScreen menuScreen;
 	private PauseScreen pauseScreen;
+	private ScreenSwitchManager switchManager;
 
 	private FPSLogger fpsLogger;
 	private SpriteBatch batch;
@@ -91,6 +95,11 @@ public class AsteroidMiner extends Game {
 			// Log FPS only when the game is being simulated
 			fpsLogger.log();
 		}
+
+		// If switching the current screen, render the overlay over everything else
+		if (switchManager != null) {
+			switchManager.render(batch);
+		}
 	}
 
 	@Override
@@ -113,5 +122,9 @@ public class AsteroidMiner extends Game {
 
 	public PauseScreen getPauseScreen() {
 		return pauseScreen;
+	}
+
+	public void switchScreenWithOverlay(Screen newScreen, Color overlayColor) {
+		switchManager = new ScreenSwitchManager(this, newScreen, overlayColor);
 	}
 }
