@@ -1,5 +1,7 @@
 package ch.kanti_wohlen.asteroidminer.spawner;
 
+import ch.kanti_wohlen.asteroidminer.entities.WorldBorder;
+
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -23,6 +25,7 @@ public final class AsteroidAABB {
 
 		@Override
 		public boolean reportFixture(Fixture fixture) {
+			if (fixture.getBody().getUserData() instanceof WorldBorder) return true;
 			didCollide = true;
 			return false;
 		}
