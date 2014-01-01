@@ -5,8 +5,13 @@ import com.badlogic.gdx.Screen;
 
 public abstract class AbstractScreen implements Screen {
 
-	protected float height;
 	protected float width;
+	protected float height;
+
+	public AbstractScreen() {
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+	}
 
 	@Override
 	public void resize(int width, int height) {

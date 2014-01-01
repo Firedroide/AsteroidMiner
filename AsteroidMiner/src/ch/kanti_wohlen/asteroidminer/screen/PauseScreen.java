@@ -1,6 +1,7 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,15 +11,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class PauseScreen extends OverlayScreen {
 
+	private final Skin skin;
 	private final Stage stage;
 	private final Table table;
 
 	public PauseScreen() {
-		Skin skin = new Skin();
+		super(new Color(0.25f, 0.25f, 0.25f, 0.75f));
+
+		skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
 		skin.load(Gdx.files.internal("data/uiskin.json"));
 
-		stage = new Stage(width, height, true);
+		stage = new Stage(width, height, true, batch);
 		table = new Table();
 		table.setBounds(0f, 0f, width, height);
 		table.center();
@@ -31,17 +35,22 @@ public class PauseScreen extends OverlayScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		game.getSpriteBatch().begin();
 		stage.draw();
-		game.getSpriteBatch().end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
 		stage.setViewport(width, height, true);
-		table.setBounds(0, 0, width, height);
+		table.setBounds(0f, 0f, width, height);
 		table.center();
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		stage.dispose();
+		skin.dispose();
 	}
 
 	@Override

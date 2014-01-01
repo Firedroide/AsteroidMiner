@@ -20,11 +20,14 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 
 	public static final float FADING_OUT_TIME = 1.2f;
 
+	private final Skin skin;
 	private final Stage stage;
 	private final Table table;
 
 	public MenuScreen() {
-		Skin skin = new Skin();
+		super(new Color(0.25f, 0.25f, 0.25f, 0.75f));
+
+		skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
 		skin.load(Gdx.files.internal("data/uiskin.json"));
 
@@ -79,12 +82,10 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 	}
 
 	@Override
-	public void hide() {}
-
-	@Override
 	public void dispose() {
 		super.dispose();
 		stage.dispose();
+		skin.dispose();
 	}
 
 	@Override
@@ -92,6 +93,9 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 		super.show();
 		Gdx.input.setInputProcessor(stage);
 	}
+
+	@Override
+	public void hide() {}
 
 	@Override
 	public void pause() {}

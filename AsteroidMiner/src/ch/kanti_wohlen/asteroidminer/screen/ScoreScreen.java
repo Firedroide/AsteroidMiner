@@ -1,6 +1,7 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -12,20 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 public class ScoreScreen extends OverlayScreen {
 
 	private final Stage stage;
-	private Table table;
+	private final Skin skin;
+	private final Table table;
 
 	public ScoreScreen() {
-		stage = new Stage(width, height, true);
-	}
+		super(Color.BLACK);
 
-	@Override
-	public void show() {
-		super.show();
-
-		Skin skin = new Skin();
+		skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
 		skin.load(Gdx.files.internal("data/uiskin.json"));
 
+		stage = new Stage(width, height, true);
 		table = new Table(skin);
 		table.center();
 		table.setBounds(0f, 0f, width, height);
@@ -46,6 +44,16 @@ public class ScoreScreen extends OverlayScreen {
 
 		table.add(backButton);
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		stage.dispose();
+		skin.dispose();
+	}
+
+	@Override
+	public void show() {}
 
 	@Override
 	public void hide() {}

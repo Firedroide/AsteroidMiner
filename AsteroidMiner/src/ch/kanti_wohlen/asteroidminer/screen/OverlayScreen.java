@@ -18,12 +18,12 @@ public abstract class OverlayScreen extends AbstractScreen {
 	protected final SpriteBatch batch;
 	protected final Sprite overlay;
 
-	public OverlayScreen() {
+	public OverlayScreen(Color color) {
 		game = AsteroidMiner.INSTANCE;
 		batch = game.getSpriteBatch();
 
 		Pixmap map = new Pixmap(1, 1, Format.RGBA8888);
-		map.drawPixel(0, 0, Color.rgba8888(255f, 255f, 255f, 192f));
+		map.drawPixel(0, 0, Color.rgba8888(color));
 		overlay = new Sprite(new Texture(map));
 		map.dispose();
 	}
