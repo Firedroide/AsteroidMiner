@@ -86,6 +86,8 @@ public class GameScreen {
 
 	public void stopGame() {
 		running = false;
+		final Color color = localPlayer.getSpaceShip().getHealth() == 0 ? Color.BLACK : Color.WHITE;
+		AsteroidMiner.INSTANCE.switchScreenWithOverlay(AsteroidMiner.INSTANCE.getGameOverScreen(), color);
 	}
 
 	public void tick(float delta) {
@@ -205,7 +207,8 @@ public class GameScreen {
 		batch.begin();
 		font.setColor(Color.WHITE);
 
-		font.draw(batch, score, Gdx.graphics.getWidth() - 10 - xDist, Gdx.graphics.getHeight() - 10);
+		font.draw(batch, "SCORE", Gdx.graphics.getWidth() - 57, Gdx.graphics.getHeight() - 10);
+		font.draw(batch, score, Gdx.graphics.getWidth() - 10 - xDist, Gdx.graphics.getHeight() - 32);
 		batch.end();
 	}
 
