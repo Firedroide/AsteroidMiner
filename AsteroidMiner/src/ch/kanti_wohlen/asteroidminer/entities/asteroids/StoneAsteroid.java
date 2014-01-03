@@ -102,7 +102,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 					return;
 				}
 
-				SplitAsteroidLauncher l = new SplitAsteroidLauncher(w, body.getPosition(), body.getLinearVelocity(),
+				SplitAsteroidLauncher l = new SplitAsteroidLauncher(w, body.getPosition().cpy(), body.getLinearVelocity(),
 						nextRadius, body.getMass());
 				TaskScheduler.INSTANCE.runTask(l);
 			}
