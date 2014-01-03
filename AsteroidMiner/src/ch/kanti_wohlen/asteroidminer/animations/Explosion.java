@@ -8,11 +8,15 @@ import java.util.Map;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.Player;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -25,30 +29,31 @@ public class Explosion implements Animation {
 
 	private static final ShapeRenderer renderer = new ShapeRenderer();
 	private static final float EXPLOSION_SCORE_MULTIPLIER = 0.05f;
+	private static final float EXPLOSION_SPEED = 1.3f;
 
 	private final World world;
 	private final Vector2 center;
-	private final float r;
+	private final float maxRadius;
 	private final int maxDmg;
 	private final boolean dmgPlayer;
 	private final Player player;
 	private final LinkedList<AbstractMap.SimpleImmutableEntry<Entity, Float>> entities;
 
-	private int currentRadius;
+	private float currentRadius;
 	private boolean removed;
 
 	public Explosion(World theWorld, Vector2 explosionCenter, float radius, int maxDamage, boolean hurtPlayer, Player owner) {
 		world = theWorld;
 		center = explosionCenter;
-		r = radius;
+		maxRadius = radius;
 		maxDmg = maxDamage;
 		dmgPlayer = hurtPlayer;
 		currentRadius = 1;
 		player = owner;
 
 		entities = new LinkedList<AbstractMap.SimpleImmutableEntry<Entity, Float>>();
-		final Vector2 upperLeft = explosionCenter.cpy().sub(r, r);
-		final Vector2 lowerRight = explosionCenter.cpy().add(r, r);
+		final Vector2 upperLeft = explosionCenter.cpy().sub(maxRadius, maxRadius);
+		final Vector2 lowerRight = explosionCenter.cpy().add(maxRadius, maxRadius);
 		world.QueryAABB(new QueryCallback() {
 
 			@Override
@@ -57,7 +62,7 @@ public class Explosion implements Animation {
 				if (entity.getType() == EntityType.ASTEROID || (entity.getType() == EntityType.SPACESHIP) && dmgPlayer) {
 					final float r2 = fixture.getBody().getPosition().dst2(center);
 
-					if (r2 <= r * r) {
+					if (r2 <= maxRadius * maxRadius) {
 						entities.add(new AbstractMap.SimpleImmutableEntry<Entity, Float>(entity, r2));
 					}
 				}
@@ -75,23 +80,27 @@ public class Explosion implements Animation {
 
 		center.scl(Entity.BOX2D_TO_PIXEL); // Scale center for rendering.
 		AsteroidMiner.INSTANCE.getGameScreen().getAnimations().addAnimation(this);
+		SoundPlayer.playSound(SoundEffect.EXPLOSION, 1f);
 	}
 
 	@Override
 	public void render(SpriteBatch batch) {
 		batch.end();
+		Gdx.gl.glEnable(GL10.GL_BLEND);
 		renderer.begin(ShapeType.Filled);
 		renderer.setTransformMatrix(batch.getTransformMatrix());
 		renderer.setProjectionMatrix(batch.getProjectionMatrix());
-		renderer.setColor(Color.RED);
+		final float alpha = (maxRadius - currentRadius) / maxRadius;
+		final float yellow = Math.abs((alpha % 0.4f) - 0.2f);
+		renderer.setColor(new Color(1f, yellow, 0f, alpha));
 		renderer.circle(center.x, center.y, currentRadius * Entity.BOX2D_TO_PIXEL);
 		renderer.end();
 		batch.begin();
 	}
 
 	public void tick(float deltaTime) {
-		++currentRadius;
-		if (currentRadius > r) {
+		currentRadius += EXPLOSION_SPEED;
+		if (currentRadius > maxRadius) {
 			removed = true;
 			return;
 		}
@@ -100,7 +109,11 @@ public class Explosion implements Animation {
 		final float radiusMax = currentRadius * currentRadius;
 
 		for (Map.Entry<Entity, Float> entry = entities.getFirst(); entry.getValue() < radiusMax; entry = entities.getFirst()) {
-			final int damage = (int) (maxDmg * Math.min(1f, 1.25f * (r - currentRadius) / r));
+			if (entry.getKey().isRemoved()) {
+				continue;
+			}
+
+			final int damage = (int) (maxDmg * Math.min(1f, 1.25f * (maxRadius - currentRadius) / maxRadius));
 			final Damageable damageable = (Damageable) entry.getKey();
 			damageable.damage(damage, player, EXPLOSION_SCORE_MULTIPLIER);
 			entities.removeFirst();

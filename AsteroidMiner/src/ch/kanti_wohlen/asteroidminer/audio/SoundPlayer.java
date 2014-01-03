@@ -50,7 +50,8 @@ public class SoundPlayer {
 	public enum SoundEffect {
 		LASER_SHOOT("LaserShoot.ogg"),
 		POWER_UP_PICK_UP("PowerUpPickUp.ogg"),
-		THRUSTER("Thrusters.ogg");
+		THRUSTER("Thrusters.ogg"),
+		EXPLOSION("Explosion.ogg");
 
 		private final String name;
 		private long currentID;

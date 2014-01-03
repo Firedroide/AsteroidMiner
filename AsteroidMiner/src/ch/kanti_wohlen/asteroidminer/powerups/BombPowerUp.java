@@ -20,7 +20,7 @@ public class BombPowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player player) {
-		new Explosion(world, body.getPosition().cpy(), 50f, 100, false, player);
+		new Explosion(world, body.getPosition().cpy(), 32f, 100, false, player);
 	}
 
 	@Override
