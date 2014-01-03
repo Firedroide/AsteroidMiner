@@ -22,8 +22,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class SpaceShip extends Entity implements Damageable {
 
-	public static final int MAX_HEALTH = 250;
-	public static final int MAX_SHIELD = 250;
+	public static final int MAX_HEALTH = 200;
+	public static final int MAX_SHIELD = 200;
 	public static final float DEFAULT_FIRING_DELAY = 0.3f;
 	public static final float DEFAULT_SPEED = 1f;
 	public static final float LINEAR_DAMPING = 2.5f;
@@ -113,6 +113,7 @@ public class SpaceShip extends Entity implements Damageable {
 
 	public void setHealth(int newHealth) {
 		if (invulnerable) return;
+		if (health == 0) return;
 
 		if (newHealth != health) {
 			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);

@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Laser extends Entity {
 
-	public static final int DEFAULT_DAMAGE = 5;
+	public static final int DEFAULT_DAMAGE = 8;
 	public static final float SPEED = 60f;
 
 	private final SpaceShip ship;
