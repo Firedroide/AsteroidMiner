@@ -7,21 +7,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Music.OnCompletionListener;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.MathUtils;
 
 public class MusicPlayer {
 
-	private static final float MUSIC_VOLUME = 0.5f; // TODO: Settings!
+	private static final float MUSIC_VOLUME = 0.2f;
+	private static final float DEFAULT_USER_VOLUME = 0.8f;
 
 	private static List<FileHandle> musicFiles;
 	private static int currentIndex;
 	private static Music currentMusic;
+	private static float userVolume;
 
 	private MusicPlayer() {}
 
 	public static void load() {
 		currentIndex = -1;
+		userVolume = DEFAULT_USER_VOLUME;
 		musicFiles = new LinkedList<FileHandle>();
-		//addMusic("Atmospheren Sound 1.ogg");
+		addMusic("Atmospheren Sound 1.ogg");
 		addMusic("Atmospheren Sound 2.ogg");
 	}
 
@@ -42,7 +46,7 @@ public class MusicPlayer {
 				start();
 			}
 		});
-		currentMusic.setVolume(MUSIC_VOLUME);
+		currentMusic.setVolume(MUSIC_VOLUME * userVolume);
 		currentMusic.play();
 	}
 
@@ -56,6 +60,15 @@ public class MusicPlayer {
 	public static void dispose() {
 		stop();
 		musicFiles.clear();
+	}
+
+	public static float getVolume() {
+		return userVolume;
+	}
+
+	public static void setVolume(float newVolume) {
+		userVolume = MathUtils.clamp(newVolume, 0f, 1f);
+		currentMusic.setVolume(MUSIC_VOLUME * userVolume);
 	}
 
 	private static void addMusic(String fileName) {

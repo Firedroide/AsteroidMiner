@@ -6,15 +6,20 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.MathUtils;
 
 public class SoundPlayer {
 
+	private static final float DEFAULT_USER_VOLUME = 1f;
+
 	private static Map<SoundEffect, Sound> sounds;
+	private static float userVolume;
 
 	private SoundPlayer() {}
 
 	public static void loadSounds() {
 		sounds = new HashMap<SoundPlayer.SoundEffect, Sound>();
+		userVolume = DEFAULT_USER_VOLUME;
 		for (SoundEffect effect : SoundEffect.values()) {
 			effect.load();
 		}
@@ -36,7 +41,7 @@ public class SoundPlayer {
 
 	public static void playSound(SoundEffect soundEffect, float volume, float pitch, float pan, boolean looping) {
 		Sound sound = sounds.get(soundEffect);
-		final long id = sound.play(volume, pitch, pan);
+		final long id = sound.play(volume * userVolume, pitch, pan);
 		sound.setLooping(id, looping);
 		soundEffect.setSound(sound, id);
 	}
@@ -45,6 +50,14 @@ public class SoundPlayer {
 		if (soundEffect.currentSound != null) {
 			soundEffect.currentSound.stop();
 		}
+	}
+
+	public static float getVolume() {
+		return userVolume;
+	}
+
+	public static void setVolume(float newVolume) {
+		userVolume = MathUtils.clamp(newVolume, 0f, 1f);
 	}
 
 	public enum SoundEffect {
@@ -74,7 +87,7 @@ public class SoundPlayer {
 
 		public void setVolume(float volume) {
 			if (currentSound != null) {
-				currentSound.setVolume(currentID, volume);
+				currentSound.setVolume(currentID, volume * userVolume);
 			}
 		}
 	}
