@@ -33,7 +33,7 @@ public class PowerUpLauncher implements Runnable {
 	 */
 	public PowerUpLauncher(World theWorld, Vector2 powerUpPosition) {
 		world = theWorld;
-		position = powerUpPosition;
+		position = powerUpPosition.cpy();
 	}
 
 	@Override
