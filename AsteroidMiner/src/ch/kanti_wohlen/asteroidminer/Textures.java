@@ -56,7 +56,7 @@ public final class Textures {
 		ASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		METALASTEROID = new Sprite(sprites, 493, 214, 123, 123);
-		METALASTEROID.setOrigin(61, 65); // const
+		METALASTEROID.setOrigin(METALASTEROID.getRegionWidth() / 2f, METALASTEROID.getRegionHeight() / 2f);
 		METALASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		ICEASTREOID = new Sprite(sprites, 906, 220, 93, 93);
