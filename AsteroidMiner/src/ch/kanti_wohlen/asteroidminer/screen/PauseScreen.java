@@ -1,5 +1,8 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
+import ch.kanti_wohlen.asteroidminer.audio.MusicPlayer;
+import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,9 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class PauseScreen extends OverlayScreen {
 
+	private static final float MUSIC_VOLUME_MULTIPLIER = 0.2f;
+
 	private final Skin skin;
 	private final Stage stage;
 	private final Table table;
+
+	private float lastMusicVolume;
 
 	public PauseScreen() {
 		super(new Color(0.25f, 0.25f, 0.25f, 0.75f));
@@ -62,7 +69,18 @@ public class PauseScreen extends OverlayScreen {
 	}
 
 	@Override
-	public void hide() {}
+	public void show() {
+		super.show();
+		lastMusicVolume = MusicPlayer.getVolume();
+		MusicPlayer.setVolume(lastMusicVolume * MUSIC_VOLUME_MULTIPLIER);
+		SoundPlayer.pauseAll();
+	}
+
+	@Override
+	public void hide() {
+		MusicPlayer.setVolume(lastMusicVolume);
+		SoundPlayer.resumeAll();
+	}
 
 	@Override
 	public void pause() {}

@@ -58,6 +58,27 @@ public class SoundPlayer {
 
 	public static void setVolume(float newVolume) {
 		userVolume = MathUtils.clamp(newVolume, 0f, 1f);
+		for (SoundEffect soundEffect : SoundEffect.values()) {
+			if (soundEffect.currentSound != null) {
+				soundEffect.currentSound.setVolume(soundEffect.currentID, soundEffect.currentVolume * userVolume);
+			}
+		}
+	}
+
+	public static void pauseAll() {
+		for (SoundEffect soundEffect : SoundEffect.values()) {
+			if (soundEffect.currentSound != null) {
+				soundEffect.currentSound.pause();
+			}
+		}
+	}
+
+	public static void resumeAll() {
+		for (SoundEffect soundEffect : SoundEffect.values()) {
+			if (soundEffect.currentSound != null) {
+				soundEffect.currentSound.resume();
+			}
+		}
 	}
 
 	public enum SoundEffect {
@@ -69,6 +90,7 @@ public class SoundPlayer {
 		private final String name;
 		private long currentID;
 		private Sound currentSound;
+		private float currentVolume;
 
 		private SoundEffect(String fileName) {
 			name = fileName;
@@ -85,9 +107,14 @@ public class SoundPlayer {
 			currentID = id;
 		}
 
+		public float getVolume() {
+			return currentVolume;
+		}
+
 		public void setVolume(float volume) {
 			if (currentSound != null) {
-				currentSound.setVolume(currentID, volume * userVolume);
+				currentVolume = MathUtils.clamp(volume, 0f, 1f);
+				currentSound.setVolume(currentID, currentVolume * userVolume);
 			}
 		}
 	}
