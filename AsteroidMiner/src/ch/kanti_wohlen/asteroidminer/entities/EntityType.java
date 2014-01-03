@@ -5,6 +5,7 @@ public enum EntityType {
 	SPACESHIP,
 	ASTEROID,
 	LASER,
+	PROJECTILE,
 	POWER_UP,
 	WORLD_BORDER;
 }

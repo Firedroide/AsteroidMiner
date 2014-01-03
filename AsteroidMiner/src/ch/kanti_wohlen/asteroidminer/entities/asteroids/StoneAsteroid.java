@@ -84,6 +84,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 
 	public void setHealth(int newHealth) {
 		if (invulnerable) return;
+		if (health == 0) return;
 
 		if (newHealth != health) {
 			health = MathUtils.clamp(newHealth, 0, maxHealth);

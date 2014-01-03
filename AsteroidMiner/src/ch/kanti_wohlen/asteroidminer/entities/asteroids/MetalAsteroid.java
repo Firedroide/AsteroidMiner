@@ -17,21 +17,20 @@ import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
+import ch.kanti_wohlen.asteroidminer.entities.MetalAsteroidProjectile;
 import ch.kanti_wohlen.asteroidminer.entities.bars.HealthBar;
 import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
 public class MetalAsteroid extends Entity implements Damageable {
 
-	public static final int MAX_HEALTH = 120;
-	public static final float MIN_RADIUS = 0.75f;
+	public static final int HEALTH_PER_SIZE = 30;
 	private static final float POWER_UP_SPAWN_CHANCE = 0.2f;
 	private static final int KILL_SCORE = 1000;
 
 	private final HealthBar healthBar;
-	private final float firstRadius;
-
-	private float currentRadius;
-	private float renderScale;
+	private final float currentRadius;
+	private final float renderScale;
+	private final int maxHealth;
 	private int health;
 
 	public MetalAsteroid(World world, Vector2 location, float radius) {
@@ -40,11 +39,11 @@ public class MetalAsteroid extends Entity implements Damageable {
 
 	public MetalAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
 		super(world, createBodyDef(location, velocity), createCircle(radius));
-		healthBar = new HealthBar(MAX_HEALTH);
-		firstRadius = radius;
+		maxHealth = (int) (radius * HEALTH_PER_SIZE);
+		health = maxHealth;
+		healthBar = new HealthBar(maxHealth);
 		currentRadius = radius;
-		renderScale = (radius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
-		health = MAX_HEALTH;
+		renderScale = (radius * BOX2D_TO_PIXEL * 2f) / Textures.METALASTEROID.getRegionWidth();
 	}
 
 	@Override
@@ -65,6 +64,12 @@ public class MetalAsteroid extends Entity implements Damageable {
 	}
 
 	@Override
+	public boolean isRemoved() {
+		return super.isRemoved() || health == 0;
+	}
+
+	// TODO: Not accurate due to offset center
+	@Override
 	public Rectangle getBoundingBox() {
 		final float d = currentRadius * 2f;
 		final Rectangle rect = new Rectangle(0f, 0f, d, d);
@@ -79,22 +84,26 @@ public class MetalAsteroid extends Entity implements Damageable {
 
 	@Override
 	public void setHealth(int newHealth) {
+		setHealth(newHealth, null);
+	}
+
+	public void setHealth(int newHealth, Player player) {
+		if (health == 0) return;
+
 		if (newHealth != health) {
-			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
+			health = MathUtils.clamp(newHealth, 0, maxHealth);
 			healthBar.resetAlpha();
 
 			if (health == 0) {
-				if (MathUtils.random() > POWER_UP_SPAWN_CHANCE)
-					return;
+				final int count = (int) (4.5f + currentRadius);
+				final World w = body.getWorld();
+				TaskScheduler.INSTANCE.runTask(new MetalAsteroidProjectileSpawner(w, this, count, player));
+				if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
+
 				final World world = body.getWorld();
 				final Vector2 loc = body.getPosition();
 				PowerUpLauncher pul = new PowerUpLauncher(world, loc);
 				TaskScheduler.INSTANCE.runTask(pul);
-			} else {
-				currentRadius = MIN_RADIUS + ((float) health / MAX_HEALTH) * (firstRadius - MIN_RADIUS);
-				renderScale = (currentRadius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
-				fixture.getShape().setRadius(currentRadius);
-				body.resetMassData();
 			}
 		}
 	}
@@ -106,7 +115,7 @@ public class MetalAsteroid extends Entity implements Damageable {
 
 	@Override
 	public void damage(int damageAmount, Player player, float scoreMultiplier) {
-		setHealth(health - damageAmount);
+		setHealth(health - damageAmount, player);
 		if (health == 0 && player != null) {
 			player.addScore((int) (KILL_SCORE * scoreMultiplier));
 		}
@@ -122,6 +131,7 @@ public class MetalAsteroid extends Entity implements Damageable {
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(position);
 		bodyDef.angle = MathUtils.random(2 * MathUtils.PI);
+		bodyDef.angularDamping = 0.15f;
 		if (velocity != null) {
 			bodyDef.linearVelocity.set(velocity);
 		}
@@ -133,11 +143,40 @@ public class MetalAsteroid extends Entity implements Damageable {
 	private static FixtureDef createCircle(float radius) {
 		final FixtureDef fixture = new FixtureDef();
 		fixture.density = 100f;
-		fixture.restitution = 0.9f;
+		fixture.restitution = 1.2f;
 		final CircleShape cs = new CircleShape();
 		cs.setRadius(radius);
 		fixture.shape = cs;
 		return fixture;
 	}
 
+	private class MetalAsteroidProjectileSpawner implements Runnable {
+
+		private static final float VELOCITY = 40f;
+
+		private final World world;
+		private final Vector2 pos;
+		private final float rot;
+		private final int count;
+		private final Player cause;
+
+		private MetalAsteroidProjectileSpawner(World theWorld, MetalAsteroid source, int projectileCount, Player player) {
+			world = theWorld;
+			pos = source.getPhysicsBody().getPosition().cpy();
+			rot = source.getPhysicsBody().getAngle();
+			count = projectileCount;
+			cause = player;
+		}
+
+		@Override
+		public void run() {
+			final Vector2 vel = new Vector2();
+			for (int i = 0; i < count; ++i) {
+				final float angle = (((float) i / count) * MathUtils.PI2 + rot) % MathUtils.PI2;
+				vel.set(MathUtils.sin(angle) * VELOCITY, MathUtils.cos(angle) * VELOCITY);
+
+				new MetalAsteroidProjectile(world, pos.cpy().add(vel.cpy().nor()), vel.cpy(), cause);
+			}
+		}
+	}
 }

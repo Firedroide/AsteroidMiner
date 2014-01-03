@@ -4,6 +4,7 @@ import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 import ch.kanti_wohlen.asteroidminer.entities.Laser;
+import ch.kanti_wohlen.asteroidminer.entities.MetalAsteroidProjectile;
 import ch.kanti_wohlen.asteroidminer.entities.SpaceShip;
 import ch.kanti_wohlen.asteroidminer.powerups.PowerUp;
 
@@ -38,6 +39,12 @@ public class CollisionListener implements ContactListener {
 			if (e2.getType() == EntityType.ASTEROID) {
 				Laser laser = (Laser) e1;
 				contactLaserAsteroid(laser, e2);
+			}
+			break;
+		case PROJECTILE:
+			if (e2 instanceof Damageable) {
+				final Player cause = ((MetalAsteroidProjectile) e1).getCausingPlayer();
+				((Damageable) e2).damage(MetalAsteroidProjectile.COLLISION_DAMAGE, cause, 2f);
 			}
 			break;
 		case SPACESHIP:
