@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
@@ -28,6 +29,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Explosion implements Animation {
 
 	private static final ShapeRenderer renderer = new ShapeRenderer();
+	private static final float MAX_HEAR_DISTANCE2 = 750f * 750f;
 	private static final float EXPLOSION_SCORE_MULTIPLIER = 0.05f;
 	private static final float EXPLOSION_SPEED = 1.3f;
 
@@ -80,7 +82,21 @@ public class Explosion implements Animation {
 
 		center.scl(Entity.BOX2D_TO_PIXEL); // Scale center for rendering.
 		AsteroidMiner.INSTANCE.getGameScreen().getAnimations().addAnimation(this);
-		SoundPlayer.playSound(SoundEffect.EXPLOSION, 1f);
+
+		if (owner == null) {
+			final Player localPlayer = AsteroidMiner.INSTANCE.getGameScreen().getLocalPlayer();
+			final Vector2 playerPos = new Vector2();
+			if (localPlayer != null) {
+				playerPos.set(localPlayer.getSpaceShip().getPhysicsBody().getPosition());
+			}
+
+			final float dist2 = center.dst2(playerPos);
+			final float vol = MathUtils.clamp((MAX_HEAR_DISTANCE2 - dist2) / MAX_HEAR_DISTANCE2, 0f, 1f);
+			if (vol == 0f) return;
+			SoundPlayer.playSound(SoundEffect.EXPLOSION, vol * 0.75f);
+		} else {
+			SoundPlayer.playSound(SoundEffect.EXPLOSION, 0.75f);
+		}
 	}
 
 	@Override
