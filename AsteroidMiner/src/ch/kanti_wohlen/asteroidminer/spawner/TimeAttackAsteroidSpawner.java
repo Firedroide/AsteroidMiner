@@ -75,12 +75,11 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 	}
 
 	private void spawnRandomAsteroid(Vector2 location, Vector2 momentum, float rotation, float difficulty) {
-		System.out.println(location);
 		final float radius = MathUtils.random(1f + difficulty, 3f + 2f * difficulty);
 		final float type = MathUtils.random(4f + 8f * difficulty);
 		if (!AsteroidAABB.checkAsteroidClipping(world, location, radius)) {
 			if (type < 6f) {
-				StoneAsteroid stoneAsteroid = new StoneAsteroid(world, location, radius, momentum);
+				MetalAsteroid stoneAsteroid = new MetalAsteroid(world, location, radius, momentum);
 				stoneAsteroid.getPhysicsBody().setAngularVelocity(rotation);
 			} else if (type < 8f) {
 				IceAsteroid iceAsteroid = new IceAsteroid(world, location, radius, momentum);
