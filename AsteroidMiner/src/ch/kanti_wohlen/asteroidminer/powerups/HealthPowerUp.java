@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class HealthPowerUp extends PowerUp {
 
-	private static final int HEALING_AMOUNT = 150;
+	private static final int HEALING_AMOUNT = 120;
 
 	public HealthPowerUp(World world, Vector2 position) {
 		super(world, position);
