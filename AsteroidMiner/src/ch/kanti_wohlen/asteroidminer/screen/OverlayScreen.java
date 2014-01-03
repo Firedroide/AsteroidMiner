@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
+import ch.kanti_wohlen.asteroidminer.fading.Fadeable;
 
-public abstract class OverlayScreen extends AbstractScreen {
+public abstract class OverlayScreen extends AbstractScreen implements Fadeable {
 
 	protected static final Matrix4 UNITY_MATRIX = new Matrix4().setToOrtho2D(0f, 0f, 1f, 1f);
 
@@ -40,5 +42,16 @@ public abstract class OverlayScreen extends AbstractScreen {
 	@Override
 	public void dispose() {
 		overlay.getTexture().dispose();
+	}
+
+	@Override
+	public float getAlpha() {
+		return overlay.getColor().a;
+	}
+
+	@Override
+	public void setAlpha(float newAlpha) {
+		final float newA = MathUtils.clamp(newAlpha, 0f, 1f);
+		overlay.setColor(1f, 1f, 1f, newA);
 	}
 }

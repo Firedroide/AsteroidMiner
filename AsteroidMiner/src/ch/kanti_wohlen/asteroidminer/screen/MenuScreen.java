@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
+import ch.kanti_wohlen.asteroidminer.GameMode;
 import ch.kanti_wohlen.asteroidminer.fading.FadeOutHelper;
 import ch.kanti_wohlen.asteroidminer.fading.Fadeable;
 
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -33,34 +35,23 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 
 		stage = new Stage(width, height, true, batch);
 		table = new Table();
-		table.setBounds(0f, 0f, width, height);
-		table.center();
+		table.setFillParent(true);
 		stage.addActor(table);
 
 		Image title = new Image(new Texture(Gdx.files.internal("graphics/logo.png")));
-		table.add(title).padBottom(50f).row();
+		table.add(title).padBottom(50f).colspan(2).row();
 
-		TextButton singlePlayer = new TextButton("Single Player", skin);
-		singlePlayer.addListener(new InputListener() {
+		TextButton singlePlayer_2 = new TextButton("2 Minute game", skin);
+		singlePlayer_2.addListener(new GameLauncher(GameMode.TIME_2_MIN));
 
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Gdx.app.log("DEBUG:", "Launched single player session.");
-				new FadeOutHelper(game.getMenuScreen(), 0f, FADING_OUT_TIME, new Runnable() {
-					
-					@Override
-					public void run() {
-						game.setScreen(null);
-						batch.setColor(Color.WHITE); // Some child of the table seems not to reset the batch's color.
-					}
-				});
+		TextButton singlePlayer_5 = new TextButton("5 Minute game", skin);
+		singlePlayer_5.addListener(new GameLauncher(GameMode.TIME_5_MIN));
+		table.add(singlePlayer_2).padRight(5f).right();
+		table.add(singlePlayer_5).left().row().padTop(10f);
 
-				Gdx.input.setInputProcessor(null);
-				game.getGameScreen().startGame();
-				return false;
-			}
-		});
-		table.add(singlePlayer).row();
+		TextButton singlePlayer_endless = new TextButton("Endless game", skin);
+		singlePlayer_endless.addListener(new GameLauncher(GameMode.ENDLESS));
+		table.add(singlePlayer_endless).padTop(10f).colspan(2).row();
 
 		// TODO: Debug...
 		// table.debug();
@@ -91,11 +82,18 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 	@Override
 	public void show() {
 		super.show();
+		setAlpha(1f);
 		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
-	public void hide() {}
+	public void hide() {
+		for (Actor actor : table.getChildren()) {
+			if (actor instanceof TextButton) {
+				((TextButton) actor).setChecked(false);
+			}
+		}
+	}
 
 	@Override
 	public void pause() {}
@@ -105,7 +103,7 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 
 	@Override
 	public float getAlpha() {
-		return stage.getRoot().getColor().a;
+		return overlay.getColor().a;
 	}
 
 	@Override
@@ -113,5 +111,29 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 		final float newA = MathUtils.clamp(newAlpha, 0f, 1f);
 		stage.getRoot().getColor().a = newA;
 		overlay.setColor(1f, 1f, 1f, newA);
+	}
+
+	private class GameLauncher extends InputListener {
+
+		private final GameMode mode;
+
+		private GameLauncher(GameMode gameMode) {
+			mode = gameMode;
+		}
+
+		@Override
+		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			new FadeOutHelper(game.getMenuScreen(), 0f, FADING_OUT_TIME, new Runnable() {
+
+				@Override
+				public void run() {
+					game.setScreen(null);
+					batch.setColor(Color.WHITE); // Some child of the table seems not to reset the batch's color.
+				}
+			});
+
+			game.getGameScreen().startGame(mode);
+			return false;
+		}
 	}
 }

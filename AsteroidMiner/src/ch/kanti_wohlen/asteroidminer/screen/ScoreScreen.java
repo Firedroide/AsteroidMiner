@@ -1,8 +1,11 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
+import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,7 +26,7 @@ public class ScoreScreen extends OverlayScreen {
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
 		skin.load(Gdx.files.internal("data/uiskin.json"));
 
-		stage = new Stage(width, height, true);
+		stage = new Stage(width, height, true, batch);
 		table = new Table(skin);
 		table.center();
 		table.setBounds(0f, 0f, width, height);
@@ -31,18 +34,24 @@ public class ScoreScreen extends OverlayScreen {
 
 		// TODO Display scores.
 
-		TextButton backButton = new TextButton("Zurück zum Hauptmenü", skin);
+		TextButton backButton = new TextButton("Back to main menu", skin);
 		backButton.addListener(new InputListener() {
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				game.setScreen(game.getMenuScreen());
+				game.switchScreenWithOverlay(game.getMenuScreen(), Color.BLACK);
 				return true;
 			}
 		});
 		table.add(backButton).padTop(20f).row();
 
 		table.add(backButton);
+	}
+
+	@Override
+	public void render(float delta) {
+		super.render(delta);
+		stage.draw();
 	}
 
 	@Override
@@ -53,7 +62,17 @@ public class ScoreScreen extends OverlayScreen {
 	}
 
 	@Override
-	public void show() {}
+	public void setAlpha(float newAlpha) {
+		final float newA = MathUtils.clamp(newAlpha, 0f, 1f);
+		stage.getRoot().getColor().a = newA;
+		overlay.setColor(1f, 1f, 1f, newA);
+	}
+
+	@Override
+	public void show() {
+		Gdx.input.setInputProcessor(stage);
+		AsteroidMiner.INSTANCE.getGameScreen().reset();
+	}
 
 	@Override
 	public void hide() {}

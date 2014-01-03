@@ -6,6 +6,7 @@ import ch.kanti_wohlen.asteroidminer.screen.GameOverScreen;
 import ch.kanti_wohlen.asteroidminer.screen.GameScreen;
 import ch.kanti_wohlen.asteroidminer.screen.MenuScreen;
 import ch.kanti_wohlen.asteroidminer.screen.PauseScreen;
+import ch.kanti_wohlen.asteroidminer.screen.ScoreScreen;
 import ch.kanti_wohlen.asteroidminer.screen.ScreenSwitchManager;
 
 import com.badlogic.gdx.Game;
@@ -25,6 +26,7 @@ public class AsteroidMiner extends Game {
 	private MenuScreen menuScreen;
 	private PauseScreen pauseScreen;
 	private GameOverScreen gameOverScreen;
+	private ScoreScreen scoreScreen;
 	private ScreenSwitchManager switchManager;
 
 	private FPSLogger fpsLogger;
@@ -56,6 +58,7 @@ public class AsteroidMiner extends Game {
 		menuScreen = new MenuScreen();
 		pauseScreen = new PauseScreen();
 		gameOverScreen = new GameOverScreen();
+		scoreScreen = new ScoreScreen();
 		setScreen(menuScreen);
 		MusicPlayer.start();
 
@@ -130,6 +133,10 @@ public class AsteroidMiner extends Game {
 
 	public GameOverScreen getGameOverScreen() {
 		return gameOverScreen;
+	}
+
+	public ScoreScreen getScoreScreen() {
+		return scoreScreen;
 	}
 
 	public void switchScreenWithOverlay(Screen newScreen, Color overlayColor) {

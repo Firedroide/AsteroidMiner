@@ -5,6 +5,7 @@ import java.util.List;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.CollisionListener;
+import ch.kanti_wohlen.asteroidminer.GameMode;
 import ch.kanti_wohlen.asteroidminer.LocalPlayer;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
@@ -69,9 +70,25 @@ public class GameScreen {
 		setAsteroidSpawner(new IdleSpawner(world));
 	}
 
-	public void startGame() {
-		setAsteroidSpawner(new TimeAttackAsteroidSpawner(world, 120f));
+	public void startGame(GameMode gameMode) {
+		Gdx.input.setInputProcessor(null);
+
+		switch (gameMode) {
+		case TIME_2_MIN:
+			setAsteroidSpawner(new TimeAttackAsteroidSpawner(world, 120f));
+			break;
+		case TIME_5_MIN:
+			setAsteroidSpawner(new TimeAttackAsteroidSpawner(world, 300f));
+			break;
+		case ENDLESS:
+			// TODO!!
+			//setAsteroidSpawner(new TimeAttackAsteroidSpawner(world, 120f));
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown game mode.");
+		}
 		localPlayer = new LocalPlayer(world);
+		players.clear();
 		players.add(localPlayer);
 
 		TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
@@ -86,8 +103,18 @@ public class GameScreen {
 
 	public void stopGame() {
 		running = false;
+
 		final Color color = localPlayer.getSpaceShip().getHealth() == 0 ? Color.BLACK : Color.WHITE;
 		AsteroidMiner.INSTANCE.switchScreenWithOverlay(AsteroidMiner.INSTANCE.getGameOverScreen(), color);
+	}
+
+	public void reset() {
+		setAsteroidSpawner(new IdleSpawner(world));
+		players.clear();
+		localPlayer = null;
+		camera.setToOrtho(false);
+		camera.position.set(0f, 0f, 0f);
+		animations.disposeAll();
 	}
 
 	public void tick(float delta) {

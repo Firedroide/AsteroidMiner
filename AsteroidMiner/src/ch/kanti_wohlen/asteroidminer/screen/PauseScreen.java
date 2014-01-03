@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -51,6 +52,13 @@ public class PauseScreen extends OverlayScreen {
 		super.dispose();
 		stage.dispose();
 		skin.dispose();
+	}
+
+	@Override
+	public void setAlpha(float newAlpha) {
+		final float newA = MathUtils.clamp(newAlpha, 0f, 1f);
+		stage.getRoot().getColor().a = newA;
+		overlay.setColor(1f, 1f, 1f, newA);
 	}
 
 	@Override
