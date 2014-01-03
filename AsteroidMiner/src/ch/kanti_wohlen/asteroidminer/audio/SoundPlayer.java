@@ -43,7 +43,7 @@ public class SoundPlayer {
 		Sound sound = sounds.get(soundEffect);
 		final long id = sound.play(volume * userVolume, pitch, pan);
 		sound.setLooping(id, looping);
-		soundEffect.setSound(sound, id);
+		soundEffect.setSound(sound, id, volume, pitch, pan);
 	}
 
 	public static void stopSound(SoundEffect soundEffect) {
@@ -91,6 +91,8 @@ public class SoundPlayer {
 		private long currentID;
 		private Sound currentSound;
 		private float currentVolume;
+		private float currentPitch;
+		private float currentPan;
 
 		private SoundEffect(String fileName) {
 			name = fileName;
@@ -102,9 +104,12 @@ public class SoundPlayer {
 			sounds.put(this, sound);
 		}
 
-		private void setSound(Sound sound, long id) {
+		private void setSound(Sound sound, long id, float volume, float pitch, float pan) {
 			currentSound = sound;
 			currentID = id;
+			currentVolume = volume;
+			currentPitch = pitch;
+			currentPan = pan;
 		}
 
 		public float getVolume() {
@@ -115,6 +120,28 @@ public class SoundPlayer {
 			if (currentSound != null) {
 				currentVolume = MathUtils.clamp(volume, 0f, 1f);
 				currentSound.setVolume(currentID, currentVolume * userVolume);
+			}
+		}
+
+		public float getPitch() {
+			return currentPitch;
+		}
+
+		public void setPitch(float pitch) {
+			if (currentSound != null) {
+				currentPitch = MathUtils.clamp(pitch, 0.5f, 2f);
+				currentSound.setPitch(currentID, currentPitch);
+			}
+		}
+
+		public float getPan() {
+			return currentPan;
+		}
+
+		public void setPan(float pan) {
+			if (currentSound != null) {
+				currentPan = MathUtils.clamp(pan, -1f, 1f);
+				currentSound.setPan(currentID, currentPan, currentVolume * userVolume);
 			}
 		}
 	}
