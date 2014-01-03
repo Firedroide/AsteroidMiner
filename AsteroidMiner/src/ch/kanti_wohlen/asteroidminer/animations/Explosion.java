@@ -110,7 +110,12 @@ public class Explosion implements Animation {
 
 		for (Map.Entry<Entity, Float> entry = entities.getFirst(); entry.getValue() < radiusMax; entry = entities.getFirst()) {
 			if (entry.getKey().isRemoved()) {
-				continue;
+				entities.removeFirst();
+				if (entities.isEmpty()) {
+					break;
+				} else {
+					continue;
+				}
 			}
 
 			final int damage = (int) (maxDmg * Math.min(1f, 1.25f * (maxRadius - currentRadius) / maxRadius));
