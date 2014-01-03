@@ -24,7 +24,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Explosion implements Animation {
 
 	private static final ShapeRenderer renderer = new ShapeRenderer();
-	private static final float EXPLOSION_SCORE_MULTIPLIER = 0.2f;
+	private static final float EXPLOSION_SCORE_MULTIPLIER = 0.05f;
 
 	private final World world;
 	private final Vector2 center;
