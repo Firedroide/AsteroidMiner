@@ -26,6 +26,7 @@ public final class Textures {
 	public static Sprite BOMBPOWERUPBOX;
 	public static Sprite POWERUPBOXALUMINIUM;
 	public static Sprite EXPLOSION;
+	public static Sprite PROJECTILE;
 	public static TiledDrawable BORDER;
 	public static TiledDrawable BORDER_LINE;
 
@@ -53,15 +54,15 @@ public final class Textures {
 		ASTEROID = new Sprite(sprites, 164, 237, 84, 83);
 		ASTEROID.setOrigin(ASTEROID.getRegionWidth() / 2, ASTEROID.getRegionHeight() / 2);
 		ASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		METALASTEROID = new Sprite(sprites, 797, 221, 89, 90);
-		METALASTEROID.setOrigin(METALASTEROID.getRegionWidth() / 2, METALASTEROID.getRegionHeight() / 2);
+
+		METALASTEROID = new Sprite(sprites, 493, 214, 123, 123);
+		METALASTEROID.setOrigin(61, 65); // const
 		METALASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		ICEASTREOID = new Sprite(sprites, 906, 220, 93, 93);
 		ICEASTREOID.setOrigin(ICEASTREOID.getRegionWidth() / 2, ICEASTREOID.getRegionHeight() / 2);
 		ICEASTREOID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		EXPLOSIVEASTEROID = new Sprite(sprites, 845, 336, 114, 114);
 		EXPLOSIVEASTEROID.setOrigin(EXPLOSIVEASTEROID.getRegionWidth() / 2, EXPLOSIVEASTEROID.getRegionHeight() / 2);
 		EXPLOSIVEASTEROID.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -119,6 +120,10 @@ public final class Textures {
 		EXPLOSION = new Sprite(sprites, 268, 360, 472, 496);
 		EXPLOSION.setOrigin(490, 623);
 		EXPLOSION.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		PROJECTILE = new Sprite(sprites, 20, 400, 30, 39);
+		PROJECTILE.setOrigin(PROJECTILE.getRegionWidth() / 2f, PROJECTILE.getRegionHeight() / 2f);
+		PROJECTILE.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		TextureRegion borderRegion = new TextureRegion(sprites, 10, 950, 64, 64);
 		BORDER = new TiledDrawable(borderRegion);
