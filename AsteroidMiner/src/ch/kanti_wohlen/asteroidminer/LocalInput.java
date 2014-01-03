@@ -14,6 +14,7 @@ public class LocalInput implements InputProcessor {
 	private final AsteroidMiner main;
 	private float thrusterVolume;
 	private boolean thrusterPlaying;
+	private boolean thrusterPanUp;
 
 	public LocalInput() {
 		main = AsteroidMiner.INSTANCE;
@@ -34,16 +35,24 @@ public class LocalInput implements InputProcessor {
 			float x = -MathUtils.sin(ship.getPhysicsBody().getAngle()) * factorSpeed;
 			float y = MathUtils.cos(ship.getPhysicsBody().getAngle()) * factorSpeed;
 			ship.getPhysicsBody().applyForceToCenter(x, y, true);
-			thrusterVolume = Math.min(thrusterVolume + 0.025f, 0.6f);
+			thrusterVolume = Math.min(thrusterVolume + 0.01f, 0.2f);
 		}
-		if (thrusterVolume > 0f && !thrusterPlaying) {
+		if (thrusterVolume > 0.01f && !thrusterPlaying) {
 			SoundPlayer.playSound(SoundEffect.THRUSTER, thrusterVolume, 1f, 0f, true);
 			thrusterPlaying = true;
-		} else if (thrusterVolume < 0.05f && thrusterPlaying) {
+		} else if (thrusterVolume < 0.01f && thrusterPlaying) {
 			SoundPlayer.stopSound(SoundEffect.THRUSTER);
 			thrusterPlaying = false;
 		}
 		SoundEffect.THRUSTER.setVolume(thrusterVolume);
+
+		if (thrusterPanUp && !k) {
+			SoundEffect.THRUSTER.setPitch(1f);
+			thrusterPanUp = false;
+		} else if (!thrusterPanUp && k) {
+			SoundEffect.THRUSTER.setPitch(1.015f);
+			thrusterPanUp = true;
+		}
 
 		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
 			ship.getPhysicsBody().applyAngularImpulse(factorTurn, true);
