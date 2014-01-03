@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.spawner;
 
+import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.WorldBorder;
@@ -17,11 +18,13 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 	private static final int START_SPAWNING_AMOUNT = 10;
 	private static final int MAXIMUM_ENTITIES = 250;
 
+	private final float gameTime;
 	private final float maxTime;
 	private float time;
 
 	public TimeAttackAsteroidSpawner(World theWorld, float time) {
 		super(theWorld);
+		gameTime = time;
 		maxTime = time * 0.95f;
 	}
 
@@ -32,6 +35,13 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 		for (int i = 0; i < START_SPAWNING_AMOUNT; i++) {
 			spawn(0f);
 		}
+
+		TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
+			@Override
+			public void run() {
+				AsteroidMiner.INSTANCE.getGameScreen().stopGame();
+			}
+		}, gameTime);
 	}
 
 	@Override
@@ -40,6 +50,14 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 		final float difficulty = Math.min(1f, time / maxTime);
 		if (MathUtils.random() > 0.1f + 0.2f * difficulty) return;
 		if (world.getBodyCount() < MAXIMUM_ENTITIES) spawn(difficulty);
+	}
+
+	public float getCurrentTime() {
+		return time;
+	}
+
+	public float getTimeLeft() {
+		return gameTime - time;
 	}
 
 	private void spawn(float difficulty) {
