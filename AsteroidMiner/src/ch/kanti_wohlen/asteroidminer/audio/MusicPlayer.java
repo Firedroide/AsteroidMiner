@@ -22,11 +22,11 @@ public class MusicPlayer {
 	private MusicPlayer() {}
 
 	public static void load() {
-		currentIndex = -1;
 		userVolume = DEFAULT_USER_VOLUME;
 		musicFiles = new LinkedList<FileHandle>();
 		addMusic("Atmospheren Sound 1.ogg");
 		addMusic("Atmospheren Sound 2.ogg");
+		currentIndex = MathUtils.random(musicFiles.size()) - 1;
 	}
 
 	public static void start() {
