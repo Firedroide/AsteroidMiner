@@ -17,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class MetalAsteroidProjectile extends Entity implements Damageable {
 
-	public static final int COLLISION_DAMAGE = 25;
+	public static final int COLLISION_DAMAGE = 15;
 
 	private static final int MAX_HEALTH = 1;
 	private static final int KILL_SCORE = 200;
