@@ -236,6 +236,16 @@ public class GameScreen {
 
 		font.draw(batch, "SCORE", Gdx.graphics.getWidth() - 57, Gdx.graphics.getHeight() - 10);
 		font.draw(batch, score, Gdx.graphics.getWidth() - 10 - xDist, Gdx.graphics.getHeight() - 32);
+
+		if (!(asteroidSpawner instanceof IdleSpawner)) {
+			font.draw(batch, "TIME LEFT", 10, Gdx.graphics.getHeight() - 10);
+			if (asteroidSpawner instanceof TimeAttackAsteroidSpawner) {
+				final String time = String.valueOf(Math.round(((TimeAttackAsteroidSpawner) asteroidSpawner).getTimeLeft()));
+				font.draw(batch, time, 10, Gdx.graphics.getHeight() - 32);
+			} else {
+				font.draw(batch, "ö", 10, Gdx.graphics.getHeight() - 32);
+			}
+		}
 		batch.end();
 	}
 
