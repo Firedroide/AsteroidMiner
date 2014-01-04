@@ -24,7 +24,6 @@ public class CollisionListener implements ContactListener {
 	@Override
 	public void beginContact(Contact contact) {
 		if (contact.getFixtureA() == null || contact.getFixtureB() == null) return;
-		//Gdx.app.log("DEBUG", "Begin contact " + contact.getFixtureA().toString() + contact.getFixtureB().toString());
 
 		Entity e1 = (Entity) contact.getFixtureA().getBody().getUserData();
 		Entity e2 = (Entity) contact.getFixtureB().getBody().getUserData();
@@ -45,6 +44,10 @@ public class CollisionListener implements ContactListener {
 			if (e2 instanceof Damageable) {
 				final Player cause = ((MetalAsteroidProjectile) e1).getCausingPlayer();
 				((Damageable) e2).damage(MetalAsteroidProjectile.COLLISION_DAMAGE, cause, 2f);
+				e1.remove();
+			} else if (e2.getType() == EntityType.LASER) {
+				e1.remove();
+				e2.remove();
 			}
 			break;
 		case SPACESHIP:

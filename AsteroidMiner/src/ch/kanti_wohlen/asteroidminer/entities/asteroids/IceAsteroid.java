@@ -135,7 +135,7 @@ public class IceAsteroid extends Entity implements Damageable {
 
 	private static FixtureDef createCircle(float radius) {
 		final FixtureDef fixture = new FixtureDef();
-		fixture.density = 100f;
+		fixture.density = 70f;
 		fixture.restitution = 1.05f;
 		final CircleShape cs = new CircleShape();
 		cs.setRadius(radius);

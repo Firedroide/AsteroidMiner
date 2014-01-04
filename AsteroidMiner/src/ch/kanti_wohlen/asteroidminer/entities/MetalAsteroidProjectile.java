@@ -40,7 +40,13 @@ public class MetalAsteroidProjectile extends Entity implements Damageable {
 		final float height = Textures.PROJECTILE.getHeight() * PIXEL_TO_BOX2D * RENDER_SCALE;
 		boundingBox = new Rectangle(0f, 0f, width, height);
 
-		new FadeOutHelper(this, 0.8f, 0.2f);
+		new FadeOutHelper(this, 0.8f, 0.2f, new Runnable() {
+
+			@Override
+			public void run() {
+				remove();
+			}
+		});
 	}
 
 	@Override

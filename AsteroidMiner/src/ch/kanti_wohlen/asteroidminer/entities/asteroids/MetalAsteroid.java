@@ -23,7 +23,7 @@ import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
 public class MetalAsteroid extends Entity implements Damageable {
 
-	public static final int HEALTH_PER_SIZE = 30;
+	public static final int HEALTH_PER_SIZE = 50;
 	private static final float POWER_UP_SPAWN_CHANCE = 0.2f;
 	private static final int KILL_SCORE = 1000;
 
@@ -53,7 +53,7 @@ public class MetalAsteroid extends Entity implements Damageable {
 		s.setScale(renderScale);
 		s.draw(batch, alpha);
 
-		final float healthBarX = s.getX() + s.getWidth() * 0.025f;
+		final float healthBarX = s.getX() + s.getWidth() * 0.17f;
 		final float healthBarY = s.getY() + s.getHeight() * 0.6f + currentRadius * BOX2D_TO_PIXEL;
 		healthBar.render(batch, health, new Vector2(healthBarX, healthBarY));
 	}
@@ -68,7 +68,6 @@ public class MetalAsteroid extends Entity implements Damageable {
 		return super.isRemoved() || health == 0;
 	}
 
-	// TODO: Not accurate due to offset center
 	@Override
 	public Rectangle getBoundingBox() {
 		final float d = currentRadius * 2f;
@@ -142,7 +141,7 @@ public class MetalAsteroid extends Entity implements Damageable {
 
 	private static FixtureDef createCircle(float radius) {
 		final FixtureDef fixture = new FixtureDef();
-		fixture.density = 100f;
+		fixture.density = 200f;
 		fixture.restitution = 1.2f;
 		final CircleShape cs = new CircleShape();
 		cs.setRadius(radius);

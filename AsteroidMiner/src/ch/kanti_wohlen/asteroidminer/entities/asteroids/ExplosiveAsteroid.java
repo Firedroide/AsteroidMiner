@@ -142,7 +142,7 @@ public class ExplosiveAsteroid extends Entity implements Damageable {
 
 	private static FixtureDef createCircle(float radius) {
 		final FixtureDef fixture = new FixtureDef();
-		fixture.density = 100f;
+		fixture.density = 150f;
 		fixture.restitution = 0.5f;
 		final CircleShape cs = new CircleShape();
 		cs.setRadius(radius);
