@@ -241,7 +241,7 @@ public class GameScreen {
 			font.draw(batch, "TIME LEFT", 10, Gdx.graphics.getHeight() - 10);
 			if (asteroidSpawner instanceof TimeAttackAsteroidSpawner) {
 				final String time = String.valueOf(Math.round(((TimeAttackAsteroidSpawner) asteroidSpawner).getTimeLeft()));
-				font.draw(batch, time, 10, Gdx.graphics.getHeight() - 32);
+				font.draw(batch, time + " seconds", 10, Gdx.graphics.getHeight() - 32);
 			} else {
 				font.draw(batch, "ö", 10, Gdx.graphics.getHeight() - 32);
 			}
@@ -309,6 +309,16 @@ public class GameScreen {
 
 	public Animations getAnimations() {
 		return animations;
+	}
+
+	public Vector2 getLocationOnScreen(Entity entity) {
+		return getLocationOnScreen(entity.getPhysicsBody());
+	}
+
+	public Vector2 getLocationOnScreen(Body body) {
+		final Vector2 bodyPos = body.getPosition().cpy().scl(Entity.BOX2D_TO_PIXEL);
+		bodyPos.sub(camera.position.x, camera.position.y).scl(1f, -1f);
+		return bodyPos.add(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
 	}
 
 	public void dispose() {

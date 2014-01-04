@@ -51,20 +51,22 @@ public class SpaceShip extends Entity implements Damageable {
 		healthBar = new HealthBar(MAX_HEALTH);
 		shieldBar = new ShieldBar(MAX_SHIELD);
 
-		health = MAX_HEALTH;
+		health = 0;
 		shield = 0;
 		firingDelay = DEFAULT_FIRING_DELAY;
 		speed = DEFAULT_SPEED;
 		laserDamage = Laser.DEFAULT_DAMAGE;
-		canShoot = true;
+		canShoot = false;
 		invulnerable = true;
 		TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
 
 			@Override
 			public void run() {
 				invulnerable = false;
+				canShoot = true;
+				health = MAX_HEALTH;
 			}
-		}, 2);
+		}, 0.8f);
 
 		final float width = Textures.SPACESHIP.getWidth() * PIXEL_TO_BOX2D;
 		final float height = Textures.SPACESHIP.getHeight() * PIXEL_TO_BOX2D;
