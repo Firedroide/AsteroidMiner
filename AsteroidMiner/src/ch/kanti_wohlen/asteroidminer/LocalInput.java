@@ -76,7 +76,6 @@ public class LocalInput implements InputProcessor {
 		}
 		angularDiff = MathUtils.clamp(angularDiff, -10f, 10f) / 10f;
 		final float velCorr = 4f * body.getAngularVelocity() * body.getMass();
-		System.out.println(factorTurn * angularDiff - velCorr);
 		body.applyAngularImpulse(factorTurn * angularDiff - velCorr, true);
 
 		// IMA FIRIN' MAH LAZORS!!

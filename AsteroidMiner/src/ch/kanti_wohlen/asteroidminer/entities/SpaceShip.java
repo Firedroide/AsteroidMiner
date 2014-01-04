@@ -24,7 +24,7 @@ public class SpaceShip extends Entity implements Damageable {
 
 	public static final int MAX_HEALTH = 200;
 	public static final int MAX_SHIELD = 200;
-	public static final float DEFAULT_FIRING_DELAY = 0.3f;
+	public static final float DEFAULT_FIRING_DELAY = 0.27f;
 	public static final float DEFAULT_SPEED = 1f;
 	public static final float LINEAR_DAMPING = 2.5f;
 
