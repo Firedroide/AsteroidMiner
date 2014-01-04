@@ -4,6 +4,7 @@ import ch.kanti_wohlen.asteroidminer.GameMode;
 import ch.kanti_wohlen.asteroidminer.fading.FadeOutHelper;
 import ch.kanti_wohlen.asteroidminer.fading.Fadeable;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,27 +42,36 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 		Image title = new Image(new Texture(Gdx.files.internal("graphics/logo.png")));
 		table.add(title).padBottom(50f).colspan(2).row();
 
-		TextButton singlePlayer_2 = new TextButton("2 Minute game", skin);
+		TextButton singlePlayer_2 = new TextButton("2 Minute Game", skin);
 		singlePlayer_2.addListener(new GameLauncher(GameMode.TIME_2_MIN));
 
-		TextButton singlePlayer_5 = new TextButton("5 Minute game", skin);
+		TextButton singlePlayer_5 = new TextButton("5 Minute Game", skin);
 		singlePlayer_5.addListener(new GameLauncher(GameMode.TIME_5_MIN));
 		table.add(singlePlayer_2).padRight(5f).right();
 		table.add(singlePlayer_5).left().row().padTop(10f);
 
-		TextButton singlePlayer_endless = new TextButton("Endless game", skin);
+		TextButton singlePlayer_endless = new TextButton("Endless Mode", skin);
 		singlePlayer_endless.addListener(new GameLauncher(GameMode.ENDLESS));
 		table.add(singlePlayer_endless).padTop(10f).colspan(2).row();
 
-		// TODO: Debug...
-		// table.debug();
+		if (Gdx.app.getType() == ApplicationType.Desktop) {
+			TextButton endGame = new TextButton("Quit Game", skin);
+			endGame.addListener(new InputListener() {
+
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					Gdx.app.exit();
+					return false;
+				}
+			});
+			table.add(endGame).padTop(30f).colspan(2).row();
+		}
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
 		stage.draw();
-		Table.drawDebug(stage);
 	}
 
 	@Override
