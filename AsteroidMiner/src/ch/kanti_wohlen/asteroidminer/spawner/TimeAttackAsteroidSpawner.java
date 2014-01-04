@@ -57,7 +57,7 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 	}
 
 	public float getTimeLeft() {
-		return gameTime - time;
+		return Math.max(gameTime - time, 0f);
 	}
 
 	private void spawn(float difficulty) {
