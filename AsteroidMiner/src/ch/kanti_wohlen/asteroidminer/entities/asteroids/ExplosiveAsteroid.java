@@ -88,6 +88,7 @@ public class ExplosiveAsteroid extends Entity implements Damageable {
 			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
 			healthBar.resetAlpha();
 
+			final Vector2 pos = body.getPosition().cpy();
 			if (health == 0) {
 				TaskScheduler.INSTANCE.runTask(new Runnable() {
 
@@ -95,7 +96,7 @@ public class ExplosiveAsteroid extends Entity implements Damageable {
 					public void run() {
 						final float radius = currentRadius * 8f;
 						final int damage = (int) (25f * currentRadius);
-						new Explosion(body.getWorld(), body.getPosition().cpy(), radius, damage, true, damager);
+						new Explosion(body.getWorld(), pos, radius, damage, true, damager);
 					}
 				});
 				if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
