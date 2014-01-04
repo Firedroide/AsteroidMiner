@@ -25,7 +25,7 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 	public TimeAttackAsteroidSpawner(World theWorld, float time) {
 		super(theWorld);
 		gameTime = time;
-		maxTime = time * 0.95f;
+		maxTime = time * 0.8f;
 	}
 
 	@Override

@@ -36,7 +36,6 @@ public class EndlessAsteroidSpawner extends AsteroidSpawner {
 	public void tick() {
 		time += TaskScheduler.TICK_TIME;
 		final float difficulty = time / (time + 60f);
-		System.out.println(difficulty);
 		if (MathUtils.random() > 0.1f + 0.2f * difficulty) return;
 		if (world.getBodyCount() < MAXIMUM_ENTITIES) spawn(difficulty);
 	}

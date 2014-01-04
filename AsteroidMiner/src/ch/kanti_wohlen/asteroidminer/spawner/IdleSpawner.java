@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class IdleSpawner extends AsteroidSpawner {
 
-	private static final int START_SPAWNING_AMOUNT = 10;
+	private static final int START_SPAWNING_AMOUNT = 20;
 
 	public IdleSpawner(World theWorld) {
 		super(theWorld);
@@ -32,7 +32,7 @@ public class IdleSpawner extends AsteroidSpawner {
 
 	@Override
 	public void tick() {
-		if (MathUtils.random() > 0.025f) return;
+		if (MathUtils.random() > 0.04f) return;
 		spawn();
 	}
 
@@ -60,7 +60,7 @@ public class IdleSpawner extends AsteroidSpawner {
 		final float width = Gdx.graphics.getWidth() * Entity.PIXEL_TO_BOX2D * 0.6f;
 		final float height = Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D * 0.6f;
 		final float angle = MathUtils.random(MathUtils.PI2);
-		final float speed = MathUtils.random(3f, 10f);
+		final float speed = MathUtils.random(4f, 12f);
 		final float rotation = MathUtils.random(-0.5f, 0.5f);
 
 		final BorderSide side = chooseSide(angle);
@@ -72,14 +72,20 @@ public class IdleSpawner extends AsteroidSpawner {
 
 	private void spawnRandomAsteroid(Vector2 location, Vector2 momentum, float rotation) {
 		final float radius = MathUtils.random(1f, 4f);
-		final float type = MathUtils.random(8f);
+		final float type = MathUtils.random(10f);
 		if (!AsteroidAABB.checkAsteroidClipping(world, location, radius)) {
 			if (type < 6f) {
 				StoneAsteroid stoneAsteroid = new StoneAsteroid(world, location, radius, momentum);
 				stoneAsteroid.getPhysicsBody().setAngularVelocity(rotation);
-			} else {
+			} else if (type < 8f) {
 				IceAsteroid iceAsteroid = new IceAsteroid(world, location, radius, momentum);
 				iceAsteroid.getPhysicsBody().setAngularVelocity(rotation);
+			} else if (type < 9f) {
+				MetalAsteroid metalAsteroid = new MetalAsteroid(world, location, radius, momentum);
+				metalAsteroid.getPhysicsBody().setAngularVelocity(rotation);
+			} else {
+				ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(world, location, radius, momentum);
+				explosiveAsteroid.getPhysicsBody().setAngularVelocity(rotation);
 			}
 		}
 	}
