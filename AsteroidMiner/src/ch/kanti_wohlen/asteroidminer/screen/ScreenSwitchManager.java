@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Matrix4;
 
 public class ScreenSwitchManager implements Runnable {
 
-	private static final float OVERLAY_SECONDS = 1.2f;
+	private static final float OVERLAY_SECONDS = 2.4f;
 	private static final float OVERLAY_HALFTIME = OVERLAY_SECONDS / 2f;
 	private static final Matrix4 UNITY_MATRIX = new Matrix4().setToOrtho2D(0f, 0f, 1f, 1f);
 
