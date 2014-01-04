@@ -14,6 +14,7 @@ import ch.kanti_wohlen.asteroidminer.animations.Animations;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.WorldBorder;
 import ch.kanti_wohlen.asteroidminer.spawner.AsteroidSpawner;
+import ch.kanti_wohlen.asteroidminer.spawner.EndlessAsteroidSpawner;
 import ch.kanti_wohlen.asteroidminer.spawner.IdleSpawner;
 import ch.kanti_wohlen.asteroidminer.spawner.TimeAttackAsteroidSpawner;
 
@@ -81,8 +82,7 @@ public class GameScreen {
 			setAsteroidSpawner(new TimeAttackAsteroidSpawner(world, 300f));
 			break;
 		case ENDLESS:
-			// TODO!!
-			//setAsteroidSpawner(new TimeAttackAsteroidSpawner(world, 120f));
+			setAsteroidSpawner(new EndlessAsteroidSpawner(world));
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown game mode.");
