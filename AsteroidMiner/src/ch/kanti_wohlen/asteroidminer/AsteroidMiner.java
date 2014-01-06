@@ -119,6 +119,10 @@ public class AsteroidMiner extends Game {
 		return batch;
 	}
 
+	public GameLauncher getGameLauncher() {
+		return launcher;
+	}
+
 	public GameScreen getGameScreen() {
 		return gameScreen;
 	}

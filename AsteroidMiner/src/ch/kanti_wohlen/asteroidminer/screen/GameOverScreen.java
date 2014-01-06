@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
+import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 
 import com.badlogic.gdx.Gdx;
@@ -81,6 +82,9 @@ public class GameOverScreen extends OverlayScreen {
 				game.switchScreenWithOverlay(game.getScoreScreen(), Color.BLACK);
 			}
 		}, SCREEN_SHOW_TIME);
+
+		AsteroidMiner.INSTANCE.getGameLauncher().setHighscore(score);
+		AsteroidMiner.INSTANCE.getGameScreen().reset();
 	}
 
 	@Override

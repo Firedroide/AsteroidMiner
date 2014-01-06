@@ -1,7 +1,13 @@
 package ch.kanti_wohlen.asteroidminer.client;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.GameLauncher;
+import ch.kanti_wohlen.asteroidminer.Pair;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
@@ -35,15 +41,40 @@ public class GwtLauncher extends GwtApplication implements GameLauncher {
 	@Override
 	public void onModuleLoad() {
 		super.onModuleLoad();
-		// TODO: Show Facebook authorization dialog
-		// logIn();
+		FacebookIntegration.init();
+		FacebookIntegration.logIn();
 	}
 
-	public static final native void alert(String msg) /*-{
-		alert(msg);
-	}-*/;
+	@Override
+	public void setHighscore(int newScore) {
+		FacebookIntegration.updateHighscore(newScore);
+	}
 
-	public static final native void logIn() /*-{
-		$doc.logIn();
-	}-*/;
+	@Override
+	public List<Pair<String, Integer>> getHighscores() {
+		List<JavaScriptHighscore> nativeScores = FacebookIntegration.getHighscores();
+		List<Pair<String, Integer>> highscores = new ArrayList<Pair<String,Integer>>(nativeScores.size());
+		for (JavaScriptHighscore highscore : nativeScores) {
+			highscores.add(new Pair<String, Integer>(highscore.getUserName(), highscore.getScore()));
+		}
+
+		Collections.sort(highscores, new Comparator<Pair<String, Integer>>() {
+
+			@Override
+			public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
+				return o2.getValue().compareTo(o1.getValue());
+			}
+		});
+		return highscores;
+	}
+
+	@Override
+	public void postFeedHighscore() {
+		FacebookIntegration.postScoreMessage(1000); // TODO: temp
+	}
+
+	@Override
+	public void postFeedFriendScoreBeaten() {
+		FacebookIntegration.postFriendScoreBeaten();
+	}
 }

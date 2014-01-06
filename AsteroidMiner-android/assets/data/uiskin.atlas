@@ -195,3 +195,11 @@ white
   orig: 1, 1
   offset: 0, 0
   index: -1
+box-light
+  rotate: false
+  xy: 27, 1
+  size: 14, 14
+  split: 3, 3, 3, 3
+  orig: 14, 14
+  offset: 0, 0
+  index: -1

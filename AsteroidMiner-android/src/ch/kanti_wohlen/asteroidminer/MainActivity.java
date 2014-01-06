@@ -1,5 +1,8 @@
 package ch.kanti_wohlen.asteroidminer;
 
+import java.util.Collections;
+import java.util.List;
+
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -17,4 +20,18 @@ public class MainActivity extends AndroidApplication implements GameLauncher {
 
 		initialize(new AsteroidMiner(this), cfg);
 	}
+
+	@Override
+	public void setHighscore(int newScore) {}
+
+	@Override
+	public List<Pair<String, Integer>> getHighscores() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public void postFeedHighscore() {}
+
+	@Override
+	public void postFeedFriendScoreBeaten() {}
 }

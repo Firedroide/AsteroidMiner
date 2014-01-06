@@ -1,12 +1,11 @@
 package ch.kanti_wohlen.asteroidminer.animations;
 
-import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.Map;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
+import ch.kanti_wohlen.asteroidminer.Pair;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer.SoundEffect;
@@ -39,7 +38,7 @@ public class Explosion implements Animation {
 	private final int maxDmg;
 	private final boolean dmgPlayer;
 	private final Player player;
-	private final LinkedList<AbstractMap.SimpleImmutableEntry<Entity, Float>> entities;
+	private final LinkedList<Pair<Entity, Float>> entities;
 
 	private float currentRadius;
 	private boolean removed;
@@ -53,7 +52,7 @@ public class Explosion implements Animation {
 		currentRadius = 1;
 		player = owner;
 
-		entities = new LinkedList<AbstractMap.SimpleImmutableEntry<Entity, Float>>();
+		entities = new LinkedList<Pair<Entity, Float>>();
 		final Vector2 upperLeft = explosionCenter.cpy().sub(maxRadius, maxRadius);
 		final Vector2 lowerRight = explosionCenter.cpy().add(maxRadius, maxRadius);
 		world.QueryAABB(new QueryCallback() {
@@ -65,17 +64,17 @@ public class Explosion implements Animation {
 					final float r2 = fixture.getBody().getPosition().dst2(center);
 
 					if (r2 <= maxRadius * maxRadius) {
-						entities.add(new AbstractMap.SimpleImmutableEntry<Entity, Float>(entity, r2));
+						entities.add(new Pair<Entity, Float>(entity, r2));
 					}
 				}
 				return true;
 			}
 		}, upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y);
 
-		Collections.sort(entities, new Comparator<Map.Entry<Entity, Float>>() {
+		Collections.sort(entities, new Comparator<Pair<Entity, Float>>() {
 
 			@Override
-			public int compare(Map.Entry<Entity, Float> o1, Map.Entry<Entity, Float> o2) {
+			public int compare(Pair<Entity, Float> o1, Pair<Entity, Float> o2) {
 				return o1.getValue().compareTo(o2.getValue());
 			}
 		});
@@ -124,7 +123,7 @@ public class Explosion implements Animation {
 
 		final float radiusMax = currentRadius * currentRadius;
 
-		for (Map.Entry<Entity, Float> entry = entities.getFirst(); entry.getValue() < radiusMax; entry = entities.getFirst()) {
+		for (Pair<Entity, Float> entry = entities.getFirst(); entry.getValue() < radiusMax; entry = entities.getFirst()) {
 			if (entry.getKey().isRemoved()) {
 				entities.removeFirst();
 				if (entities.isEmpty()) {
