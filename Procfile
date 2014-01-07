@@ -1,1 +1,1 @@
-web:    java -cp AsteroidMiner-html/target/classes/ch/kanti_wohlen/asteroidminer/client GwtLauncher
+web:    java -jar AsteroidMiner-html/target/dependency/jetty-runner.jar AsteroidMiner-html/target/*.war

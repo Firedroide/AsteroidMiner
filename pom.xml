@@ -61,6 +61,11 @@
       <modules>
         <module>AsteroidMiner-html</module>
       </modules>
+      <activation>
+          <property>
+              <name>heroku</name>
+          </property>
+      </activation>
     </profile>
     <profile>
       <id>all</id>
