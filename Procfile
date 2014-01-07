@@ -1,1 +1,1 @@
-web:    java -jar AsteroidMiner-html/target/dependency/jetty-runner.jar AsteroidMiner-html/target/*.war
+web:    java -jar AsteroidMiner-html/target/dependency/jetty-runner.jar --port $PORT AsteroidMiner-html/target/*.war
