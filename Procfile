@@ -1,0 +1,1 @@
+web:    java -cp AsteroidMiner-html/target/classes/ch/kanti_wohlen/asteroidminer/client GwtLauncher
