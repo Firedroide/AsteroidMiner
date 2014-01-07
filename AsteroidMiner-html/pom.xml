@@ -81,6 +81,7 @@
         <configuration>
           <webappDirectory>${project.basedir}/target/webapp</webappDirectory>
           <runTarget>index.html</runTarget>
+          <draftCompile>true</draftCompile>
         </configuration>
         <executions>
           <execution>
