@@ -23,6 +23,8 @@ public class FiringSpeedPowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player player) {
+		super.onPickUp(player);
+
 		player.getSpaceShip().setFiringDelay(SpaceShip.DEFAULT_FIRING_DELAY - FIRING_DELAY_DECREASE);
 		TaskScheduler.INSTANCE.runTaskLater(new PowerUpRemover(player), POWER_UP_DURATION);
 		SoundPlayer.playSound(SoundEffect.POWER_UP_PICK_UP, 0.4f);

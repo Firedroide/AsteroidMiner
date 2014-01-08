@@ -23,6 +23,8 @@ public class WeaponFiringForcePowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player player) {
+		super.onPickUp(player);
+
 		player.getSpaceShip().setLaserDamage(Laser.DEFAULT_DAMAGE + DAMAGE_INCREASE);
 		TaskScheduler.INSTANCE.runTaskLater(new PowerUpRemover(player), POWER_UP_DURATION);
 		SoundPlayer.playSound(SoundEffect.POWER_UP_PICK_UP, 0.4f);

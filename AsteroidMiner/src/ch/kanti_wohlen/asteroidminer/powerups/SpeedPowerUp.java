@@ -23,6 +23,8 @@ public class SpeedPowerUp extends PowerUp {
 
 	@Override
 	public void onPickUp(Player player) {
+		super.onPickUp(player);
+
 		player.getSpaceShip().setSpeed(SpaceShip.DEFAULT_SPEED + SPEED_INCREASE);
 		TaskScheduler.INSTANCE.runTaskLater(new PowerUpRemover(player), POWER_UP_DURATION);
 		SoundPlayer.playSound(SoundEffect.POWER_UP_PICK_UP, 0.4f);

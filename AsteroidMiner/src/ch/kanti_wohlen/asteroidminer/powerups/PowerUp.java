@@ -16,6 +16,7 @@ import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 public abstract class PowerUp extends Entity {
 
 	protected static final float PICKUP_RADIUS = 0.5f;
+	protected static final int PICKUP_SCORE = 50;
 	private static final float FADE_OUT_START = 15f;
 	private static final float FADE_OUT_TIME = 5f;
 
@@ -61,7 +62,9 @@ public abstract class PowerUp extends Entity {
 		return fixture;
 	}
 
-	public abstract void onPickUp(Player player);
+	public void onPickUp(Player player) {
+		player.addScore(PICKUP_SCORE);
+	}
 
 	public abstract PowerUpType getPowerUpType();
 }
