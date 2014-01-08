@@ -36,9 +36,9 @@ public class GameScreen {
 
 	public static final float WORLD_SIZE = 160f;
 
-	private static final float timeStep = 1 / 60f; // TODO: Allow different maximum frame rates?
-	private static final int velocityIterations = 8;
-	private static final int positionIterations = 3;
+	private static final float timeStep = TaskScheduler.INSTANCE.TICK_TIME;
+	private static final int velocityIterations = 5;
+	private static final int positionIterations = 2;
 
 	private final BitmapFont font;
 	private final OrthographicCamera camera;
