@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.spawner;
 
+import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.WorldBorder.BorderSide;
 
@@ -12,10 +13,13 @@ import com.badlogic.gdx.utils.Array;
 
 public abstract class AsteroidSpawner {
 
+	protected static final int MAXIMUM_ENTITIES = 200;
+	protected final float tickTimeModifier;
 	protected final World world;
 
 	public AsteroidSpawner(World theWorld) {
 		world = theWorld;
+		tickTimeModifier = TaskScheduler.INSTANCE.TICK_TIME * 60f;
 	}
 
 	public void start() {}

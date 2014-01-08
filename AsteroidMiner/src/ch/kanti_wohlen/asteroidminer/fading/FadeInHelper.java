@@ -24,9 +24,9 @@ public class FadeInHelper implements Runnable {
 
 	@Override
 	public void run() {
-		currentTime += 1 * TaskScheduler.TICK_TIME;
+		currentTime += 1 * TaskScheduler.INSTANCE.TICK_TIME;
 		source.setAlpha(currentTime / time);
-		if (time - currentTime < TaskScheduler.TICK_TIME) {
+		if (time - currentTime < TaskScheduler.INSTANCE.TICK_TIME) {
 			if (doneListener != null) doneListener.run();
 		}
 	}

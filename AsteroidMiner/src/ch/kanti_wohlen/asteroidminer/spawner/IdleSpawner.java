@@ -32,8 +32,10 @@ public class IdleSpawner extends AsteroidSpawner {
 
 	@Override
 	public void tick() {
-		if (MathUtils.random() > 0.04f) return;
-		spawn();
+		if (MathUtils.random() > tickTimeModifier * 0.04f) return;
+		if (world.getBodyCount() < MAXIMUM_ENTITIES) {
+			spawn();
+		}
 	}
 
 	@Override

@@ -22,8 +22,12 @@ public class LocalInput implements InputProcessor {
 		main = AsteroidMiner.INSTANCE;
 	}
 
-	public void onGameRunning(LocalPlayer player) {
-		if (player.getSpaceShip().getHealth() == 0) return;
+	public void onGameRunning(LocalPlayer player, float deltaTime) {
+		if (player.getSpaceShip().getHealth() == 0 || main.getScreen() == main.getGameOverScreen()) {
+			thrusterVolume *= 0.9f;
+			SoundEffect.THRUSTER.setVolume(thrusterVolume);
+			return;
+		}
 
 		boolean shift = Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT);
 		float factorSpeed = shift ? 160f : 80f;

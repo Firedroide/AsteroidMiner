@@ -14,8 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class EndlessAsteroidSpawner extends AsteroidSpawner {
 
-	private static final int START_SPAWNING_AMOUNT = 10;
-	private static final int MAXIMUM_ENTITIES = 250;
+	private static final int START_SPAWNING_AMOUNT = 40;
 
 	private float time;
 
@@ -34,9 +33,9 @@ public class EndlessAsteroidSpawner extends AsteroidSpawner {
 
 	@Override
 	public void tick() {
-		time += TaskScheduler.TICK_TIME;
+		time += TaskScheduler.INSTANCE.TICK_TIME;
 		final float difficulty = time / (time + 60f);
-		if (MathUtils.random() > 0.1f + 0.2f * difficulty) return;
+		if (MathUtils.random() > tickTimeModifier * (0.05f + 0.1f * difficulty)) return;
 		if (world.getBodyCount() < MAXIMUM_ENTITIES) spawn(difficulty);
 	}
 

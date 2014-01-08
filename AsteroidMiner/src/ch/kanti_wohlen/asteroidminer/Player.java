@@ -18,5 +18,5 @@ public interface Player extends Disposable {
 
 	public void subtractScore(int difference);
 
-	public void doInput();
+	public void doInput(float deltaTime);
 }

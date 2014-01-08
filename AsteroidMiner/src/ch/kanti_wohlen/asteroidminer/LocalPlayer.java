@@ -60,8 +60,8 @@ public class LocalPlayer implements Player {
 	}
 
 	@Override
-	public void doInput() {
-		input.onGameRunning(this);
+	public void doInput(float deltaTime) {
+		input.onGameRunning(this, deltaTime);
 	}
 
 	@Override

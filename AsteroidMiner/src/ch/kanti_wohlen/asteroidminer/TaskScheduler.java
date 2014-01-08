@@ -9,9 +9,9 @@ public class TaskScheduler {
 	 * The current and only instance of TaskScheduler.<br>
 	 * Is never <code>null</code>.
 	 */
-	public static final TaskScheduler INSTANCE = new TaskScheduler();
-	public static final float TICKS_PER_SECOND = 60f;
-	public static final float TICK_TIME = 1f / TICKS_PER_SECOND;
+	public static TaskScheduler INSTANCE;
+	public final float TICKS_PER_SECOND;
+	public final float TICK_TIME;
 
 	/*
 	 * At 60 ticks per seconds, this will be able to count up for about 414.2 days
@@ -21,7 +21,12 @@ public class TaskScheduler {
 	private final ArrayList<Task> tasks;
 	private final ArrayList<Task> taskBuffer;
 
-	private TaskScheduler() {
+	TaskScheduler(int targetTickRate) {
+		INSTANCE = this;
+
+		TICKS_PER_SECOND = (float) targetTickRate;
+		TICK_TIME = 1f / TICKS_PER_SECOND;
+
 		currentTick = 0;
 		tasks = new ArrayList<Task>();
 		taskBuffer = new ArrayList<Task>();

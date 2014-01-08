@@ -21,6 +21,7 @@ public class AsteroidMiner extends Game {
 
 	public static AsteroidMiner INSTANCE;
 	private final GameLauncher launcher;
+	private final int targetTickRate;
 
 	private GameScreen gameScreen;
 	private MenuScreen menuScreen;
@@ -38,9 +39,12 @@ public class AsteroidMiner extends Game {
 	 * 
 	 * @param launcher
 	 *            the launcher native to each platform. Used to perform Facebook publishing tasks.
+	 * @param fpsAndTickRate
+	 *            the target FPS and tick rate the game should be run at.
 	 */
-	public AsteroidMiner(GameLauncher gameLauncher) {
+	public AsteroidMiner(GameLauncher gameLauncher, int fpsAndTickRate) {
 		launcher = gameLauncher;
+		targetTickRate = fpsAndTickRate;
 		INSTANCE = this;
 	}
 
@@ -52,7 +56,7 @@ public class AsteroidMiner extends Game {
 
 		fpsLogger = new FPSLogger();
 		batch = new SpriteBatch();
-		scheduler = TaskScheduler.INSTANCE;
+		scheduler = new TaskScheduler(targetTickRate);
 
 		gameScreen = new GameScreen();
 		menuScreen = new MenuScreen();
@@ -114,6 +118,10 @@ public class AsteroidMiner extends Game {
 
 	@Override
 	public void resume() {}
+
+	public int getTargetTickRate() {
+		return targetTickRate;
+	}
 
 	public SpriteBatch getSpriteBatch() {
 		return batch;

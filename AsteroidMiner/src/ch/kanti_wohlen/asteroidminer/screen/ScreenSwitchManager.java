@@ -34,7 +34,7 @@ public class ScreenSwitchManager implements Runnable {
 		pixmap.drawPixel(0, 0, Color.rgba8888(overlayColor));
 		overlay = new Sprite(new Texture(pixmap));
 
-		final int executions = (int) (OVERLAY_SECONDS * TaskScheduler.TICKS_PER_SECOND);
+		final int executions = (int) (OVERLAY_SECONDS * TaskScheduler.INSTANCE.TICKS_PER_SECOND);
 		changeTick = executions / 2;
 		TaskScheduler.INSTANCE.runTaskMultipleTimes(this, 0, 1, executions);
 	}
@@ -42,7 +42,7 @@ public class ScreenSwitchManager implements Runnable {
 	@Override
 	public void run() {
 		++tick;
-		alpha = Math.max(0f, 1f - Math.abs((tick * TaskScheduler.TICK_TIME) - OVERLAY_HALFTIME) / OVERLAY_HALFTIME);
+		alpha = Math.max(0f, 1f - Math.abs((tick * TaskScheduler.INSTANCE.TICK_TIME) - OVERLAY_HALFTIME) / OVERLAY_HALFTIME);
 
 		if (tick == changeTick) {
 			main.setScreen(screen);

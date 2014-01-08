@@ -28,6 +28,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
@@ -72,6 +73,7 @@ public class GameScreen {
 	}
 
 	public void startGame(GameMode gameMode) {
+		if (running) return;
 		Gdx.input.setInputProcessor(null);
 
 		switch (gameMode) {
@@ -102,10 +104,15 @@ public class GameScreen {
 	}
 
 	public void stopGame() {
+		if (!running) return;
 		running = false;
 
 		final Color color = localPlayer.getSpaceShip().getHealth() == 0 ? Color.BLACK : Color.WHITE;
 		AsteroidMiner.INSTANCE.switchScreenWithOverlay(AsteroidMiner.INSTANCE.getGameOverScreen(), color);
+	}
+
+	public boolean isGameRunning() {
+		return running;
 	}
 
 	public void reset() {
@@ -133,7 +140,7 @@ public class GameScreen {
 
 		// Process input
 		for (Player p : players) {
-			p.doInput();
+			p.doInput(delta);
 		}
 
 		// Tick animations
@@ -269,26 +276,33 @@ public class GameScreen {
 	private void applyGravity() {
 		final float G = 0.2f;
 
-		// Update to nightly GDX builds to fix this issue?
-		Array<Body> bodies = new Array<Body>(world.getBodyCount());
-		world.getBodies(bodies);
-		ArrayIterator<Body> outer = new ArrayIterator<Body>(bodies, false);
+		final Array<Body> outer = new Array<Body>(world.getBodyCount());
+		world.getBodies(outer);
 
-		for (Body body : outer) {
-			if (body == null) continue;
+		for (int i = 0; i < outer.size; ++i) {
+			final Body body = outer.get(i);
+			if (body == null || body.getGravityScale() == 0f || body.getType() != BodyType.DynamicBody) {
+				outer.removeIndex(i);
+				--i;
+			}
+		}
+		final Array<Body> inner = new Array<Body>(outer);
+		Vector2 dir = new Vector2();
 
-			ArrayIterator<Body> inner = new ArrayIterator<Body>(bodies, false);
+		for (int i = 0; i < outer.size; ++i) {
+			final Body source = outer.get(i);
+			inner.removeIndex(0);
+
 			for (Body target : inner) {
-				if (target == null) continue;
-				if (target.getGravityScale() == 0f) continue;
+				dir = source.getPosition().sub(target.getPosition());
+				final float dist2 = dir.len2() + 1;
+				if (dist2 > 20000) continue;
 
-				Vector2 dir = body.getPosition().cpy().sub(target.getPosition());
-				final float dist = dir.len2() + 1;
 				dir.nor();
-				final float w2 = body.getMass() * target.getMass();
-				final float force = G * w2 / dist;
+				final float force = G * source.getMass() * target.getMass() / dist2;
 
-				target.applyForceToCenter(dir.scl(force).scl(target.getGravityScale()), true);
+				target.applyForceToCenter(dir.cpy().scl(force * target.getGravityScale()), true);
+				source.applyForceToCenter(dir.cpy().scl(-force * source.getGravityScale()), true);
 			}
 		}
 	}

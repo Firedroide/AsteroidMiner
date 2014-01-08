@@ -27,7 +27,7 @@ public class Main implements GameLauncher {
 		cfg.foregroundFPS = 60;
 		cfg.backgroundFPS = -1;
 
-		new LwjglApplication(new AsteroidMiner(this), cfg);
+		new LwjglApplication(new AsteroidMiner(this, 60), cfg);
 	}
 
 	@Override

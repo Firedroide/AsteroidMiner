@@ -18,7 +18,7 @@ public class MainActivity extends AndroidApplication implements GameLauncher {
 		cfg.hideStatusBar = true;
 		cfg.useGL20 = false;
 
-		initialize(new AsteroidMiner(this), cfg);
+		initialize(new AsteroidMiner(this, 30), cfg);
 	}
 
 	@Override
