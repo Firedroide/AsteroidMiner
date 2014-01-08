@@ -30,7 +30,7 @@ public class Explosion implements Animation {
 	private static final ShapeRenderer renderer = new ShapeRenderer();
 	private static final float MAX_HEAR_DISTANCE2 = 750f * 750f;
 	private static final float EXPLOSION_SCORE_MULTIPLIER = 0.05f;
-	private static final float EXPLOSION_SPEED = 1.3f;
+	private static final float EXPLOSION_SPEED = 80f;
 
 	private final World world;
 	private final Vector2 center;
@@ -114,7 +114,7 @@ public class Explosion implements Animation {
 	}
 
 	public void tick(float deltaTime) {
-		currentRadius += EXPLOSION_SPEED;
+		currentRadius += EXPLOSION_SPEED * deltaTime;
 		if (currentRadius > maxRadius) {
 			removed = true;
 			return;
