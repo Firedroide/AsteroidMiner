@@ -40,7 +40,7 @@ public class FacebookIntegration {
 	}-*/;
 
 	public static native void updateHighscore(int newScore) /*-{
-		$doc.FB.api("/me/scores", "GET", function(currentScore) {
+		$doc.FB.api("/425756014191466/scores", "GET", function(currentScore) {
 			var getUserScore = function(scores) {
 				if (!(scores && scores.data)) {
 					$doc.highscores = [];
