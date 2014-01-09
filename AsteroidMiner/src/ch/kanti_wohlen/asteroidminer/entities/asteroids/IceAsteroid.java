@@ -21,7 +21,7 @@ public class IceAsteroid extends DamageableEntity {
 	public static final int HEALTH_PER_SIZE = 15;
 	public static final float MIN_RADIUS = 0.5f;
 	private static final float POWER_UP_CHANCE = 0.1f;
-	private static final int SCORE_PER_SIZE = 30;
+	private static final int SCORE_PER_SIZE = 50;
 
 	private final float firstRadius;
 	private float currentRadius;

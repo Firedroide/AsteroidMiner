@@ -23,7 +23,7 @@ public class ExplosiveAsteroid extends DamageableEntity {
 	public static final int MAX_HEALTH = 10;
 	public static final float MIN_RADIUS = 0.5f;
 	private static final float POWER_UP_CHANCE = 0.1f;
-	private static final int KILL_SCORE = 100;
+	private static final int KILL_SCORE = 250;
 
 	private final float currentRadius;
 	private final float renderScale;

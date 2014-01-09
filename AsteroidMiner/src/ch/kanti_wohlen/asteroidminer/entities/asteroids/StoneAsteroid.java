@@ -23,7 +23,7 @@ public class StoneAsteroid extends DamageableEntity {
 	public static final int HEALTH_PER_SIZE = 20;
 	public static final float STONE_ASTEROID_MIN_SIZE = 0.75f;
 	private static final float POWER_UP_CHANCE = 0.05f;
-	private static final int SCORE_PER_SIZE = 20;
+	private static final int SCORE_PER_SIZE = 30;
 
 	private final float currentRadius;
 	private final float renderScale;
