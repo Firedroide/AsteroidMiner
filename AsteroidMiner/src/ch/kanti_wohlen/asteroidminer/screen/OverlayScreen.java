@@ -14,6 +14,7 @@ import ch.kanti_wohlen.asteroidminer.fading.Fadeable;
 
 public abstract class OverlayScreen extends AbstractScreen implements Fadeable {
 
+	public static final Color OVERLAY_COLOR = new Color(0.25f, 0.25f, 0.25f, 0.75f);
 	protected static final Matrix4 UNITY_MATRIX = new Matrix4().setToOrtho2D(0f, 0f, 1f, 1f);
 
 	protected final AsteroidMiner game;

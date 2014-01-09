@@ -26,7 +26,7 @@ public class ScoreScreen extends OverlayScreen {
 	private final Table table;
 
 	public ScoreScreen() {
-		super(new Color(0.25f, 0.25f, 0.25f, 0.75f));
+		super(OVERLAY_COLOR);
 
 		skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));

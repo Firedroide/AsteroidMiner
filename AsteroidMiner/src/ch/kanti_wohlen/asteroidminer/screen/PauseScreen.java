@@ -4,7 +4,6 @@ import ch.kanti_wohlen.asteroidminer.audio.MusicPlayer;
 import ch.kanti_wohlen.asteroidminer.audio.SoundPlayer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
@@ -24,7 +23,7 @@ public class PauseScreen extends OverlayScreen {
 	private float lastMusicVolume;
 
 	public PauseScreen() {
-		super(new Color(0.25f, 0.25f, 0.25f, 0.75f));
+		super(OVERLAY_COLOR);
 
 		skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
