@@ -50,7 +50,7 @@ public class AsteroidMiner extends Game {
 
 	@Override
 	public void create() {
-		Textures.load(); // TODO: Loading system.
+		Textures.load();
 		SoundPlayer.loadSounds();
 		MusicPlayer.load();
 
