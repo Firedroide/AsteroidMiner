@@ -167,6 +167,10 @@ public class GameScreen {
 		pos.sub(width * 0.5f, height * 0.5f, 0f);
 		final Rectangle visibleRect = new Rectangle(pos.x, pos.y, width, height);
 
+		// Make sure the camera doesn't get stretched when the window is resized.
+		camera.viewportWidth = Gdx.graphics.getWidth();
+		camera.viewportHeight = Gdx.graphics.getHeight();
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
