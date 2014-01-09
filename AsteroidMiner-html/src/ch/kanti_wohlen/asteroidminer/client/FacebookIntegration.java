@@ -29,7 +29,7 @@ public class FacebookIntegration {
 						$doc.userID = response.authResponse.userID;
 					}
 				}, {
-					scope : 'publish_stream,friends_games_activity'
+					scope : 'publish_stream'
 				});
 			}
 		});
@@ -84,7 +84,6 @@ public class FacebookIntegration {
 		});
 	}-*/;
 
-	// TODO: Limit number of maximum highscores to 10
 	public static List<JavaScriptHighscore> getHighscores() {
 		final JsArray<JavaScriptHighscore> nativeHighscores = getFriendHighscores();
 		final List<JavaScriptHighscore> highscores = new ArrayList<JavaScriptHighscore>(nativeHighscores.length());
