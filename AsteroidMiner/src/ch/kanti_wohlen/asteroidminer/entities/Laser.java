@@ -90,7 +90,7 @@ public class Laser extends Entity {
 		fixture.density = 0f;
 		fixture.isSensor = true;
 		final PolygonShape ps = new PolygonShape();
-		ps.setAsBox(Textures.LASER.getWidth() / 4f * PIXEL_TO_BOX2D, Textures.LASER.getHeight() / 4f * PIXEL_TO_BOX2D);
+		ps.setAsBox(Textures.LASER.getWidth() * 0.5f * PIXEL_TO_BOX2D, Textures.LASER.getHeight() * 0.5f * PIXEL_TO_BOX2D);
 		fixture.shape = ps;
 		return fixture;
 	}
