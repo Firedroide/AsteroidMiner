@@ -2,6 +2,7 @@ package ch.kanti_wohlen.asteroidminer.spawner;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
+import ch.kanti_wohlen.asteroidminer.TaskScheduler.Task;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.WorldBorder;
 import ch.kanti_wohlen.asteroidminer.entities.WorldBorder.BorderSide;
@@ -19,6 +20,7 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 
 	private final float gameTime;
 	private final float maxTime;
+	private Task gameEndTask;
 	private float time;
 
 	public TimeAttackAsteroidSpawner(World theWorld, float time) {
@@ -35,12 +37,18 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 			spawn(0f);
 		}
 
-		TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
+		gameEndTask = TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
 			@Override
 			public void run() {
 				AsteroidMiner.INSTANCE.getGameScreen().stopGame();
 			}
 		}, gameTime);
+	}
+
+	@Override
+	public void stop() {
+		super.stop();
+		gameEndTask.cancel();
 	}
 
 	@Override
@@ -75,15 +83,15 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 
 	private void spawnRandomAsteroid(Vector2 location, Vector2 momentum, float rotation, float difficulty) {
 		final float radius = MathUtils.random(1f + difficulty, 3f + 2f * difficulty);
-		final float type = MathUtils.random(4f + 8f * difficulty);
+		final float type = MathUtils.random(5f + 8f * difficulty);
 		if (!AsteroidAABB.checkAsteroidClipping(world, location, radius)) {
 			if (type < 6f) {
 				StoneAsteroid stoneAsteroid = new StoneAsteroid(world, location, radius, momentum);
 				stoneAsteroid.getPhysicsBody().setAngularVelocity(rotation);
-			} else if (type < 8f) {
+			} else if (type < 9f) {
 				IceAsteroid iceAsteroid = new IceAsteroid(world, location, radius, momentum);
 				iceAsteroid.getPhysicsBody().setAngularVelocity(rotation);
-			} else if (type < 10f) {
+			} else if (type < 11f) {
 				MetalAsteroid metalAsteroid = new MetalAsteroid(world, location, radius, momentum);
 				metalAsteroid.getPhysicsBody().setAngularVelocity(rotation);
 			} else {
