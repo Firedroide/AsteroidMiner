@@ -85,7 +85,7 @@ public class MetalAsteroid extends DamageableEntity {
 
 	private static FixtureDef createCircle(float radius) {
 		final FixtureDef fixture = new FixtureDef();
-		fixture.density = 200f;
+		fixture.density = 150f;
 		fixture.restitution = 1.2f;
 		final CircleShape cs = new CircleShape();
 		cs.setRadius(radius);

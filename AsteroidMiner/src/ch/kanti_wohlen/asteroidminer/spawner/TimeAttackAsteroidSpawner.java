@@ -95,7 +95,7 @@ public class TimeAttackAsteroidSpawner extends AsteroidSpawner {
 				MetalAsteroid metalAsteroid = new MetalAsteroid(world, location, radius, momentum);
 				metalAsteroid.getPhysicsBody().setAngularVelocity(rotation);
 			} else {
-				ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(world, location, radius, momentum);
+				ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(world, location, radius, momentum.scl(0.75f));
 				explosiveAsteroid.getPhysicsBody().setAngularVelocity(rotation);
 			}
 		}
