@@ -250,7 +250,7 @@ public class GameScreen {
 				final String time = String.valueOf(Math.round(((TimeAttackAsteroidSpawner) asteroidSpawner).getTimeLeft()));
 				font.draw(batch, time + " seconds", 10, Gdx.graphics.getHeight() - 32);
 			} else {
-				font.draw(batch, "ö", 10, Gdx.graphics.getHeight() - 32);
+				font.draw(batch, String.valueOf((char) 8734), 10, Gdx.graphics.getHeight() - 32);
 			}
 		}
 		batch.end();
