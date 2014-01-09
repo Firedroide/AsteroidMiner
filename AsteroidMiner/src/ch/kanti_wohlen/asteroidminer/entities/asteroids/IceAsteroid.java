@@ -68,7 +68,7 @@ public class IceAsteroid extends DamageableEntity {
 	public void setHealth(int newHealth, Player player, float scoreMultiplier) {
 		super.setHealth(newHealth, player, scoreMultiplier);
 
-		if (health != newHealth && health != 0) {
+		if (health != 0) {
 			currentRadius = MIN_RADIUS + ((float) health / maxHealth) * (firstRadius - MIN_RADIUS);
 			renderScale = (currentRadius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
 			fixture.getShape().setRadius(currentRadius);
