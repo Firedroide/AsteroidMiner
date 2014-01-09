@@ -79,8 +79,8 @@ public class ScoreScreen extends OverlayScreen {
 		header1.setColor(0.6f, 0.8f, 1f, 1f);
 		header2.setDisabled(true);
 		header2.setColor(0.6f, 0.8f, 1f, 1f);
-		table.add(header1);
-		table.add(header2);
+		table.add(header1).minWidth(250f);
+		table.add(header2).minWidth(100f);
 		table.row();
 
 		List<Pair<String, Integer>> highscores = game.getGameLauncher().getHighscores();
@@ -95,8 +95,8 @@ public class ScoreScreen extends OverlayScreen {
 				field2.setColor(0.7f, 0.7f, 0.7f, 1f);
 			}
 
-			table.add(field1);
-			table.add(field2);
+			table.add(field1).fillX();
+			table.add(field2).fillX();
 			table.row();
 			lightColor = !lightColor;
 		}
