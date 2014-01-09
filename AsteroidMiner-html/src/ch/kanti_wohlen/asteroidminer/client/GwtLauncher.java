@@ -54,6 +54,11 @@ public class GwtLauncher extends GwtApplication implements GameLauncher {
 	}
 
 	@Override
+	public void refreshHighscores(Runnable callback) {
+		FacebookIntegration.refreshHighscores(callback);
+	}
+
+	@Override
 	public List<Pair<String, Integer>> getHighscores() {
 		List<JavaScriptHighscore> nativeScores = FacebookIntegration.getHighscores();
 		List<Pair<String, Integer>> highscores = new ArrayList<Pair<String,Integer>>(nativeScores.size());

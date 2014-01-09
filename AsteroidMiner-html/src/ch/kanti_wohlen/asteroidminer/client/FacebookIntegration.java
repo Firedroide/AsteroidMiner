@@ -7,6 +7,8 @@ import com.google.gwt.core.client.JsArray;
 
 public class FacebookIntegration {
 
+	private static Runnable highscoreCallback;
+
 	public static native void init() /*-{
 		$doc.FB.init({
 			appId : '425756014191466',
@@ -83,6 +85,36 @@ public class FacebookIntegration {
 			}
 		});
 	}-*/;
+
+	public static void refreshHighscores(Runnable callback) {
+		if (highscoreCallback != null) return;
+		if (callback != null) {
+			highscoreCallback = callback;
+			refreshHighscores(true);
+		} else {
+			refreshHighscores(false);
+		}
+	}
+
+	private static native void refreshHighscores(boolean callback) /*-{
+		$doc.FB.api("/425756014191466/scores", "GET", function(scores) {
+			if (!(scores && scores.data)) {
+				$doc.highscores = [];
+			} else {
+				$doc.highscores = scores.data;
+			}
+
+			if (callback) {
+				@ch.kanti_wohlen.asteroidminer.client.FacebookIntegration::executeCallback()();
+			}
+		});
+	}-*/;
+
+	private static void executeCallback() {
+		if (highscoreCallback == null) return;
+		highscoreCallback.run();
+		highscoreCallback = null;
+	}
 
 	public static List<JavaScriptHighscore> getHighscores() {
 		final JsArray<JavaScriptHighscore> nativeHighscores = getFriendHighscores();

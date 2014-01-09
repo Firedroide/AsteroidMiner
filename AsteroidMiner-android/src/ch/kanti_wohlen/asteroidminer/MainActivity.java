@@ -25,6 +25,9 @@ public class MainActivity extends AndroidApplication implements GameLauncher {
 	public void setHighscore(int newScore) {}
 
 	@Override
+	public void refreshHighscores(Runnable callback) {}
+
+	@Override
 	public List<Pair<String, Integer>> getHighscores() {
 		return Collections.emptyList();
 	}

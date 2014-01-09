@@ -6,6 +6,8 @@ public interface GameLauncher {
 
 	public void setHighscore(int newScore);
 
+	public void refreshHighscores(Runnable callback);
+
 	public List<Pair<String, Integer>> getHighscores();
 
 	public void postFeedHighscore();

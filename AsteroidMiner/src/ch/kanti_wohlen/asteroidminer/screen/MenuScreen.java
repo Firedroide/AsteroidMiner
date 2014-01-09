@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer.screen;
 
+import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.GameMode;
 import ch.kanti_wohlen.asteroidminer.fading.FadeOutHelper;
 import ch.kanti_wohlen.asteroidminer.fading.Fadeable;
@@ -28,7 +29,7 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 	private final Table table;
 
 	public MenuScreen() {
-		super(new Color(0.25f, 0.25f, 0.25f, 0.75f));
+		super(OVERLAY_COLOR);
 
 		skin = new Skin();
 		skin.addRegions(new TextureAtlas("data/uiskin.atlas"));
@@ -53,6 +54,26 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 		TextButton singlePlayer_endless = new TextButton(GameMode.ENDLESS.getName(), skin);
 		singlePlayer_endless.addListener(new GameLauncher(GameMode.ENDLESS));
 		table.add(singlePlayer_endless).padTop(10f).colspan(2).row();
+
+		TextButton highscores = new TextButton("Highscores", skin);
+		highscores.addListener(new InputListener() {
+
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				AsteroidMiner.INSTANCE.getGameLauncher().refreshHighscores(new Runnable() {
+
+					@Override
+					public void run() {
+						synchronized (AsteroidMiner.INSTANCE.getScreen()) {
+							AsteroidMiner.INSTANCE.switchScreenWithOverlay(AsteroidMiner.INSTANCE.getScoreScreen(),
+									Color.BLACK);
+						}
+					}
+				});
+				return false;
+			}
+		});
+		table.add(highscores).padTop(30f).colspan(2).row();
 
 		if (Gdx.app.getType() == ApplicationType.Desktop) {
 			TextButton endGame = new TextButton("Quit Game", skin);
@@ -101,6 +122,7 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 		for (Actor actor : table.getChildren()) {
 			if (actor instanceof TextButton) {
 				((TextButton) actor).getClickListener().cancel();
+				((TextButton) actor).setChecked(false);
 			}
 		}
 	}

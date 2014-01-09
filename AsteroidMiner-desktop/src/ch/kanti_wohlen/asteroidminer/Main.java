@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
-import com.badlogic.gdx.Preferences;
 
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -54,6 +54,13 @@ public class Main implements GameLauncher {
 			}
 		}
 		prefs.flush();
+	}
+
+	@Override
+	public void refreshHighscores(Runnable callback) {
+		// We don't cache highscores, therefore this method won't do anything
+		// Let's just call the callback.
+		callback.run();
 	}
 
 	@Override
