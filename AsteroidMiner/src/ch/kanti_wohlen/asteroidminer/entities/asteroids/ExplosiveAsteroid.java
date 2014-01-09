@@ -15,32 +15,25 @@ import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
 import ch.kanti_wohlen.asteroidminer.animations.Explosion;
-import ch.kanti_wohlen.asteroidminer.entities.Damageable;
-import ch.kanti_wohlen.asteroidminer.entities.Entity;
+import ch.kanti_wohlen.asteroidminer.entities.DamageableEntity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
-import ch.kanti_wohlen.asteroidminer.entities.bars.HealthBar;
-import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
-public class ExplosiveAsteroid extends Entity implements Damageable {
+public class ExplosiveAsteroid extends DamageableEntity {
 
 	public static final int MAX_HEALTH = 10;
 	public static final float MIN_RADIUS = 0.5f;
-	private static final float POWER_UP_SPAWN_CHANCE = 0.1f;
+	private static final float POWER_UP_CHANCE = 0.1f;
 	private static final int KILL_SCORE = 100;
 
-	private final HealthBar healthBar;
 	private final float currentRadius;
 	private final float renderScale;
-	private int health;
 
 	public ExplosiveAsteroid(World world, Vector2 location, float radius) {
 		this(world, location, radius, null);
 	}
 
 	public ExplosiveAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
-		super(world, createBodyDef(location, velocity), createCircle(radius));
-		health = MAX_HEALTH;
-		healthBar = new HealthBar(MAX_HEALTH);
+		super(world, createBodyDef(location, velocity), createCircle(radius), MAX_HEALTH, KILL_SCORE, POWER_UP_CHANCE);
 		currentRadius = radius;
 		renderScale = (radius * BOX2D_TO_PIXEL * 2f) / Textures.EXPLOSIVEASTEROID.getRegionWidth();
 	}
@@ -51,11 +44,8 @@ public class ExplosiveAsteroid extends Entity implements Damageable {
 		positionSprite(s);
 		s.setScale(renderScale);
 		s.draw(batch, alpha);
-	}
 
-	@Override
-	public boolean isRemoved() {
-		return super.isRemoved() || health == 0;
+		// Do not render the health bar.
 	}
 
 	@Override
@@ -72,59 +62,19 @@ public class ExplosiveAsteroid extends Entity implements Damageable {
 	}
 
 	@Override
-	public int getHealth() {
-		return health;
-	}
+	protected void onKill(Player player, float scoreMultiplier) {
+		final Vector2 pos = body.getPosition().cpy();
+		final Player damager = player;
+		final float radius = currentRadius * 8f;
+		final int damage = (int) (25f * currentRadius);
 
-	@Override
-	public void setHealth(int newHealth) {
-		setHealth(newHealth, null);
-	}
-	
-	public void setHealth(int newHealth, final Player damager) {
-		if (health == 0) return;
+		TaskScheduler.INSTANCE.runTask(new Runnable() {
 
-		if (newHealth != health) {
-			health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
-			healthBar.resetAlpha();
-
-			final Vector2 pos = body.getPosition().cpy();
-			if (health == 0) {
-				TaskScheduler.INSTANCE.runTask(new Runnable() {
-
-					@Override
-					public void run() {
-						final float radius = currentRadius * 8f;
-						final int damage = (int) (25f * currentRadius);
-						new Explosion(body.getWorld(), pos, radius, damage, true, damager);
-					}
-				});
-				if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
-
-				final World world = body.getWorld();
-				final Vector2 loc = body.getPosition();
-				PowerUpLauncher pul = new PowerUpLauncher(world, loc);
-				TaskScheduler.INSTANCE.runTask(pul);
+			@Override
+			public void run() {
+				new Explosion(body.getWorld(), pos, radius, damage, true, damager);
 			}
-		}
-	}
-
-	@Override
-	public void heal(int healingAmoung) {
-		setHealth(health + healingAmoung);
-	}
-
-	@Override
-	public void damage(int damageAmount, Player player, float scoreMultiplier) {
-		setHealth(health - damageAmount, player);
-		if (health == 0 && player != null) {
-			player.addScore((int) (KILL_SCORE * scoreMultiplier));
-		}
-	}
-
-	@Override
-	public void kill() {
-		setHealth(0);
+		});
 	}
 
 	private static BodyDef createBodyDef(Vector2 position, Vector2 velocity) {

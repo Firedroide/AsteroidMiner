@@ -14,34 +14,26 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
-import ch.kanti_wohlen.asteroidminer.entities.Damageable;
-import ch.kanti_wohlen.asteroidminer.entities.Entity;
+import ch.kanti_wohlen.asteroidminer.entities.DamageableEntity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 import ch.kanti_wohlen.asteroidminer.entities.MetalAsteroidProjectile;
-import ch.kanti_wohlen.asteroidminer.entities.bars.HealthBar;
-import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
-public class MetalAsteroid extends Entity implements Damageable {
+public class MetalAsteroid extends DamageableEntity {
 
 	public static final int HEALTH_PER_SIZE = 50;
-	private static final float POWER_UP_SPAWN_CHANCE = 0.2f;
-	private static final int KILL_SCORE = 1000;
+	private static final float POWER_UP_CHANCE = 0.2f;
+	private static final int SCORE_PER_SIZE = 100;
 
-	private final HealthBar healthBar;
 	private final float currentRadius;
 	private final float renderScale;
-	private final int maxHealth;
-	private int health;
 
 	public MetalAsteroid(World world, Vector2 location, float radius) {
 		this(world, location, radius, null);
 	}
 
 	public MetalAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
-		super(world, createBodyDef(location, velocity), createCircle(radius));
-		maxHealth = (int) (radius * HEALTH_PER_SIZE);
-		health = maxHealth;
-		healthBar = new HealthBar(maxHealth);
+		super(world, createBodyDef(location, velocity), createCircle(radius), (int) (radius * HEALTH_PER_SIZE),
+				(int) (radius * SCORE_PER_SIZE), POWER_UP_CHANCE);
 		currentRadius = radius;
 		renderScale = (radius * BOX2D_TO_PIXEL * 2f) / Textures.METALASTEROID.getRegionWidth();
 	}
@@ -64,11 +56,6 @@ public class MetalAsteroid extends Entity implements Damageable {
 	}
 
 	@Override
-	public boolean isRemoved() {
-		return super.isRemoved() || health == 0;
-	}
-
-	@Override
 	public Rectangle getBoundingBox() {
 		final float d = currentRadius * 2f;
 		final Rectangle rect = new Rectangle(0f, 0f, d, d);
@@ -77,52 +64,9 @@ public class MetalAsteroid extends Entity implements Damageable {
 	}
 
 	@Override
-	public int getHealth() {
-		return health;
-	}
-
-	@Override
-	public void setHealth(int newHealth) {
-		setHealth(newHealth, null);
-	}
-
-	public void setHealth(int newHealth, Player player) {
-		if (health == 0) return;
-
-		if (newHealth != health) {
-			health = MathUtils.clamp(newHealth, 0, maxHealth);
-			healthBar.resetAlpha();
-
-			if (health == 0) {
-				final int count = (int) (4.5f + currentRadius);
-				final World w = body.getWorld();
-				TaskScheduler.INSTANCE.runTask(new MetalAsteroidProjectileSpawner(w, this, count, player));
-				if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
-
-				final World world = body.getWorld();
-				final Vector2 loc = body.getPosition();
-				PowerUpLauncher pul = new PowerUpLauncher(world, loc);
-				TaskScheduler.INSTANCE.runTask(pul);
-			}
-		}
-	}
-
-	@Override
-	public void heal(int healingAmoung) {
-		setHealth(health + healingAmoung);
-	}
-
-	@Override
-	public void damage(int damageAmount, Player player, float scoreMultiplier) {
-		setHealth(health - damageAmount, player);
-		if (health == 0 && player != null) {
-			player.addScore((int) (KILL_SCORE * scoreMultiplier));
-		}
-	}
-
-	@Override
-	public void kill() {
-		setHealth(0);
+	protected void onKill(Player player, float scoreMultiplier) {
+		final int count = (int) (4.5f + currentRadius);
+		TaskScheduler.INSTANCE.runTask(new MetalAsteroidProjectileSpawner(body.getWorld(), this, count, player));
 	}
 
 	private static BodyDef createBodyDef(Vector2 position, Vector2 velocity) {

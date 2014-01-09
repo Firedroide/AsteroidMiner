@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class MetalAsteroidProjectile extends Entity implements Damageable {
+public class MetalAsteroidProjectile extends DamageableEntity {
 
 	public static final int COLLISION_DAMAGE = 15;
 
@@ -25,16 +25,14 @@ public class MetalAsteroidProjectile extends Entity implements Damageable {
 
 	private final Player shooter;
 	private final Rectangle boundingBox;
-	private int health;
 
 	public MetalAsteroidProjectile(World world, Vector2 position, Vector2 velocity) {
 		this(world, position, velocity, null);
 	}
 
 	public MetalAsteroidProjectile(World world, Vector2 position, Vector2 velocity, Player cause) {
-		super(world, createBodyDef(position, velocity), createFixture());
+		super(world, createBodyDef(position, velocity), createFixture(), MAX_HEALTH, KILL_SCORE, 0f);
 		shooter = cause;
-		health = MAX_HEALTH;
 
 		final float width = Textures.PROJECTILE.getWidth() * PIXEL_TO_BOX2D * RENDER_SCALE;
 		final float height = Textures.PROJECTILE.getHeight() * PIXEL_TO_BOX2D * RENDER_SCALE;
@@ -69,41 +67,8 @@ public class MetalAsteroidProjectile extends Entity implements Damageable {
 		return rect;
 	}
 
-	@Override
-	public boolean isRemoved() {
-		return super.isRemoved() || health == 0;
-	}
-
 	public Player getCausingPlayer() {
 		return shooter;
-	}
-
-	@Override
-	public int getHealth() {
-		return health;
-	}
-
-	@Override
-	public void setHealth(int newHealth) {
-		health = MathUtils.clamp(newHealth, 0, MAX_HEALTH);
-	}
-
-	@Override
-	public void heal(int healingAmoung) {
-		setHealth(health + healingAmoung);
-	}
-
-	@Override
-	public void damage(int damageAmount, Player player, float scoreMultiplier) {
-		setHealth(health - damageAmount);
-		if (health == 0 && player != null) {
-			player.addScore((int) (KILL_SCORE * scoreMultiplier));
-		}
-	}
-
-	@Override
-	public void kill() {
-		setHealth(0);
 	}
 
 	private static BodyDef createBodyDef(Vector2 position, Vector2 velocity) {

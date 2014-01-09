@@ -3,10 +3,8 @@ package ch.kanti_wohlen.asteroidminer.entities.asteroids;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
 import ch.kanti_wohlen.asteroidminer.Textures;
-import ch.kanti_wohlen.asteroidminer.entities.Damageable;
-import ch.kanti_wohlen.asteroidminer.entities.Entity;
+import ch.kanti_wohlen.asteroidminer.entities.DamageableEntity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
-import ch.kanti_wohlen.asteroidminer.entities.bars.HealthBar;
 import ch.kanti_wohlen.asteroidminer.powerups.PowerUpLauncher;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,30 +18,23 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class StoneAsteroid extends Entity implements Damageable {
+public class StoneAsteroid extends DamageableEntity {
 
 	public static final int HEALTH_PER_SIZE = 20;
 	public static final float STONE_ASTEROID_MIN_SIZE = 0.75f;
-	private static final float POWER_UP_SPAWN_CHANCE = 0.05f;
-	private static final int KILL_SCORE = 75;
+	private static final float POWER_UP_CHANCE = 0.05f;
+	private static final int SCORE_PER_SIZE = 20;
 
-	private final HealthBar healthBar;
 	private final float currentRadius;
 	private final float renderScale;
-	private final int maxHealth;
-
-	private boolean invulnerable;
-	private int health;
 
 	public StoneAsteroid(World world, Vector2 location, float radius) {
 		this(world, location, radius, null);
 	}
 
 	public StoneAsteroid(World world, Vector2 location, float radius, Vector2 velocity) {
-		super(world, createBodyDef(location, velocity), createCircle(radius));
-		maxHealth = (int) (radius * HEALTH_PER_SIZE);
-		health = maxHealth;
-		healthBar = new HealthBar(maxHealth);
+		super(world, createBodyDef(location, velocity), createCircle(radius), (int) (radius * HEALTH_PER_SIZE),
+				(int) (radius * SCORE_PER_SIZE), 0f);
 		currentRadius = radius;
 		renderScale = (radius * BOX2D_TO_PIXEL * 2f) / Textures.ASTEROID.getRegionWidth();
 	}
@@ -61,11 +52,6 @@ public class StoneAsteroid extends Entity implements Damageable {
 	}
 
 	@Override
-	public boolean isRemoved() {
-		return super.isRemoved() || health == 0;
-	}
-
-	@Override
 	public EntityType getType() {
 		return EntityType.ASTEROID;
 	}
@@ -78,52 +64,22 @@ public class StoneAsteroid extends Entity implements Damageable {
 		return rect;
 	}
 
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int newHealth) {
-		if (invulnerable) return;
-		if (health == 0) return;
-
-		if (newHealth != health) {
-			health = MathUtils.clamp(newHealth, 0, maxHealth);
-			healthBar.resetAlpha();
-
-			if (health == 0) {
-				final World w = body.getWorld();
-				final float nextRadius = currentRadius / 2f;
-
-				if (nextRadius <= STONE_ASTEROID_MIN_SIZE) {
-					if (MathUtils.random() > POWER_UP_SPAWN_CHANCE) return;
-					final World world = body.getWorld();
-					final Vector2 loc = body.getPosition();
-					PowerUpLauncher pul = new PowerUpLauncher(world, loc);
-					TaskScheduler.INSTANCE.runTask(pul);
-					return;
-				}
-
-				SplitAsteroidLauncher l = new SplitAsteroidLauncher(w, body.getPosition().cpy(), body.getLinearVelocity(),
-						nextRadius, body.getMass());
-				TaskScheduler.INSTANCE.runTask(l);
-			}
-		}
-	}
-
-	public void heal(int healingAmoung) {
-		setHealth(health + healingAmoung);
-	}
-
 	@Override
-	public void damage(int damageAmount, Player player, float scoreMultiplier) {
-		setHealth(health - damageAmount);
-		if (health == 0 && player != null) {
-			player.addScore((int) (KILL_SCORE * scoreMultiplier));
+	protected void onKill(Player player, float scoreMultiplier) {
+		final float nextRadius = currentRadius / 2f;
+		if (nextRadius < STONE_ASTEROID_MIN_SIZE) {
+			// Only spawn PowerUps when not spawning new, smaller StoneAsteroids.
+			if (MathUtils.random() <= POWER_UP_CHANCE) {
+				final World world = body.getWorld();
+				final Vector2 loc = body.getPosition();
+				PowerUpLauncher pul = new PowerUpLauncher(world, loc);
+				TaskScheduler.INSTANCE.runTask(pul);
+			}
+		} else {
+			SplitAsteroidLauncher l = new SplitAsteroidLauncher(body.getWorld(), body.getPosition(),
+					body.getLinearVelocity(), nextRadius, body.getMass());
+			TaskScheduler.INSTANCE.runTask(l);
 		}
-	}
-
-	public void kill() {
-		setHealth(0);
 	}
 
 	private static BodyDef createBodyDef(Vector2 position, Vector2 velocity) {
@@ -160,8 +116,8 @@ public class StoneAsteroid extends Entity implements Damageable {
 
 		public SplitAsteroidLauncher(World world, Vector2 pos, Vector2 vel, float r, float m) {
 			w = world;
-			position = pos;
-			velocity = vel;
+			position = pos.cpy();
+			velocity = vel.cpy();
 			radius = r;
 			mass = m;
 		}
@@ -174,10 +130,10 @@ public class StoneAsteroid extends Entity implements Damageable {
 			final float rot1 = MathUtils.random(MathUtils.PI * 0.4f, MathUtils.PI * 0.6f);
 			final float rot2 = MathUtils.random(MathUtils.PI * 1.4f, MathUtils.PI * 1.6f);
 
-			Vector2 loc1 = position.cpy().add(MathUtils.cos(rot0 + rot1) * r1 * 1.1f,
-					MathUtils.sin(rot0 + rot1) * r1 * 1.1f);
-			Vector2 loc2 = position.cpy().add(MathUtils.cos(rot0 + rot2) * r2 * 1.1f,
-					MathUtils.sin(rot0 + rot2) * r2 * 1.1f);
+			Vector2 loc1 = position.cpy().add(MathUtils.cos(rot0 + rot1) * r1 * 1.1f, MathUtils.sin(rot0 + rot1) * r1
+					* 1.1f);
+			Vector2 loc2 = position.cpy().add(MathUtils.cos(rot0 + rot2) * r2 * 1.1f, MathUtils.sin(rot0 + rot2) * r2
+					* 1.1f);
 
 			final StoneAsteroid a1 = new StoneAsteroid(w, loc1, r1, velocity);
 			final StoneAsteroid a2 = new StoneAsteroid(w, loc2, r2, velocity);
@@ -194,7 +150,7 @@ public class StoneAsteroid extends Entity implements Damageable {
 			a1.invulnerable = true;
 			a2.invulnerable = true;
 			TaskScheduler.INSTANCE.runTaskLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					a1.invulnerable = false;
