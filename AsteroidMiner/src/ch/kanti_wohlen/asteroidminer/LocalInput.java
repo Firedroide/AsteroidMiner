@@ -107,13 +107,6 @@ public class LocalInput implements InputProcessor {
 			SoundEffect.THRUSTER.setPitch(1.015f);
 			thrusterPanUp = true;
 		}
-
-		if (Gdx.input.isKeyPressed(Keys.Q) || Gdx.input.isKeyPressed(Keys.LEFT)) {
-			body.applyAngularImpulse(factorTurn, true);
-		}
-		if (Gdx.input.isKeyPressed(Keys.E) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			body.applyAngularImpulse(-factorTurn, true);
-		}
 	}
 
 	@Override
