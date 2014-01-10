@@ -127,7 +127,6 @@ public class GameScreen {
 	public void tick(float delta) {
 		if (running) moveCamera();
 
-		final long nano1 = System.nanoTime();
 		// Temp
 		counter += 1;
 		counter %= 60;
@@ -152,10 +151,7 @@ public class GameScreen {
 
 		// Do physics, therefore initializing newly spawned entities
 		world.step(timeStep, velocityIterations, positionIterations);
-		final long nano2 = System.nanoTime();
 		GravityCalculator.doGravityInWorld(world);
-		final long nano3 = System.nanoTime();
-		System.out.println("> " + (nano3 - nano2) / 1000f + "ms of " + (nano3 - nano1) / 1000f + "ms");
 	}
 
 	public void render() {
