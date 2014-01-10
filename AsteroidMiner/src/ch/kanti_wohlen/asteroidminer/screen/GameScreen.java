@@ -6,6 +6,7 @@ import java.util.List;
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.CollisionListener;
 import ch.kanti_wohlen.asteroidminer.GameMode;
+import ch.kanti_wohlen.asteroidminer.GravityCalculator;
 import ch.kanti_wohlen.asteroidminer.LocalPlayer;
 import ch.kanti_wohlen.asteroidminer.Player;
 import ch.kanti_wohlen.asteroidminer.TaskScheduler;
@@ -28,7 +29,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
@@ -127,6 +127,7 @@ public class GameScreen {
 	public void tick(float delta) {
 		if (running) moveCamera();
 
+		final long nano1 = System.nanoTime();
 		// Temp
 		counter += 1;
 		counter %= 60;
@@ -151,7 +152,10 @@ public class GameScreen {
 
 		// Do physics, therefore initializing newly spawned entities
 		world.step(timeStep, velocityIterations, positionIterations);
-		applyGravity();
+		final long nano2 = System.nanoTime();
+		GravityCalculator.doGravityInWorld(world);
+		final long nano3 = System.nanoTime();
+		System.out.println("> " + (nano3 - nano2) / 1000f + "ms of " + (nano3 - nano1) / 1000f + "ms");
 	}
 
 	public void render() {
@@ -275,40 +279,6 @@ public class GameScreen {
 
 		// Apply movement to foreground camera
 		camera.position.add(movement.x, movement.y, 0f);
-	}
-
-	private void applyGravity() {
-		final float G = 0.2f;
-
-		final Array<Body> outer = new Array<Body>(world.getBodyCount());
-		world.getBodies(outer);
-
-		for (int i = 0; i < outer.size; ++i) {
-			final Body body = outer.get(i);
-			if (body == null || body.getGravityScale() == 0f || body.getType() != BodyType.DynamicBody) {
-				outer.removeIndex(i);
-				--i;
-			}
-		}
-		final Array<Body> inner = new Array<Body>(outer);
-		Vector2 dir = new Vector2();
-
-		for (int i = 0; i < outer.size; ++i) {
-			final Body source = outer.get(i);
-			inner.removeIndex(0);
-
-			for (Body target : inner) {
-				dir = source.getPosition().sub(target.getPosition());
-				final float dist2 = dir.len2() + 1;
-				if (dist2 > 20000) continue;
-
-				dir.nor();
-				final float force = G * source.getMass() * target.getMass() / dist2;
-
-				target.applyForceToCenter(dir.cpy().scl(force * target.getGravityScale()), true);
-				source.applyForceToCenter(dir.cpy().scl(-force * source.getGravityScale()), true);
-			}
-		}
 	}
 
 	private void setAsteroidSpawner(AsteroidSpawner newAsteroidSpawner) {
