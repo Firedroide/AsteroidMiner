@@ -44,7 +44,7 @@ public class PowerUpLauncher implements Runnable {
 			new BombPowerUp(world, position);
 			break;
 		case FIRING_DAMAGE:
-			new WeaponFiringForcePowerUp(world, position);
+			new FiringForcePowerUp(world, position);
 			break;
 		case FIRING_SPEED:
 			new FiringSpeedPowerUp(world, position);

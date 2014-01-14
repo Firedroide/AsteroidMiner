@@ -12,12 +12,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class WeaponFiringForcePowerUp extends PowerUp {
+public class FiringForcePowerUp extends PowerUp {
 
 	private static final int DAMAGE_INCREASE = 5;
 	private static final float POWER_UP_DURATION = 10f;
 
-	public WeaponFiringForcePowerUp(World world, Vector2 position) {
+	public FiringForcePowerUp(World world, Vector2 position) {
 		super(world, position);
 	}
 
