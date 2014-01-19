@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 public final class GravityCalculator {
 
 	private static final float G = 0.2f;
-	private static final float MAX_RANGE = 20000;
+	private static final float MAX_RANGE = 5000;
 
 	private GravityCalculator() {}
 
