@@ -51,7 +51,6 @@ public class FacebookIntegration {
 					$doc.highscores = scores.data;
 					for (var i = 0; i < scores.data.length; ++i) {
 						var score = scores.data[i];
-						//alert(JSON.stringify(score));
 						if ((score.application.id == '425756014191466')
 								&& (score.user.id == $doc.userID)) {
 							score.user.name = 'Your previous highscore';
@@ -62,9 +61,7 @@ public class FacebookIntegration {
 				return 0;
 			}
 
-			//alert(JSON.stringify(currentScore));
 			var score = getUserScore(currentScore);
-			//alert("Current highscore: " + score);
 			$doc.highscores.push({
 				user : {
 					name : "This game",
@@ -79,8 +76,6 @@ public class FacebookIntegration {
 				$doc.FB.api("/me/scores", "POST", {
 					score : newScore
 				}, function(response) {
-					//alert(JSON.stringify(response));
-					//alert("Updated score!");
 				});
 			}
 		});
@@ -129,7 +124,6 @@ public class FacebookIntegration {
 	}
 
 	private static native JsArray<JavaScriptHighscore> getFriendHighscores() /*-{
-		//alert("Getting cached highscores...");
 		return $doc.highscores;
 	}-*/;
 
