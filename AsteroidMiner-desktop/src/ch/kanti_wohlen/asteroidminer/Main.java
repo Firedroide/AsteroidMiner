@@ -32,7 +32,7 @@ public class Main implements GameLauncher {
 
 	@Override
 	public void setHighscore(int newScore) {
-		Preferences prefs = Gdx.app.getPreferences("scores");
+		Preferences prefs = Gdx.app.getPreferences("ch.kanti_wohlen.asteroidminer.highscores");
 		Map<String, ?> map = prefs.get();
 		prefs.putInteger(String.valueOf(System.currentTimeMillis()), newScore);
 		prefs.flush();
@@ -67,7 +67,7 @@ public class Main implements GameLauncher {
 	public List<Pair<String, Integer>> getHighscores() {
 		List<Pair<String, Integer>> returnValues = new ArrayList<Pair<String, Integer>>();
 		List<Map.Entry<String, ?>> scoreList = new ArrayList<Map.Entry<String, ?>>(
-				Gdx.app.getPreferences("scores").get().entrySet());
+				Gdx.app.getPreferences("ch.kanti_wohlen.asteroidminer.highscores").get().entrySet());
 
 		Collections.sort(scoreList, new Comparator<Entry<String, ?>>() {
 
