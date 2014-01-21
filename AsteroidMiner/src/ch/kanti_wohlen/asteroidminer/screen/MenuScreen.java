@@ -2,11 +2,13 @@ package ch.kanti_wohlen.asteroidminer.screen;
 
 import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.GameMode;
+import ch.kanti_wohlen.asteroidminer.fading.FadeInHelper;
 import ch.kanti_wohlen.asteroidminer.fading.FadeOutHelper;
 import ch.kanti_wohlen.asteroidminer.fading.Fadeable;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -75,6 +77,17 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 		});
 		table.add(highscores).padTop(30f).colspan(2).row();
 
+		TextButton settings = new TextButton("Settings", skin);
+		settings.addListener(new InputListener() {
+
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				game.switchScreenWithOverlay(game.getSettingsScreen(), Color.BLACK);
+				return false;
+			}
+		});
+		table.add(settings).padTop(10f).colspan(2).row();
+
 		if (Gdx.app.getType() == ApplicationType.Desktop) {
 			TextButton endGame = new TextButton("Quit Game", skin);
 			endGame.addListener(new InputListener() {
@@ -128,12 +141,6 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 	}
 
 	@Override
-	public void pause() {}
-
-	@Override
-	public void resume() {}
-
-	@Override
 	public float getAlpha() {
 		return overlay.getColor().a;
 	}
@@ -155,16 +162,32 @@ public class MenuScreen extends OverlayScreen implements Fadeable {
 
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			final Preferences settings = Gdx.app.getPreferences("ch.kanti_wohlen.asteroidminer.settings");
+			final boolean showTutorialScreen = settings.getBoolean("showTutorial", true);
+			System.out.println(showTutorialScreen);
+
 			new FadeOutHelper(game.getMenuScreen(), 0f, FADING_OUT_TIME, new Runnable() {
 
 				@Override
 				public void run() {
-					game.setScreen(null);
+
+					if (showTutorialScreen) {
+						game.setScreen(game.getTutorialScreen());
+						game.getTutorialScreen().setAlpha(0f);
+						game.getTutorialScreen().setGameMode(mode);
+						new FadeInHelper(game.getTutorialScreen(), 0.2f, 0.5f);
+					} else {
+						game.setScreen(null);
+					}
 					batch.setColor(Color.WHITE); // Some child of the table seems not to reset the batch's color.
 				}
 			});
 
-			game.getGameScreen().startGame(mode);
+			if (showTutorialScreen) {
+				game.getGameScreen().stopSpawning();
+			} else {
+				game.getGameScreen().startGame(mode);
+			}
 			return false;
 		}
 	}

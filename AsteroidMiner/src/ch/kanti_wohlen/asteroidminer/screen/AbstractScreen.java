@@ -24,4 +24,14 @@ public abstract class AbstractScreen implements Screen {
 		this.width = Gdx.graphics.getWidth();
 		this.height = Gdx.graphics.getHeight();
 	}
+
+	@Override
+	public void pause() {
+		// Irrelevant on desktop / web
+	}
+
+	@Override
+	public void resume() {
+		// Irrelevant on desktop / web
+	}
 }

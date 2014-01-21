@@ -33,6 +33,14 @@ default-round-large
   orig: 20, 20
   offset: 0, 0
   index: -1
+default-round-large-transparent
+  rotate: false
+  xy: 57, 7
+  size: 20, 20
+  split: 5, 5, 5, 4
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
 default-scroll
   rotate: false
   xy: 78, 29

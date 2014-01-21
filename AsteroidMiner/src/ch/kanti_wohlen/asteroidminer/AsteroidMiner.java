@@ -8,14 +8,18 @@ import ch.kanti_wohlen.asteroidminer.screen.MenuScreen;
 import ch.kanti_wohlen.asteroidminer.screen.PauseScreen;
 import ch.kanti_wohlen.asteroidminer.screen.ScoreScreen;
 import ch.kanti_wohlen.asteroidminer.screen.ScreenSwitchManager;
+import ch.kanti_wohlen.asteroidminer.screen.SettingsScreen;
+import ch.kanti_wohlen.asteroidminer.screen.TutorialScreen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 public class AsteroidMiner extends Game {
 
@@ -28,6 +32,8 @@ public class AsteroidMiner extends Game {
 	private PauseScreen pauseScreen;
 	private GameOverScreen gameOverScreen;
 	private ScoreScreen scoreScreen;
+	private SettingsScreen settingsScreen;
+	private TutorialScreen tutorialScreen;
 	private ScreenSwitchManager switchManager;
 
 	private FPSLogger fpsLogger;
@@ -63,10 +69,18 @@ public class AsteroidMiner extends Game {
 		pauseScreen = new PauseScreen();
 		gameOverScreen = new GameOverScreen();
 		scoreScreen = new ScoreScreen();
+		settingsScreen = new SettingsScreen();
+		tutorialScreen = new TutorialScreen();
 		setScreen(menuScreen);
 		MusicPlayer.start();
 
 		Gdx.graphics.setVSync(false);
+
+		final Preferences settings = Gdx.app.getPreferences("ch.kanti_wohlen.asteroidminer.settings");
+		final float soundSetting = settings.getFloat("soundVolume", 1f);
+		final float musicSetting = settings.getFloat("musicVolume", 0.8f);
+		SoundPlayer.setVolume(MathUtils.clamp(soundSetting, 0f, 1f));
+		MusicPlayer.setVolume(MathUtils.clamp(musicSetting, 0f, 1f));
 	}
 
 	@Override
@@ -114,7 +128,11 @@ public class AsteroidMiner extends Game {
 	}
 
 	@Override
-	public void pause() {}
+	public void pause() {
+		if (getScreen() == null) {
+			setScreen(pauseScreen);
+		}
+	}
 
 	@Override
 	public void resume() {}
@@ -149,6 +167,14 @@ public class AsteroidMiner extends Game {
 
 	public ScoreScreen getScoreScreen() {
 		return scoreScreen;
+	}
+
+	public SettingsScreen getSettingsScreen() {
+		return settingsScreen;
+	}
+
+	public TutorialScreen getTutorialScreen() {
+		return tutorialScreen;
 	}
 
 	public void switchScreenWithOverlay(Screen newScreen, Color overlayColor) {

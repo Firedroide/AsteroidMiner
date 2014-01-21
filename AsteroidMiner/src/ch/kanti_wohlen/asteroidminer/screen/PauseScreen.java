@@ -80,10 +80,4 @@ public class PauseScreen extends OverlayScreen {
 		MusicPlayer.setVolume(lastMusicVolume);
 		SoundPlayer.resumeAll();
 	}
-
-	@Override
-	public void pause() {}
-
-	@Override
-	public void resume() {}
 }

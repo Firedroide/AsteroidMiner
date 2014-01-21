@@ -119,10 +119,4 @@ public class ScoreScreen extends OverlayScreen {
 
 	@Override
 	public void hide() {}
-
-	@Override
-	public void pause() {}
-
-	@Override
-	public void resume() {}
 }

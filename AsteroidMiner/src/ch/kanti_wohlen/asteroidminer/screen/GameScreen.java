@@ -17,6 +17,7 @@ import ch.kanti_wohlen.asteroidminer.entities.WorldBorder;
 import ch.kanti_wohlen.asteroidminer.spawner.AsteroidSpawner;
 import ch.kanti_wohlen.asteroidminer.spawner.EndlessAsteroidSpawner;
 import ch.kanti_wohlen.asteroidminer.spawner.IdleSpawner;
+import ch.kanti_wohlen.asteroidminer.spawner.NullAsteroidSpawner;
 import ch.kanti_wohlen.asteroidminer.spawner.TimeAttackAsteroidSpawner;
 
 import com.badlogic.gdx.Gdx;
@@ -109,6 +110,10 @@ public class GameScreen {
 
 		final Color color = localPlayer.getSpaceShip().getHealth() == 0 ? Color.BLACK : Color.WHITE;
 		AsteroidMiner.INSTANCE.switchScreenWithOverlay(AsteroidMiner.INSTANCE.getGameOverScreen(), color);
+	}
+
+	public void stopSpawning() {
+		setAsteroidSpawner(new NullAsteroidSpawner(world));
 	}
 
 	public boolean isGameRunning() {

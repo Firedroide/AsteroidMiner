@@ -96,10 +96,4 @@ public class GameOverScreen extends OverlayScreen {
 
 	@Override
 	public void hide() {}
-
-	@Override
-	public void pause() {}
-
-	@Override
-	public void resume() {}
 }
