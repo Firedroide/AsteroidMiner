@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.badlogicgames.gdx</groupId>
       <artifactId>gdx</artifactId>
-      <version>${gdx.version}</version>
+      <version>1.0-20140120.030136-196</version>
       <classifier>sources</classifier>
       <scope>provided</scope>
     </dependency>
@@ -82,6 +82,23 @@
           <webappDirectory>${project.basedir}/target/webapp</webappDirectory>
           <runTarget>index.html</runTarget>
         </configuration>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-dev</artifactId>
+                <version>${gwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-codeserver</artifactId>
+                <version>${gwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <version>${gwt.version}</version>
+            </dependency>
+        </dependencies>
         <executions>
           <execution>
             <goals>

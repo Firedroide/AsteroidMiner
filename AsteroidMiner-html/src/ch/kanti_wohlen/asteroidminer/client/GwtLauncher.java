@@ -10,7 +10,6 @@ import ch.kanti_wohlen.asteroidminer.GameLauncher;
 import ch.kanti_wohlen.asteroidminer.Pair;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 
@@ -19,8 +18,6 @@ public class GwtLauncher extends GwtApplication implements GameLauncher {
 	@Override
 	public GwtApplicationConfiguration getConfig() {
 		GwtApplicationConfiguration cfg = new GwtApplicationConfiguration(960, 640);
-		Gdx.app.log("ERROR", String.valueOf(cfg.useDebugGL));
-		Gdx.app.log("ERROR", String.valueOf(cfg.stencil));
 		cfg.fps = 45;
 		cfg.antialiasing = false;
 		return cfg;
