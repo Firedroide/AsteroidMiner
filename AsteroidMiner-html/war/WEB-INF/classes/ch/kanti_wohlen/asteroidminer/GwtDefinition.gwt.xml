@@ -4,5 +4,9 @@
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 	<inherits name='AsteroidMiner' />
 	<entry-point class='ch.kanti_wohlen.asteroidminer.client.GwtLauncher' />
-	<set-configuration-property name="gdx.assetpath" value="../AsteroidMiner-android/assets" />
+	<set-configuration-property name="gdx.assetpath" value="AsteroidMiner-android/assets/" />
+	<set-configuration-property name="gdx.assetoutputpath" value="AsteroidMiner-html/target/webapp" />
+
+	<set-property name="user.agent" value="safari" />
+	<extend-property name="user.agent" values="gecko1_8" />
 </module>
