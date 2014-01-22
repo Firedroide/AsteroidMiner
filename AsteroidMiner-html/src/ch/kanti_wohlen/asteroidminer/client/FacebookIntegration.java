@@ -134,10 +134,10 @@ public class FacebookIntegration {
 		var lastScore = @ch.kanti_wohlen.asteroidminer.client.FacebookIntegration::lastScore;
 		$doc.FB.ui({
 			method: 'feed',
-			name: 'AsteroidMiner score',
+			name: 'AsteroidMiner: ' + lastScore + ' points',
 			link: 'https://apps.facebook.com/asteroid_miner/',
-			picture: 'https://github.com/Firedroide/AsteroidMiner/blob/master/Logo.png',
-			description: 'I have just gotten a score of ' + lastScore + 'points in AsteroidMiner. How many can you get?'
+			picture: 'https://raw.github.com/Firedroide/AsteroidMiner/master/Logo.png',
+			description: 'I have just gotten a score of ' + lastScore + ' points in AsteroidMiner. How many can you get?'
 		}, function(response) {
 		});
 	}-*/;
