@@ -70,14 +70,9 @@ public class LocalInput implements InputProcessor {
 		// Rotation
 		final Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
 		final Vector2 spaceShipPos = main.getGameScreen().getLocationOnScreen(body);
-		final float mouseAngle = spaceShipPos.sub(mousePos).angle();
-		final float spaceShipAngle = 360f - ((body.getAngle() * MathUtils.radDeg + 270f) % 360f);
-		float angularDiff = spaceShipAngle - mouseAngle;
-		if (angularDiff > 180f) {
-			angularDiff -= 360f;
-		} else if (angularDiff < -180f) {
-			angularDiff += 360f;
-		}
+		final float mouseAngle = clampDeg(spaceShipPos.sub(mousePos).angle());
+		final float spaceShipAngle = clampDeg((-body.getAngle() * MathUtils.radDeg + 90f) % 360f);
+		float angularDiff = clampDeg(spaceShipAngle - mouseAngle);
 		angularDiff = MathUtils.clamp(angularDiff, -10f, 10f) / 10f;
 		final float velCorr = 4f * body.getAngularVelocity() * body.getMass();
 		body.applyAngularImpulse(factorTurn * angularDiff - velCorr, true);
@@ -106,6 +101,16 @@ public class LocalInput implements InputProcessor {
 		} else if (!thrusterPanUp && shift) {
 			SoundEffect.THRUSTER.setPitch(1.015f);
 			thrusterPanUp = true;
+		}
+	}
+
+	private float clampDeg(float degInput) {
+		if (degInput >= 180f) {
+			return -360f + degInput;
+		} else if (degInput <= -180f) {
+			return 360f + degInput;
+		} else {
+			return degInput;
 		}
 	}
 
