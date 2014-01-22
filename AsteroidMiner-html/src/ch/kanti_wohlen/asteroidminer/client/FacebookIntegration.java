@@ -8,6 +8,7 @@ import com.google.gwt.core.client.JsArray;
 public class FacebookIntegration {
 
 	private static Runnable highscoreCallback;
+	private static int lastScore;
 
 	public static native void init() /*-{
 		$doc.FB.init({
@@ -31,7 +32,7 @@ public class FacebookIntegration {
 						$doc.userID = response.authResponse.userID;
 					}
 				}, {
-					scope : 'publish_stream'
+					scope : 'publish_stream,publish_actions'
 				});
 			}
 		});
@@ -42,6 +43,8 @@ public class FacebookIntegration {
 	}-*/;
 
 	public static native void updateHighscore(int newScore) /*-{
+		@ch.kanti_wohlen.asteroidminer.client.FacebookIntegration::lastScore = newScore;
+
 		$doc.FB.api("/425756014191466/scores", "GET", function(currentScore) {
 			var getUserScore = function(scores) {
 				if (!(scores && scores.data)) {
@@ -127,11 +130,19 @@ public class FacebookIntegration {
 		return $doc.highscores;
 	}-*/;
 
-	public static native void postScoreMessage(int score) /*-{
-		// TODO: make not todo anymore.
+	public static native void postScoreMessage() /*-{
+		var lastScore = @ch.kanti_wohlen.asteroidminer.client.FacebookIntegration::lastScore;
+		$doc.FB.ui({
+			method: 'feed',
+			name: 'AsteroidMiner score',
+			link: 'https://apps.facebook.com/asteroid_miner/',
+			picture: 'https://github.com/Firedroide/AsteroidMiner/blob/master/Logo.png',
+			description: 'I have just gotten a score of ' + lastScore + 'points in AsteroidMiner. How many can you get?'
+		}, function(response) {
+		});
 	}-*/;
 
 	public static native void postFriendScoreBeaten() /*-{
-		// TODO: also todo...
+		// TODO: make not todo anymore.
 	}-*/;
 }

@@ -75,7 +75,7 @@ public class GwtLauncher extends GwtApplication implements GameLauncher {
 
 	@Override
 	public void postFeedHighscore() {
-		FacebookIntegration.postScoreMessage(1000); // TODO: temp
+		FacebookIntegration.postScoreMessage();
 	}
 
 	@Override

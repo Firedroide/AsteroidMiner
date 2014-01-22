@@ -2,6 +2,7 @@ package ch.kanti_wohlen.asteroidminer.screen;
 
 import java.util.List;
 
+import ch.kanti_wohlen.asteroidminer.AsteroidMiner;
 import ch.kanti_wohlen.asteroidminer.Pair;
 
 import com.badlogic.gdx.Gdx;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -101,11 +103,23 @@ public class ScoreScreen extends OverlayScreen {
 			lightColor = !lightColor;
 		}
 
+		final HorizontalGroup buttons = new HorizontalGroup();
+		buttons.setSpacing(15f);
+
 		if (Gdx.app.getType() == ApplicationType.WebGL) {
-			// Ask user to post to feed
+			final TextButton commentButton = new TextButton("Comment score on Facebook", skin);
+			commentButton.addListener(new InputListener() {
+
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					AsteroidMiner.INSTANCE.getGameLauncher().postFeedHighscore();
+					return true;
+				}
+			});
+			buttons.addActor(commentButton);
 		}
 
-		TextButton backButton = new TextButton("Back to main menu", skin);
+		final TextButton backButton = new TextButton("Back to main menu", skin);
 		backButton.addListener(new InputListener() {
 
 			@Override
@@ -114,7 +128,8 @@ public class ScoreScreen extends OverlayScreen {
 				return true;
 			}
 		});
-		table.add(backButton).colspan(2).padTop(20f).row();
+		buttons.addActor(backButton);
+		table.add(buttons).colspan(2).padTop(20f).row();
 	}
 
 	@Override
