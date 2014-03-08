@@ -43,7 +43,7 @@ public class EndlessAsteroidSpawner extends AsteroidSpawner {
 		final float width = GameScreen.WORLD_SIZE + Gdx.graphics.getWidth() * Entity.PIXEL_TO_BOX2D * 0.2f;
 		final float height = GameScreen.WORLD_SIZE + Gdx.graphics.getHeight() * Entity.PIXEL_TO_BOX2D * 0.2f;
 		final float angle = MathUtils.random(MathUtils.PI2);
-		final float speed = MathUtils.random(4f, 12f) + difficulty * 5f;
+		final float speed = MathUtils.random(12f, 24f) + difficulty * 7f;
 		final float rotation = MathUtils.random(-0.5f, 0.5f);
 
 		final BorderSide side = chooseSide(angle);
