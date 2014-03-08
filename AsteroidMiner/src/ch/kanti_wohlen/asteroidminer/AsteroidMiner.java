@@ -17,7 +17,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -100,7 +100,7 @@ public class AsteroidMiner extends Game {
 	@Override
 	public void render() {
 		// GL: Clear color buffer --> "Reset" Image
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		// GL: Fill everything with darkness (no redness or whiteness involved)
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 

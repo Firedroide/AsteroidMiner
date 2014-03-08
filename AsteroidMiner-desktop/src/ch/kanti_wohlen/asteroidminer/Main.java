@@ -21,7 +21,6 @@ public class Main implements GameLauncher {
 	private void start() {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "AsteroidMiner";
-		cfg.useGL20 = false;
 		cfg.width = 960;
 		cfg.height = 640;
 		cfg.foregroundFPS = 60;

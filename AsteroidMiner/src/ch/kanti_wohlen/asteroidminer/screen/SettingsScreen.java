@@ -140,7 +140,7 @@ public class SettingsScreen extends OverlayScreen {
 			}
 		});
 		HorizontalGroup buttons = new HorizontalGroup();
-		buttons.setSpacing(10f);
+		buttons.space(10f);
 		buttons.addActor(applyButton);
 		buttons.addActor(backButton);
 		table.add(buttons).colspan(3).right().row();

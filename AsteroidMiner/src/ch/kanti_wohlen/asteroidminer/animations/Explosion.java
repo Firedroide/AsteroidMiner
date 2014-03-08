@@ -15,7 +15,7 @@ import ch.kanti_wohlen.asteroidminer.entities.EntityType;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -101,7 +101,7 @@ public class Explosion implements Animation {
 	@Override
 	public void render(SpriteBatch batch) {
 		batch.end();
-		Gdx.gl.glEnable(GL10.GL_BLEND);
+		Gdx.gl.glEnable(GL20.GL_BLEND);
 		renderer.begin(ShapeType.Filled);
 		renderer.setTransformMatrix(batch.getTransformMatrix());
 		renderer.setProjectionMatrix(batch.getProjectionMatrix());

@@ -19,10 +19,6 @@
       <id>gdx-nightlies</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
-    <repository>
-      <id>central</id>
-      <url>http://repo1.maven.org/maven2</url>
-    </repository>
   </repositories>
 
   <build>

@@ -104,7 +104,7 @@ public class ScoreScreen extends OverlayScreen {
 		}
 
 		final HorizontalGroup buttons = new HorizontalGroup();
-		buttons.setSpacing(15f);
+		buttons.space(15f);
 
 		if (Gdx.app.getType() == ApplicationType.WebGL) {
 			final TextButton commentButton = new TextButton("Comment score on Facebook", skin);

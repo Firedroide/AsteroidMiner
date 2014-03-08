@@ -126,7 +126,7 @@ public class TutorialScreen extends AbstractScreen implements Fadeable {
 					+ "or the arrow keys. But watch out!\n"
 					+ "Movement is relative to your spaceship's rotation,\n"
 					+ "so up does not always mean up!", skin);
-			wasdGroup.setSpacing(30f);
+			wasdGroup.space(30f);
 			wasdGroup.addActor(wasdImage);
 			wasdGroup.addActor(wasdText);
 			foregroundTable.add(wasdGroup).left().row();
@@ -136,7 +136,7 @@ public class TutorialScreen extends AbstractScreen implements Fadeable {
 			final Image mouseImage = new Image(mouse);
 			final Label mouseText = new Label("Press SHIFT to use your boosters\n\n"
 					+ "Use the mouse to rotate your spaceship", skin);
-			mouseGroup.setSpacing(60f);
+			mouseGroup.space(60f);
 			mouseGroup.addActor(mouseText);
 			mouseGroup.addActor(mouseImage);
 			foregroundTable.add(mouseGroup).right().row();
@@ -148,7 +148,7 @@ public class TutorialScreen extends AbstractScreen implements Fadeable {
 					+ "to shoot your lasers. Use the lasers\n"
 					+ "to shoot the asteroids that are\n"
 					+ "dashing towards your spaceship!", skin);
-			laserGroup.setSpacing(40f);
+			laserGroup.space(40f);
 			laserGroup.addActor(laserImage);
 			laserGroup.addActor(laserText);
 			foregroundTable.add(laserGroup).left().row();
@@ -165,7 +165,7 @@ public class TutorialScreen extends AbstractScreen implements Fadeable {
 			final Label stoneAsteroidText = new Label("Stone asteroids are pretty easy to destroy,\n"
 					+ "but they will split into two smaller\n"
 					+ "asteroids when they're still large enough.", skin);
-			stoneAsteroidGroup.setSpacing(40f);
+			stoneAsteroidGroup.space(40f);
 			stoneAsteroidGroup.addActor(stoneAsteroidImage);
 			stoneAsteroidGroup.addActor(stoneAsteroidText);
 			foregroundTable.add(stoneAsteroidGroup).left().spaceBottom(15f).row();
@@ -176,7 +176,7 @@ public class TutorialScreen extends AbstractScreen implements Fadeable {
 			final Label iceAsteroidText = new Label("Ice asteroids cannot simply be shattered into pieces\n"
 					+ "like those stone asteroids. Your lasers will actually melt\n"
 					+ "the ice causing the asteroids to shrink until they disappear.", skin);
-			iceAsteroidGroup.setSpacing(40f);
+			iceAsteroidGroup.space(40f);
 			iceAsteroidGroup.addActor(iceAsteroidText);
 			iceAsteroidGroup.addActor(iceAsteroidImage);
 			foregroundTable.add(iceAsteroidGroup).right().spaceBottom(15f).row();
@@ -187,7 +187,7 @@ public class TutorialScreen extends AbstractScreen implements Fadeable {
 			final Label metalAsteroidText = new Label("Metal are quite hard to destroy and contain small\n"
 					+ "ore chunks which will be shot into all directions\n"
 					+ "when the metal asteroid is destroyed.", skin);
-			metalAsteroidGroup.setSpacing(40f);
+			metalAsteroidGroup.space(40f);
 			metalAsteroidGroup.addActor(metalAsteroidImage);
 			metalAsteroidGroup.addActor(metalAsteroidText);
 			foregroundTable.add(metalAsteroidGroup).left().spaceBottom(15f).row();
@@ -198,7 +198,7 @@ public class TutorialScreen extends AbstractScreen implements Fadeable {
 			final Label explosiveAsteroidText = new Label("You should watch out for these asteroids!\n"
 					+ "They are structually instable and will immediately explode\n"
 					+ "should a laser hit it or an unfortunate spaceship bump into it.", skin);
-			explosiveAsteroidGroup.setSpacing(40f);
+			explosiveAsteroidGroup.space(40f);
 			explosiveAsteroidGroup.addActor(explosiveAsteroidText);
 			explosiveAsteroidGroup.addActor(explosiveAsteroidImage);
 			foregroundTable.add(explosiveAsteroidGroup).right().spaceBottom(15f).row();
@@ -209,7 +209,7 @@ public class TutorialScreen extends AbstractScreen implements Fadeable {
 
 		foregroundTable.add().expandY().expandX().row();
 		final HorizontalGroup buttons = new HorizontalGroup();
-		buttons.setSpacing(10f);
+		buttons.space(10f);
 		if (page > 0) {
 			final TextButton backButton = new TextButton("< Back", skin);
 			backButton.addListener(new InputListener() {
