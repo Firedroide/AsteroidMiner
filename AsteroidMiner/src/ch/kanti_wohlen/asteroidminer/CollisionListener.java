@@ -1,5 +1,6 @@
 package ch.kanti_wohlen.asteroidminer;
 
+import ch.kanti_wohlen.asteroidminer.animations.Explosion;
 import ch.kanti_wohlen.asteroidminer.entities.Damageable;
 import ch.kanti_wohlen.asteroidminer.entities.Entity;
 import ch.kanti_wohlen.asteroidminer.entities.EntityType;
@@ -37,6 +38,9 @@ public class CollisionListener implements ContactListener {
 		case LASER:
 			if (e2.getType() == EntityType.ASTEROID) {
 				Laser laser = (Laser) e1;
+				Body body = laser.getPhysicsBody();
+				Player shooter = laser.getShooter().getPlayer();
+				new Explosion(body.getWorld(), body.getPosition().cpy(), 10f, 10, false, shooter);
 				contactLaserAsteroid(laser, e2);
 			}
 			break;
@@ -142,3 +146,4 @@ public class CollisionListener implements ContactListener {
 		}
 	}
 }
+//				new Explosion(body.getWorld(), body.getPosition().cpy(), 8f, 15, false, shooter);
